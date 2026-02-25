@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Header from "./LayOut/Header";
 import Home from "./Page/Home";
 import Auth from "./Page/Auth";
+import { LanguageProvider } from "./context/LanguageContext"; 
 
 function AppWrapper() {
   const location = useLocation();
@@ -21,7 +22,9 @@ function AppWrapper() {
 function App() {
   return (
     <BrowserRouter>
-      <AppWrapper />
+      <LanguageProvider> 
+        <AppWrapper />
+      </LanguageProvider>
     </BrowserRouter>
   );
 }

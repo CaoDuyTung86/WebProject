@@ -1,17 +1,20 @@
+// src/components/BookingTabs.jsx
 import { useState } from "react";
 import { PiAirplaneTilt } from "react-icons/pi";
 import { MdOutlineTrain, MdOutlinePercent } from "react-icons/md";
 import { IoIosBus } from "react-icons/io";
-
-const tabs = [
-  { icon: <PiAirplaneTilt />, label: "Vé máy bay" },
-  { icon: <MdOutlineTrain />, label: "Vé tàu hỏa" },
-  { icon: <IoIosBus />, label: "Xe khách" },
-  { icon: <MdOutlinePercent />, label: "Đặt theo gói" },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 const BookingTabs = () => {
   const [active, setActive] = useState(0);
+  const { t } = useLanguage();
+
+  const tabs = [
+    { icon: <PiAirplaneTilt />, label: t.flight },
+    { icon: <MdOutlineTrain />, label: t.train },
+    { icon: <IoIosBus />, label: t.bus },
+    { icon: <MdOutlinePercent />, label: t.package },
+  ];
 
   return (
     <div
@@ -20,7 +23,7 @@ const BookingTabs = () => {
         borderRadius: "20px",
         padding: "30px",
         boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-        color:"black"
+        color: "black"
       }}
     >
       {/* Tabs */}
@@ -52,9 +55,8 @@ const BookingTabs = () => {
               gap: "4px",
             }}
           >
-            {/* Chỉ sửa chỗ này */}
-            {tab.icon}
-            <span>{tab.label}</span>
+            <span style={{ fontSize: "24px" }}>{tab.icon}</span>
+            <span style={{ fontSize: "14px", fontWeight: "500" }}>{tab.label}</span>
           </div>
         ))}
       </div>
@@ -72,7 +74,7 @@ const BookingTabs = () => {
           fontSize: "18px",
         }}
       >
-        Nội dung đặt vé cho: <b style={{ marginLeft: 6 }}>{tabs[active].label}</b>
+        {t.bookingContent} <b style={{ marginLeft: 6, color: "#4f7cff" }}>{tabs[active].label}</b>
       </div>
     </div>
   );

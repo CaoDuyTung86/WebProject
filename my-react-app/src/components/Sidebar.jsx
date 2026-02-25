@@ -2,7 +2,11 @@ import { PiAirplaneTilt } from "react-icons/pi";
 import { MdOutlineTrain } from "react-icons/md";
 import { IoIosBus } from "react-icons/io";
 import { MdOutlinePercent } from "react-icons/md";
+import { useLanguage } from "../context/LanguageContext";
+
 const Sidebar = ({ isOpen }) => {
+  const { t } = useLanguage();
+
   return (
     <aside
       style={{
@@ -17,10 +21,10 @@ const Sidebar = ({ isOpen }) => {
       }}
     >
       <div style={{ opacity: isOpen ? 1 : 0, transition: "0.2s" }}>
-        <div style={{ padding: "14px 20px" }}><PiAirplaneTilt />  Vé máy bay</div>
-        <div style={{ padding: "14px 20px" }}><MdOutlineTrain />  Vé tàu hỏa</div>
-        <div style={{ padding: "14px 20px" }}><IoIosBus />  Xe khách</div>
-        <div style={{ padding: "14px 20px" }}><MdOutlinePercent /> Đặt theo gói</div>
+        <div style={{ padding: "14px 20px" }}><PiAirplaneTilt />  {t.flight}</div>
+        <div style={{ padding: "14px 20px" }}><MdOutlineTrain />  {t.train}</div>
+        <div style={{ padding: "14px 20px" }}><IoIosBus />  {t.bus}</div>
+        <div style={{ padding: "14px 20px" }}><MdOutlinePercent /> {t.package}</div>
       </div>
     </aside>
   );
