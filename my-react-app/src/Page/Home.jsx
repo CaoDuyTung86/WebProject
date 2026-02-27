@@ -7,10 +7,12 @@ const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <div style={{ height: "100vh", background: "#f5f7fb" }}>
+    <div style={{ minHeight: "100vh", background: "#f5f7fb" }}>
+     
       <Header setIsSidebarOpen={setIsSidebarOpen} />
 
-      <div style={{ display: "flex", marginTop: "70px" }}>
+      
+      <div style={{ display: "flex", marginTop: "70px", position: "relative" }}>
         
         <Sidebar isOpen={isSidebarOpen} />
 
@@ -19,7 +21,9 @@ const Home = () => {
           style={{
             flex: 1,
             padding: "40px",
-            transition: "0.3s",
+            marginLeft: isSidebarOpen ? "220px" : "0", 
+            transition: "margin-left 0.3s",
+            width: "100%",
           }}
         >
           <BookingTabs />

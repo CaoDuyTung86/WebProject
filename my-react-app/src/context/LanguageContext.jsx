@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-
 const translations = {
   vi: {
     // Header
@@ -56,8 +55,97 @@ const translations = {
     bus: "Xe khách",
     package: "Đặt theo gói",
 
-  },
+    // Flight Search
+    roundTrip: "Khứ hồi",
+    oneWay: "Một chiều",
+    multiCity: "Nhiều thành phố",
+    directFlight: "Bay thẳng",
+    from: "Từ",
+    to: "Đến",
+    selectDeparture: "Chọn điểm đi",
+    selectDestination: "Chọn điểm đến",
+    departureDate: "Ngày đi",
+    returnDate: "Ngày về",
+    passengers: "Hành khách",
+    adult: "Người lớn",
+    child: "Trẻ em",
+    infant: "Em bé",
+    adultAge: "Người lớn (≥12 tuổi)",
+    childAge: "Trẻ em (2-11 tuổi)",
+    infantAge: "Em bé (<2 tuổi)",
+    class: "Hạng vé",
+    economy: "Phổ thông",
+    premium: "Phổ thông đặc biệt",
+    business: "Thương gia",
+    first: "Hạng nhất",
+    apply: "Áp dụng",
+    flightHotel: "Vé máy bay + Khách sạn",
+    search: "Tìm kiếm",
+    anywhere: "Mọi nơi",
+    addFlight: "Thêm chuyến bay khác",
 
+    // Train Search
+    departureStation: "Ga khởi hành",
+    arrivalStation: "Ga đến",
+    departureTime: "Thời gian khởi hành",
+    returnTime: "Giờ về",
+    addReturn: "Thêm chuyến về",
+    onlyHighSpeed: "Chỉ tàu cao tốc",
+    exploreHotel: "Khám phá khách sạn",
+    all: "Tất cả",
+    vip: "VIP",
+
+    // City Selector - Tabs
+    vietnam: "Việt Nam",
+    taiwan: "Đài Loan",
+    japan: "Nhật Bản",
+    uk: "Anh",
+    searchCity: "Tìm thành phố...",
+    
+    // Vietnam Cities
+    hanoi: "Hà Nội",
+    hcmc: "TP. Hồ Chí Minh",
+    danang: "Đà Nẵng",
+    
+    // Taiwan Cities
+    taipei: "Đài Bắc",
+    kaohsiung: "Cao Hùng",
+    taichung: "Đài Trung",
+    
+    // Japan Cities
+    tokyo: "Tokyo",
+    osaka: "Osaka",
+    nagoya: "Nagoya",
+    sapporo: "Sapporo",
+    fukuoka: "Fukuoka",
+    
+    // UK Cities
+    london: "Luân Đôn",
+    manchester: "Manchester",
+    edinburgh: "Edinburgh",
+    birmingham: "Birmingham",
+
+    // Footer
+    contactUs: "Liên Hệ Với Chúng Tôi",
+    customerCare: "Chăm Sóc Khách Hàng",
+    serviceGuarantee: "Bảo Đảm Dịch Vụ",
+    moreServiceInfo: "Xem thêm thông tin dịch vụ",
+    aboutTrip: "Về Datxe.com",
+    news: "Tin Tức",
+    careers: "Tuyển dụng",
+    termsConditions: "Điều Khoản & Điều Kiện",
+    privacyPolicy: "Tuyên bố quyền riêng tư",
+    aboutGroup: "Giới Thiệu Về Tập Đoàn Trip.com",
+    otherServices: "Các Dịch Vụ Khác",
+    investorRelations: "Quan Hệ Đầu Tư",
+    tripRewards: "Phần Thưởng Trip.com",
+    affiliateProgram: "Chương trình đối tác liên kết",
+    listProperty: "Đăng Cơ Sở Lưu Trú",
+    security: "Bảo Mật",
+    paymentMethods: "Phương thức thanh toán",
+    ourPartners: "Đối Tác Của Chúng Tôi",
+    copyright: "Bản quyền © 2025 Datxe.com Travel VietNam Pte. Ltd. Bảo lưu mọi quyền. Nhà điều hành trang: Datxe.com Travel VietNam Pte. Ltd.",
+  },
 
   en: {
     // Header
@@ -113,8 +201,97 @@ const translations = {
     bus: "Bus Tickets",
     package: "Package Booking",
 
-  },
+    // Flight Search
+    roundTrip: "Round trip",
+    oneWay: "One way",
+    multiCity: "Multi-city",
+    directFlight: "Direct flights only",
+    from: "From",
+    to: "To",
+    selectDeparture: "Select departure",
+    selectDestination: "Select destination",
+    departureDate: "Departure",
+    returnDate: "Return",
+    passengers: "Passengers",
+    adult: "Adult",
+    child: "Child",
+    infant: "Infant",
+    adultAge: "Adults (≥12 years)",
+    childAge: "Children (2-11 years)",
+    infantAge: "Infants (<2 years)",
+    class: "Class",
+    economy: "Economy",
+    premium: "Premium economy",
+    business: "Business",
+    first: "First class",
+    apply: "Apply",
+    flightHotel: "Flight + Hotel",
+    search: "Search",
+    anywhere: "Anywhere",
+    addFlight: "Add another flight",
 
+    // Train Search
+    departureStation: "Departure station",
+    arrivalStation: "Arrival station",
+    departureTime: "Departure time",
+    returnTime: "Return time",
+    addReturn: "Add return",
+    onlyHighSpeed: "High speed only",
+    exploreHotel: "Explore hotels",
+    all: "All",
+    vip: "VIP",
+
+    // City Selector - Tabs
+    vietnam: "Vietnam",
+    taiwan: "Taiwan",
+    japan: "Japan",
+    uk: "United Kingdom",
+    searchCity: "Search city...",
+    
+    // Vietnam Cities
+    hanoi: "Hanoi",
+    hcmc: "Ho Chi Minh City",
+    danang: "Da Nang",
+    
+    // Taiwan Cities
+    taipei: "Taipei",
+    kaohsiung: "Kaohsiung",
+    taichung: "Taichung",
+    
+    // Japan Cities
+    tokyo: "Tokyo",
+    osaka: "Osaka",
+    nagoya: "Nagoya",
+    sapporo: "Sapporo",
+    fukuoka: "Fukuoka",
+    
+    // UK Cities
+    london: "London",
+    manchester: "Manchester",
+    edinburgh: "Edinburgh",
+    birmingham: "Birmingham",
+
+    // Footer
+  contactUs: "Contact Us",
+  customerCare: "Customer Care",
+  serviceGuarantee: "Service Guarantee",
+  moreServiceInfo: "More service information",
+  aboutUs: "About Datxe.com",
+  news: "News",
+  careers: "Careers",
+  termsConditions: "Terms & Conditions",
+  privacyPolicy: "Privacy Policy",
+  aboutGroup: "About Datxe.com Group",
+  otherServices: "Other Services",
+  investorRelations: "Investor Relations",
+  rewards: "Datxe.com Rewards",
+  affiliateProgram: "Affiliate Program",
+  listProperty: "List Your Property",
+  security: "Security",
+  paymentMethods: "Payment Methods",
+  ourPartners: "Our Partners",
+  copyright: "Copyright © 2025 Datxe.com Travel VietNam Pte. Ltd. All rights reserved. Operator: Datxe.com Travel VietNam Pte. Ltd.",
+  },
 
   ja: {
     // Header
@@ -170,8 +347,98 @@ const translations = {
     bus: "バスチケット",
     package: "パッケージ予約",
 
+    // Flight Search
+    roundTrip: "往復",
+    oneWay: "片道",
+    multiCity: "複数の都市",
+    directFlight: "直行便のみ",
+    from: "出発",
+    to: "到着",
+    selectDeparture: "出発地を選択",
+    selectDestination: "到着地を選択",
+    departureDate: "出発日",
+    returnDate: "帰国日",
+    passengers: "乗客",
+    adult: "大人",
+    child: "子供",
+    infant: "幼児",
+    adultAge: "大人 (12歳以上)",
+    childAge: "子供 (2-11歳)",
+    infantAge: "幼児 (2歳未満)",
+    class: "クラス",
+    economy: "エコノミー",
+    premium: "プレミアムエコノミー",
+    business: "ビジネス",
+    first: "ファースト",
+    apply: "適用",
+    flightHotel: "飛行機 + ホテル",
+    search: "検索",
+    anywhere: "どこでも",
+    addFlight: "別のフライトを追加",
 
+    // Train Search
+    departureStation: "出発駅",
+    arrivalStation: "到着駅",
+    departureTime: "出発時間",
+    returnTime: "帰着時間",
+    addReturn: "帰りを追加",
+    onlyHighSpeed: "高速のみ",
+    exploreHotel: "ホテルを探す",
+    all: "すべて",
+    vip: "VIP",
+
+    // City Selector - Tabs
+    vietnam: "ベトナム",
+    taiwan: "台湾",
+    japan: "日本",
+    uk: "イギリス",
+    searchCity: "都市を検索...",
+    
+    // Vietnam Cities
+    hanoi: "ハノイ",
+    hcmc: "ホーチミン",
+    danang: "ダナン",
+    
+    // Taiwan Cities
+    taipei: "台北",
+    kaohsiung: "高雄",
+    taichung: "台中",
+    
+    // Japan Cities
+    tokyo: "東京",
+    osaka: "大阪",
+    nagoya: "名古屋",
+    sapporo: "札幌",
+    fukuoka: "福岡",
+    
+    // UK Cities
+    london: "ロンドン",
+    manchester: "マンチェスター",
+    edinburgh: "エディンバラ",
+    birmingham: "バーミンガム",
+
+  // Footer
+  contactUs: "お問い合わせ",
+  customerCare: "カスタマーケア",
+  serviceGuarantee: "サービス保証",
+  moreServiceInfo: "サービス詳細",
+  aboutUs: "Datxe.comについて",
+  news: "ニュース",
+  careers: "採用情報",
+  termsConditions: "利用規約",
+  privacyPolicy: "プライバシーポリシー",
+  aboutGroup: "Datxe.comグループについて",
+  otherServices: "その他のサービス",
+  investorRelations: "投資家情報",
+  rewards: "Datxe.com特典",
+  affiliateProgram: "アフィリエイトプログラム",
+  listProperty: "宿泊施設を登録",
+  security: "セキュリティ",
+  paymentMethods: "お支払い方法",
+  ourPartners: "パートナー",
+  copyright: "著作権 © 2025 Datxe.com Travel VietNam Pte. Ltd. 全著作権所有。運営会社: Datxe.com Travel VietNam Pte. Ltd.",
   },
+
   zh: {
     // Header
     app: "應用程式",
@@ -226,7 +493,96 @@ const translations = {
     bus: "巴士票",
     package: "套裝預訂",
 
+    // Flight Search
+    roundTrip: "往返",
+    oneWay: "單程",
+    multiCity: "多個城市",
+    directFlight: "僅限直飛",
+    from: "出發地",
+    to: "目的地",
+    selectDeparture: "選擇出發地",
+    selectDestination: "選擇目的地",
+    departureDate: "出發日期",
+    returnDate: "回程日期",
+    passengers: "乘客",
+    adult: "成人",
+    child: "兒童",
+    infant: "嬰兒",
+    adultAge: "成人 (12歲以上)",
+    childAge: "兒童 (2-11歲)",
+    infantAge: "嬰兒 (2歲以下)",
+    class: "艙等",
+    economy: "經濟艙",
+    premium: "豪華經濟艙",
+    business: "商務艙",
+    first: "頭等艙",
+    apply: "套用",
+    flightHotel: "機票 + 酒店",
+    search: "搜尋",
+    anywhere: "任何地方",
+    addFlight: "添加其他航班",
 
+    // Train Search
+    departureStation: "出發站",
+    arrivalStation: "到達站",
+    departureTime: "出發時間",
+    returnTime: "回程時間",
+    addReturn: "添加回程",
+    onlyHighSpeed: "僅高速",
+    exploreHotel: "探索酒店",
+    all: "全部",
+    vip: "VIP",
+
+    // City Selector - Tabs
+    vietnam: "越南",
+    taiwan: "台灣",
+    japan: "日本",
+    uk: "英國",
+    searchCity: "搜尋城市...",
+    
+    // Vietnam Cities
+    hanoi: "河內",
+    hcmc: "胡志明市",
+    danang: "峴港",
+    
+    // Taiwan Cities
+    taipei: "台北",
+    kaohsiung: "高雄",
+    taichung: "台中",
+    
+    // Japan Cities
+    tokyo: "東京",
+    osaka: "大阪",
+    nagoya: "名古屋",
+    sapporo: "札幌",
+    fukuoka: "福岡",
+    
+    // UK Cities
+    london: "倫敦",
+    manchester: "曼徹斯特",
+    edinburgh: "愛丁堡",
+    birmingham: "伯明翰",
+
+    // Footer
+  contactUs: "聯繫我們",
+  customerCare: "客戶服務",
+  serviceGuarantee: "服務保證",
+  moreServiceInfo: "更多服務信息",
+  aboutUs: "關於Datxe.com",
+  news: "新聞",
+  careers: "招聘",
+  termsConditions: "條款與條件",
+  privacyPolicy: "隱私政策",
+  aboutGroup: "關於Datxe.com集團",
+  otherServices: "其他服務",
+  investorRelations: "投資者關係",
+  rewards: "Datxe.com獎勵",
+  affiliateProgram: "聯盟計畫",
+  listProperty: "註冊住宿",
+  security: "安全",
+  paymentMethods: "付款方式",
+  ourPartners: "合作夥伴",
+  copyright: "版權所有 © 2025 Datxe.com Travel VietNam Pte. Ltd. 保留所有權利。運營商：Datxe.com Travel VietNam Pte. Ltd.",
   }
 };
 

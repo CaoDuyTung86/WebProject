@@ -1,0 +1,569 @@
+import React, { useState } from "react";
+import { useLanguage } from "../context/LanguageContext";
+import { FaCalendarAlt, FaSearch, FaTrain, FaClock } from "react-icons/fa";
+import { IoIosSwap } from "react-icons/io";
+import { MdOutlineTrain } from "react-icons/md";
+import { GiSteeringWheel } from "react-icons/gi";
+import { FaHotel } from "react-icons/fa";
+import CitySelector from "./CitySelector";
+
+const TrainSearch = () => {
+  const { t } = useLanguage();
+  const [tripType, setTripType] = useState("oneway");
+  
+  // State cho ga đi/đến
+  const [from, setFrom] = useState("");
+  const [fromCity, setFromCity] = useState(null);
+  const [to, setTo] = useState("");
+  const [toCity, setToCity] = useState(null);
+  
+  const [departDate, setDepartDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [passengers, setPassengers] = useState({
+    adult: 1,
+    child: 0,
+    infant: 0,
+    class: "all"
+  });
+  const [showPassengerModal, setShowPassengerModal] = useState(false);
+  const [onlyHighSpeed, setOnlyHighSpeed] = useState(false);
+  const [showHotel, setShowHotel] = useState(false);
+  
+  // State cho CitySelector
+  const [showCitySelector, setShowCitySelector] = useState(false);
+  const [citySelectorType, setCitySelectorType] = useState(null);
+
+  const tripTypes = [
+    { id: "oneway", label: t.oneWay },
+    { id: "roundtrip", label: t.roundTrip },
+  ];
+
+  const trainClasses = [
+    { id: "all", label: t.all || "Tất cả" },
+    { id: "economy", label: t.economy },
+    { id: "business", label: t.business },
+    { id: "vip", label: t.vip || "VIP" },
+  ];
+
+  const handleSearch = () => {
+    console.log("Search trains:", {
+      tripType,
+      from: fromCity,
+      to: toCity,
+      departDate,
+      returnDate,
+      passengers,
+      onlyHighSpeed,
+      showHotel
+    });
+  };
+
+  const handleCitySelect = (city) => {
+    if (citySelectorType === 'from') {
+      setFromCity(city);
+      setFrom(city.name);
+    } else if (citySelectorType === 'to') {
+      setToCity(city);
+      setTo(city.name);
+    }
+  };
+
+  const handleSwapCities = () => {
+    const tempFrom = from;
+    const tempFromCity = fromCity;
+    setFrom(to);
+    setFromCity(toCity);
+    setTo(tempFrom);
+    setToCity(tempFromCity);
+  };
+
+  const getPassengerText = () => {
+    const total = passengers.adult + passengers.child + passengers.infant;
+    return `${total} ${t.passengers}`;
+  };
+
+  return (
+    <div style={{
+      background: "#fff",
+      borderRadius: "16px",
+      padding: "24px",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+      marginTop: "20px",
+    }}>
+      {/* Header với icon tàu */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        marginBottom: "20px",
+        paddingBottom: "12px",
+        borderBottom: "2px solid #4f7cff",
+      }}>
+        <MdOutlineTrain style={{ fontSize: "28px", color: "#4f7cff" }} />
+        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#333", margin: 0 }}>
+          {t.train}
+        </h3>
+      </div>
+
+      {/* Trip type tabs */}
+      <div style={{
+        display: "flex",
+        gap: "8px",
+        marginBottom: "20px",
+      }}>
+        {tripTypes.map(type => (
+          <button
+            key={type.id}
+            onClick={() => setTripType(type.id)}
+            style={{
+              padding: "8px 20px",
+              border: "none",
+              background: tripType === type.id ? "#4f7cff" : "#f0f0f0",
+              color: tripType === type.id ? "#fff" : "#666",
+              borderRadius: "30px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: tripType === type.id ? "600" : "400",
+              transition: "all 0.2s",
+            }}
+          >
+            {type.label}
+          </button>
+        ))}
+      </div>
+
+      {/* From - To */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
+        gap: "12px",
+        marginBottom: "16px",
+      }}>
+        {/* From */}
+        <div 
+          style={{
+            border: "1px solid #e0e0e0",
+            borderRadius: "12px",
+            padding: "12px",
+            background: "#f8f9fa",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setCitySelectorType('from');
+            setShowCitySelector(true);
+          }}
+        >
+          <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+            {t.from} · {t.departureStation || "Ga khởi hành"}
+          </label>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <FaTrain style={{ color: "#4f7cff", fontSize: "16px" }} />
+            <span style={{ 
+              fontSize: "15px", 
+              color: from ? "#333" : "#999",
+              flex: 1,
+            }}>
+              {from || t.selectDeparture}
+            </span>
+          </div>
+        </div>
+
+        {/* Swap button */}
+        <button 
+          onClick={handleSwapCities}
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            border: "1px solid #e0e0e0",
+            background: "#fff",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          <IoIosSwap style={{ fontSize: "20px", color: "#4f7cff" }} />
+        </button>
+
+        {/* To */}
+        <div 
+          style={{
+            border: "1px solid #e0e0e0",
+            borderRadius: "12px",
+            padding: "12px",
+            background: "#f8f9fa",
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setCitySelectorType('to');
+            setShowCitySelector(true);
+          }}
+        >
+          <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+            {t.to} · {t.arrivalStation || "Ga đến"}
+          </label>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <FaTrain style={{ color: "#4f7cff", fontSize: "16px", transform: "rotate(180deg)" }} />
+            <span style={{ 
+              fontSize: "15px", 
+              color: to ? "#333" : "#999",
+              flex: 1,
+            }}>
+              {to || t.selectDestination}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Dates */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: tripType === "roundtrip" ? "1fr 1fr" : "1fr",
+        gap: "12px",
+        marginBottom: "16px",
+      }}>
+        {/* Depart date */}
+        <div style={{
+          border: "1px solid #e0e0e0",
+          borderRadius: "12px",
+          padding: "12px",
+          background: "#f8f9fa",
+        }}>
+          <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+            {t.departureDate}
+          </label>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "14px" }} />
+            <input
+              type="date"
+              value={departDate}
+              onChange={(e) => setDepartDate(e.target.value)}
+              style={{
+                border: "none",
+                background: "transparent",
+                outline: "none",
+                fontSize: "15px",
+                width: "100%",
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Return date - only for roundtrip */}
+        {tripType === "roundtrip" && (
+          <div style={{
+            border: "1px solid #e0e0e0",
+            borderRadius: "12px",
+            padding: "12px",
+            background: "#f8f9fa",
+          }}>
+            <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+              {t.returnDate} · <span style={{ color: "#4f7cff", cursor: "pointer" }}>
+                {t.addReturn || "Thêm chuyến về"}
+              </span>
+            </label>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "14px" }} />
+              <input
+                type="date"
+                value={returnDate}
+                onChange={(e) => setReturnDate(e.target.value)}
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  outline: "none",
+                  fontSize: "15px",
+                  width: "100%",
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* High speed train only */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        marginBottom: "16px",
+        padding: "8px 12px",
+        background: "#f8f9fa",
+        borderRadius: "8px",
+      }}>
+        <input 
+          type="checkbox" 
+          id="highSpeed"
+          checked={onlyHighSpeed}
+          onChange={(e) => setOnlyHighSpeed(e.target.checked)}
+          style={{ width: "16px", height: "16px", cursor: "pointer" }}
+        />
+        <label htmlFor="highSpeed" style={{ fontSize: "14px", color: "#333", cursor: "pointer", flex: 1 }}>
+          {t.onlyHighSpeed || "Chỉ tàu cao tốc"}
+        </label>
+       
+      </div>
+
+      {/* Passengers */}
+      <div style={{
+        border: "1px solid #e0e0e0",
+        borderRadius: "12px",
+        padding: "12px",
+        background: "#f8f9fa",
+        marginBottom: "16px",
+        position: "relative",
+        cursor: "pointer",
+      }}
+      onClick={() => setShowPassengerModal(!showPassengerModal)}
+      >
+        <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+          {t.passengers}
+        </label>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <FaTrain style={{ color: "#4f7cff", fontSize: "14px" }} />
+          <span style={{ fontSize: "15px", color: "#333" }}>
+            {getPassengerText()}
+          </span>
+        </div>
+
+        {/* Passenger modal */}
+        {showPassengerModal && (
+          <div 
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              right: 0,
+              background: "#fff",
+              borderRadius: "12px",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+              padding: "16px",
+              zIndex: 10,
+              marginTop: "4px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Adults */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              marginBottom: "12px" 
+            }}>
+              <span style={{ fontWeight: "500" }}>{t.adultAge}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, adult: Math.max(1, passengers.adult - 1)});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                  }}
+                >-</button>
+                <span>{passengers.adult}</span>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, adult: passengers.adult + 1});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                  }}
+                >+</button>
+              </div>
+            </div>
+
+            {/* Children */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              marginBottom: "12px" 
+            }}>
+              <span style={{ fontWeight: "500" }}>{t.childAge}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, child: Math.max(0, passengers.child - 1)});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                  }}
+                >-</button>
+                <span>{passengers.child}</span>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, child: passengers.child + 1});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                  }}
+                >+</button>
+              </div>
+            </div>
+
+            {/* Infants */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              marginBottom: "16px" 
+            }}>
+              <span style={{ fontWeight: "500" }}>{t.infantAge}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, infant: Math.max(0, passengers.infant - 1)});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                  }}
+                >-</button>
+                <span>{passengers.infant}</span>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, infant: passengers.infant + 1});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                  }}
+                >+</button>
+              </div>
+            </div>
+
+            {/* Class */}
+            <div>
+              <label style={{ 
+                fontSize: "14px", 
+                fontWeight: "500", 
+                display: "block", 
+                marginBottom: "8px" 
+              }}>
+                {t.class}
+              </label>
+              <select
+                value={passengers.class}
+                onChange={(e) => setPassengers({...passengers, class: e.target.value})}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  outline: "none",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                }}
+              >
+                {trainClasses.map(cls => (
+                  <option key={cls.id} value={cls.id}>{cls.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Apply button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowPassengerModal(false);
+              }}
+              style={{
+                width: "100%",
+                padding: "10px",
+                background: "#4f7cff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontWeight: "600",
+                marginTop: "16px",
+              }}
+            >
+              {t.apply}
+            </button>
+          </div>
+        )}
+      </div>
+
+    
+      {/* Search button */}
+      <button
+        onClick={handleSearch}
+        style={{
+          width: "100%",
+          padding: "14px",
+          background: "#4f7cff",
+          color: "#fff",
+          border: "none",
+          borderRadius: "12px",
+          fontSize: "16px",
+          fontWeight: "600",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px",
+          transition: "background 0.2s",
+        }}
+        onMouseEnter={(e) => e.target.style.background = "#3a5fd0"}
+        onMouseLeave={(e) => e.target.style.background = "#4f7cff"}
+      >
+        <FaSearch />
+        {t.search}
+      </button>
+
+      {/* City Selector Modal */}
+      <CitySelector
+        isOpen={showCitySelector}
+        onClose={() => setShowCitySelector(false)}
+        onSelect={handleCitySelect}
+        type={citySelectorType}
+      />
+    </div>
+  );
+};
+
+export default TrainSearch;

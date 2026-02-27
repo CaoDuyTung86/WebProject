@@ -1,11 +1,11 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { IoIosPhonePortrait } from "react-icons/io";
 import { MdOutlinePhone } from "react-icons/md";
 import { IoChevronDown } from "react-icons/io5";
 import Auth from "../Page/Auth"; 
 import { useLanguage } from "../context/LanguageContext";
 import { AiOutlineGlobal } from "react-icons/ai";
+import { useNavigate } from "react-router-dom"; 
 import VNFlag from "../Picture/flags/vn.png";
 import UKFlag from "../Picture/flags/uk.png";
 import JPFlag from "../Picture/flags/jp.png";
@@ -14,7 +14,9 @@ import TWFlag from "../Picture/flags/tw.png";
 const Header = ({ setIsSidebarOpen }) => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [showPhone, setShowPhone] = useState(false); 
   const { currentLanguage, t, changeLanguage } = useLanguage();
+  const navigate = useNavigate(); 
 
   const languages = [
     { code: 'vi', name: 'Tiếng Việt', flag: VNFlag },
@@ -23,8 +25,19 @@ const Header = ({ setIsSidebarOpen }) => {
     { code: 'zh', name: '繁體中文', flag: TWFlag },
   ];
 
-  
-  useEffect(() => {
+  const phoneNumbers = {
+    vi: "1900 1234",
+    en: "+84 13 1234 5678",
+    ja: "+84 58 1234 5678",
+    zh: "+84 43 1234 5678"
+  };
+
+ 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
+  React.useEffect(() => {
     const langWithFlag = languages.find(lang => lang.code === currentLanguage.code);
     if (langWithFlag && currentLanguage.flag !== langWithFlag.flag) {
       currentLanguage.flag = langWithFlag.flag;
@@ -36,10 +49,11 @@ const Header = ({ setIsSidebarOpen }) => {
     setIsLanguageOpen(false);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.language-selector')) {
+      if (!event.target.closest('.language-selector') && !event.target.closest('.cskh-container')) {
         setIsLanguageOpen(false);
+        setShowPhone(false);
       }
     };
     document.addEventListener('click', handleClickOutside);
@@ -78,7 +92,19 @@ const Header = ({ setIsSidebarOpen }) => {
           >
             ☰
           </button>
-          <h2 style={{ margin: 0, color: "#20c997" }}>Datxe.com</h2>
+          <h2 
+            onClick={handleLogoClick} 
+            style={{ 
+              margin: 0, 
+              color: "#20c997",
+              cursor: "pointer", 
+              transition: "opacity 0.2s",
+            }}
+            onMouseEnter={(e) => e.target.style.opacity = "0.8"}
+            onMouseLeave={(e) => e.target.style.opacity = "1"}
+          >
+            Datxe.com
+          </h2>
         </div>
 
         <input
@@ -114,6 +140,7 @@ const Header = ({ setIsSidebarOpen }) => {
               onClick={(e) => {
                 e.stopPropagation();
                 setIsLanguageOpen(!isLanguageOpen);
+                setShowPhone(false); 
               }}
             >
               <img 
@@ -219,9 +246,79 @@ const Header = ({ setIsSidebarOpen }) => {
             )}
           </div>
 
-          <span style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-            <MdOutlinePhone /> {t.support}
-          </span>
+          <div className="cskh-container" style={{ position: "relative" }}>
+            <span 
+              style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                gap: "4px", 
+                cursor: "pointer",
+                padding: "4px 8px",
+                borderRadius: "4px",
+                backgroundColor: showPhone ? "#f0f0f0" : "transparent",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowPhone(!showPhone);
+                setIsLanguageOpen(false); 
+              }}
+            >
+              <MdOutlinePhone /> {t.support}
+            </span>
+
+            {showPhone && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "40px",
+                  right: 0,
+                  width: "200px",
+                  backgroundColor: "#fff",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+                  zIndex: 1001,
+                  padding: "16px",
+                  textAlign: "center",
+                }}
+              >
+                <div style={{
+                  fontSize: "20px",
+                  fontWeight: "700",
+                  color: "#4f7cff",
+                  marginBottom: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px"
+                }}>
+                  <MdOutlinePhone style={{ fontSize: "18px" }} />
+                  {phoneNumbers[currentLanguage.code]}
+                </div>
+                <div style={{
+                  fontSize: "12px",
+                  color: "#666",
+                  borderTop: "1px solid #eee",
+                  paddingTop: "8px",
+                  marginTop: "8px"
+                }}>
+                  {t.support === "CSKH" ? "Tư vấn 24/7" : 
+                   t.support === "Support" ? "24/7 Support" :
+                   t.support === "サポート" ? "24時間サポート" : "24小時客服"}
+                </div>
+                <div style={{
+                  position: "absolute",
+                  top: "-6px",
+                  right: "20px",
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: "#fff",
+                  transform: "rotate(45deg)",
+                  borderTop: "1px solid #eee",
+                  borderLeft: "1px solid #eee",
+                }} />
+              </div>
+            )}
+          </div>
 
           <button
             onClick={() => setIsAuthOpen(true)}

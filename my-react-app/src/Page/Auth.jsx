@@ -1,4 +1,3 @@
-// src/Page/Auth.jsx
 import React, { useState, useEffect } from "react";
 import G from "../Picture/G.png";
 import FB from "../Picture/FB.png";

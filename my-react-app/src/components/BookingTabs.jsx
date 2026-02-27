@@ -4,6 +4,9 @@ import { PiAirplaneTilt } from "react-icons/pi";
 import { MdOutlineTrain, MdOutlinePercent } from "react-icons/md";
 import { IoIosBus } from "react-icons/io";
 import { useLanguage } from "../context/LanguageContext";
+import FlightSearch from "./FlightSearch";
+import TrainSearch from "./TrainSearch";
+import BusSearch from "./BusSearch";
 
 const BookingTabs = () => {
   const [active, setActive] = useState(0);
@@ -62,20 +65,25 @@ const BookingTabs = () => {
       </div>
 
       {/* Content */}
-      <div
-        style={{
-          height: "200px",
-          border: "2px dashed #dee2e6",
-          borderRadius: "14px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#999",
-          fontSize: "18px",
-        }}
-      >
-        {t.bookingContent} <b style={{ marginLeft: 6, color: "#4f7cff" }}>{tabs[active].label}</b>
-      </div>
+      {active === 0 && <FlightSearch />}
+      {active === 1 && <TrainSearch />}
+      {active === 2 && <BusSearch />}
+      {active === 3 && (
+        <div
+          style={{
+            height: "200px",
+            border: "2px dashed #dee2e6",
+            borderRadius: "14px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#999",
+            fontSize: "18px",
+          }}
+        >
+          {t.bookingContent} <b style={{ marginLeft: 6, color: "#4f7cff" }}>{tabs[active].label}</b>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,0 +1,868 @@
+import React, { useState } from "react";
+import { useLanguage } from "../context/LanguageContext";
+import { IoIosSwap } from "react-icons/io";
+import { FaCalendarAlt, FaUser, FaSearch, FaPlus } from "react-icons/fa";
+import { MdFlightTakeoff, MdFlightLand } from "react-icons/md";
+import CitySelector from "./CitySelector";
+
+const FlightSearch = () => {
+  const { t } = useLanguage();
+  const [tripType, setTripType] = useState("roundtrip");
+  
+  // State cho roundtrip và oneway
+  const [from, setFrom] = useState("");
+  const [fromCity, setFromCity] = useState(null);
+  const [to, setTo] = useState("");
+  const [toCity, setToCity] = useState(null);
+  const [departDate, setDepartDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  
+  // State cho multi-city
+  const [multiCityFlights, setMultiCityFlights] = useState([
+    { id: 1, from: "", fromCity: null, to: "", toCity: null, departDate: "" },
+    { id: 2, from: "", fromCity: null, to: "", toCity: null, departDate: "" },
+    { id: 3, from: "", fromCity: null, to: "", toCity: null, departDate: "" },
+  ]);
+  
+  // State chung
+  const [passengers, setPassengers] = useState({
+    adult: 1,
+    child: 0,
+    infant: 0,
+    class: "economy"
+  });
+  const [showPassengerModal, setShowPassengerModal] = useState(false);
+  const [showCitySelector, setShowCitySelector] = useState(false);
+  const [citySelectorType, setCitySelectorType] = useState(null);
+  const [currentFlightId, setCurrentFlightId] = useState(null);
+
+  const tripTypes = [
+    { id: "roundtrip", label: t.roundTrip },
+    { id: "oneway", label: t.oneWay },
+    { id: "multi", label: t.multiCity },
+  ];
+
+  const flightClasses = [
+    { id: "economy", label: t.economy },
+    { id: "premium", label: t.premium },
+    { id: "business", label: t.business },
+    { id: "first", label: t.first },
+  ];
+
+  const handleSearch = () => {
+    if (tripType === "multi") {
+      console.log("Search multi-city flights:", { 
+        flights: multiCityFlights.filter(f => f.from && f.to && f.departDate), 
+        passengers 
+      });
+    } else {
+      console.log("Search flights:", { 
+        tripType, 
+        from: fromCity, 
+        to: toCity, 
+        departDate, 
+        returnDate, 
+        passengers 
+      });
+    }
+  };
+
+  const handleCitySelect = (city) => {
+    if (tripType === "multi") {
+      // Xử lý cho multi-city
+      setMultiCityFlights(prev => prev.map(flight => {
+        if (flight.id === currentFlightId) {
+          if (citySelectorType === 'from') {
+            return { ...flight, from: getCityName(city), fromCity: city };
+          } else if (citySelectorType === 'to') {
+            return { ...flight, to: getCityName(city), toCity: city };
+          }
+        }
+        return flight;
+      }));
+    } else {
+      // Xử lý cho roundtrip và oneway
+      if (citySelectorType === 'from') {
+        setFromCity(city);
+        setFrom(getCityName(city));
+      } else if (citySelectorType === 'to') {
+        setToCity(city);
+        setTo(getCityName(city));
+      }
+    }
+  };
+
+  const getCityName = (city) => {
+    if (!city) return "";
+    return city.name; // City.name đã được đa ngôn ngữ từ CitySelector
+  };
+
+  const handleSwapCities = () => {
+    if (tripType === "multi") {
+      // Xử lý swap cho multi-city (cần flightId)
+    } else {
+      // Xử lý swap cho roundtrip và oneway
+      const tempFrom = from;
+      const tempFromCity = fromCity;
+      setFrom(to);
+      setFromCity(toCity);
+      setTo(tempFrom);
+      setToCity(tempFromCity);
+    }
+  };
+
+  const handleSwapMultiCity = (flightId) => {
+    setMultiCityFlights(prev => prev.map(flight => {
+      if (flight.id === flightId) {
+        const tempFrom = flight.from;
+        const tempFromCity = flight.fromCity;
+        return {
+          ...flight,
+          from: flight.to,
+          fromCity: flight.toCity,
+          to: tempFrom,
+          toCity: tempFromCity
+        };
+      }
+      return flight;
+    }));
+  };
+
+  const addNewFlight = () => {
+    const newId = Math.max(...multiCityFlights.map(f => f.id), 0) + 1;
+    setMultiCityFlights([...multiCityFlights, {
+      id: newId,
+      from: "",
+      fromCity: null,
+      to: "",
+      toCity: null,
+      departDate: ""
+    }]);
+  };
+
+  const removeFlight = (flightId) => {
+    if (multiCityFlights.length > 1) {
+      setMultiCityFlights(multiCityFlights.filter(f => f.id !== flightId));
+    }
+  };
+
+  const getPassengerText = () => {
+    const total = passengers.adult + passengers.child + passengers.infant;
+    const classText = flightClasses.find(c => c.id === passengers.class)?.label || "";
+    return `${total} ${t.passengers} · ${classText}`;
+  };
+
+  // Render cho multi-city
+  const renderMultiCity = () => {
+    return (
+      <div>
+        {multiCityFlights.map((flight, index) => (
+          <div key={flight.id} style={{
+            border: "1px solid #e0e0e0",
+            borderRadius: "12px",
+            padding: "16px",
+            marginBottom: "16px",
+            background: "#fff",
+            position: "relative",
+          }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "12px",
+            }}>
+              <span style={{
+                width: "24px",
+                height: "24px",
+                borderRadius: "50%",
+                background: "#4f7cff",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "14px",
+                fontWeight: "600",
+                marginRight: "8px",
+              }}>
+                {index + 1}
+              </span>
+              <span style={{ fontSize: "14px", fontWeight: "600", color: "#333" }}>
+                {t.flight} {index + 1}
+              </span>
+              
+              {/* Nút xóa */}
+              {multiCityFlights.length > 1 && (
+                <button
+                  onClick={() => removeFlight(flight.id)}
+                  style={{
+                    position: "absolute",
+                    top: "16px",
+                    right: "16px",
+                    background: "none",
+                    border: "none",
+                    color: "#999",
+                    cursor: "pointer",
+                    fontSize: "20px",
+                    fontWeight: "500",
+                  }}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+
+            {/* From - To */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr auto 1fr",
+              gap: "8px",
+              marginBottom: "12px",
+            }}>
+              {/* From */}
+              <div 
+                style={{
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  background: "#f8f9fa",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setCitySelectorType('from');
+                  setCurrentFlightId(flight.id);
+                  setShowCitySelector(true);
+                }}
+              >
+                <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+                  {t.from}
+                </label>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <MdFlightTakeoff style={{ color: "#4f7cff", fontSize: "14px" }} />
+                  <span style={{ 
+                    fontSize: "13px", 
+                    color: flight.from ? "#333" : "#999",
+                  }}>
+                    {flight.from || t.selectDeparture}
+                  </span>
+                </div>
+              </div>
+
+              {/* Swap button */}
+              <button 
+                onClick={() => handleSwapMultiCity(flight.id)}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  border: "1px solid #e0e0e0",
+                  background: "#fff",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: "16px",
+                }}
+              >
+                <IoIosSwap style={{ fontSize: "16px", color: "#4f7cff" }} />
+              </button>
+
+              {/* To */}
+              <div 
+                style={{
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  background: "#f8f9fa",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setCitySelectorType('to');
+                  setCurrentFlightId(flight.id);
+                  setShowCitySelector(true);
+                }}
+              >
+                <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+                  {t.to}
+                </label>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <MdFlightLand style={{ color: "#4f7cff", fontSize: "14px" }} />
+                  <span style={{ 
+                    fontSize: "13px", 
+                    color: flight.to ? "#333" : "#999",
+                  }}>
+                    {flight.to || t.selectDestination}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Depart date */}
+            <div style={{
+              border: "1px solid #e0e0e0",
+              borderRadius: "8px",
+              padding: "10px",
+              background: "#f8f9fa",
+            }}>
+              <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+                {t.departureDate}
+              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "12px" }} />
+                <input
+                  type="date"
+                  value={flight.departDate}
+                  onChange={(e) => {
+                    setMultiCityFlights(prev => prev.map(f => 
+                      f.id === flight.id ? { ...f, departDate: e.target.value } : f
+                    ));
+                  }}
+                  placeholder="Chọn ngày"
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    outline: "none",
+                    fontSize: "13px",
+                    width: "100%",
+                    color: flight.departDate ? "#333" : "#999",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Nút thêm chuyến bay */}
+        <button
+          onClick={addNewFlight}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            padding: "12px",
+            background: "none",
+            border: "2px dashed #4f7cff",
+            borderRadius: "8px",
+            color: "#4f7cff",
+            cursor: "pointer",
+            width: "100%",
+            fontSize: "14px",
+            fontWeight: "500",
+            marginBottom: "20px",
+          }}
+        >
+          <FaPlus />
+          {t.addFlight || "Thêm chuyến bay khác"}
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <div style={{
+      background: "#fff",
+      borderRadius: "16px",
+      padding: "24px",
+      boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+      marginTop: "20px",
+    }}>
+      {/* Trip type tabs */}
+      <div style={{
+        display: "flex",
+        gap: "8px",
+        marginBottom: "24px",
+        borderBottom: "1px solid #e0e0e0",
+        paddingBottom: "12px",
+      }}>
+        {tripTypes.map(type => (
+          <button
+            key={type.id}
+            onClick={() => setTripType(type.id)}
+            style={{
+              padding: "8px 16px",
+              border: "none",
+              background: tripType === type.id ? "#4f7cff" : "transparent",
+              color: tripType === type.id ? "#fff" : "#666",
+              borderRadius: "20px",
+              cursor: "pointer",
+              fontSize: "14px",
+              fontWeight: tripType === type.id ? "600" : "400",
+              transition: "all 0.2s",
+            }}
+          >
+            {type.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Direct flight checkbox - chỉ hiển thị cho roundtrip và oneway */}
+      {tripType !== "multi" && (
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          marginBottom: "16px",
+        }}>
+          <input 
+            type="checkbox" 
+            id="directFlight"
+            style={{ width: "16px", height: "16px", cursor: "pointer" }}
+          />
+          <label htmlFor="directFlight" style={{ fontSize: "14px", color: "#666", cursor: "pointer" }}>
+            {t.directFlight}
+          </label>
+        </div>
+      )}
+
+      {/* Nội dung theo loại chuyến đi */}
+      {tripType === "multi" ? (
+        renderMultiCity()
+      ) : (
+        <>
+          {/* From - To cho roundtrip và oneway */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
+            gap: "12px",
+            marginBottom: "16px",
+          }}>
+            {/* From */}
+            <div 
+              style={{
+                border: "1px solid #e0e0e0",
+                borderRadius: "12px",
+                padding: "12px",
+                background: "#f8f9fa",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setCitySelectorType('from');
+                setShowCitySelector(true);
+              }}
+            >
+              <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+                {t.from}
+              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <MdFlightTakeoff style={{ color: "#4f7cff", fontSize: "18px" }} />
+                <span style={{ 
+                  fontSize: "15px", 
+                  color: from ? "#333" : "#999",
+                  flex: 1,
+                }}>
+                  {from || t.selectDeparture}
+                </span>
+              </div>
+            </div>
+
+            {/* Swap button */}
+            <button 
+              onClick={handleSwapCities}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                border: "1px solid #e0e0e0",
+                background: "#fff",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              <IoIosSwap style={{ fontSize: "20px", color: "#4f7cff" }} />
+            </button>
+
+            {/* To */}
+            <div 
+              style={{
+                border: "1px solid #e0e0e0",
+                borderRadius: "12px",
+                padding: "12px",
+                background: "#f8f9fa",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setCitySelectorType('to');
+                setShowCitySelector(true);
+              }}
+            >
+              <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+                {t.to}
+              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <MdFlightLand style={{ color: "#4f7cff", fontSize: "18px" }} />
+                <span style={{ 
+                  fontSize: "15px", 
+                  color: to ? "#333" : "#999",
+                  flex: 1,
+                }}>
+                  {to || t.selectDestination}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Dates */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: tripType === "roundtrip" ? "1fr 1fr" : "1fr",
+            gap: "12px",
+            marginBottom: "16px",
+          }}>
+            {/* Depart date */}
+            <div style={{
+              border: "1px solid #e0e0e0",
+              borderRadius: "12px",
+              padding: "12px",
+              background: "#f8f9fa",
+            }}>
+              <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+                {t.departureDate}
+              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "14px" }} />
+                <input
+                  type="date"
+                  value={departDate}
+                  onChange={(e) => setDepartDate(e.target.value)}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    outline: "none",
+                    fontSize: "15px",
+                    width: "100%",
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Return date - only for roundtrip */}
+            {tripType === "roundtrip" && (
+              <div style={{
+                border: "1px solid #e0e0e0",
+                borderRadius: "12px",
+                padding: "12px",
+                background: "#f8f9fa",
+              }}>
+                <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+                  {t.returnDate}
+                </label>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "14px" }} />
+                  <input
+                    type="date"
+                    value={returnDate}
+                    onChange={(e) => setReturnDate(e.target.value)}
+                    style={{
+                      border: "none",
+                      background: "transparent",
+                      outline: "none",
+                      fontSize: "15px",
+                      width: "100%",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Passengers - Chung cho tất cả loại chuyến đi */}
+      <div style={{
+        border: "1px solid #e0e0e0",
+        borderRadius: "12px",
+        padding: "12px",
+        background: "#f8f9fa",
+        marginBottom: "20px",
+        position: "relative",
+        cursor: "pointer",
+      }}
+      onClick={() => setShowPassengerModal(!showPassengerModal)}
+      >
+        <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+          {t.passengers}
+        </label>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <FaUser style={{ color: "#4f7cff", fontSize: "14px" }} />
+          <span style={{ fontSize: "15px", color: "#333" }}>
+            {getPassengerText()}
+          </span>
+        </div>
+
+        {/* Passenger modal */}
+        {showPassengerModal && (
+          <div 
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              right: 0,
+              background: "#fff",
+              borderRadius: "12px",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+              padding: "16px",
+              zIndex: 10,
+              marginTop: "4px",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Adults */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              marginBottom: "12px" 
+            }}>
+              <span style={{ fontWeight: "500" }}>{t.adultAge}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, adult: Math.max(1, passengers.adult - 1)});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >-</button>
+                <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.adult}</span>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, adult: passengers.adult + 1});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >+</button>
+              </div>
+            </div>
+
+            {/* Children */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              marginBottom: "12px" 
+            }}>
+              <span style={{ fontWeight: "500" }}>{t.childAge}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, child: Math.max(0, passengers.child - 1)});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >-</button>
+                <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.child}</span>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, child: passengers.child + 1});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >+</button>
+              </div>
+            </div>
+
+            {/* Infants */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              marginBottom: "16px" 
+            }}>
+              <span style={{ fontWeight: "500" }}>{t.infantAge}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, infant: Math.max(0, passengers.infant - 1)});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >-</button>
+                <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.infant}</span>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPassengers({...passengers, infant: passengers.infant + 1});
+                  }}
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    border: "1px solid #4f7cff",
+                    background: "#fff",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >+</button>
+              </div>
+            </div>
+
+            {/* Class */}
+            <div>
+              <label style={{ 
+                fontSize: "14px", 
+                fontWeight: "500", 
+                display: "block", 
+                marginBottom: "8px" 
+              }}>
+                {t.class}
+              </label>
+              <select
+                value={passengers.class}
+                onChange={(e) => setPassengers({...passengers, class: e.target.value})}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "8px",
+                  outline: "none",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                }}
+              >
+                {flightClasses.map(cls => (
+                  <option key={cls.id} value={cls.id}>{cls.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Apply button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowPassengerModal(false);
+              }}
+              style={{
+                width: "100%",
+                padding: "12px",
+                background: "#4f7cff",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                marginTop: "16px",
+                cursor: "pointer",
+                fontWeight: "600",
+                fontSize: "14px",
+              }}
+            >
+              {t.apply}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Flight + Hotel checkbox and search button */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginTop: "20px",
+        paddingTop: "20px",
+        borderTop: "1px solid #e0e0e0",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <input 
+            type="checkbox" 
+            id="flightHotel"
+            style={{ width: "16px", height: "16px", cursor: "pointer" }}
+          />
+          <label htmlFor="flightHotel" style={{ fontSize: "14px", color: "#666", cursor: "pointer" }}>
+            {t.flightHotel}
+          </label>
+        </div>
+
+        <button
+          onClick={handleSearch}
+          style={{
+            padding: "12px 32px",
+            background: "#4f7cff",
+            color: "#fff",
+            border: "none",
+            borderRadius: "30px",
+            fontSize: "16px",
+            fontWeight: "600",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            transition: "background 0.2s",
+          }}
+          onMouseEnter={(e) => e.target.style.background = "#3a5fd0"}
+          onMouseLeave={(e) => e.target.style.background = "#4f7cff"}
+        >
+          <FaSearch />
+          {t.search}
+        </button>
+      </div>
+
+      {/* City Selector Modal */}
+      <CitySelector
+        isOpen={showCitySelector}
+        onClose={() => setShowCitySelector(false)}
+        onSelect={handleCitySelect}
+        type={citySelectorType}
+      />
+    </div>
+  );
+};
+
+export default FlightSearch;
