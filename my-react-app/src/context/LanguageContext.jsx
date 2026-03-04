@@ -135,17 +135,42 @@ const translations = {
     careers: "Tuyển dụng",
     termsConditions: "Điều Khoản & Điều Kiện",
     privacyPolicy: "Tuyên bố quyền riêng tư",
-    aboutGroup: "Giới Thiệu Về Tập Đoàn Trip.com",
+    aboutGroup: "Giới Thiệu Về Tập Đoàn Datxe.com",
     otherServices: "Các Dịch Vụ Khác",
     investorRelations: "Quan Hệ Đầu Tư",
-    tripRewards: "Phần Thưởng Trip.com",
+    tripRewards: "Phần Thưởng Datxe.com",
     affiliateProgram: "Chương trình đối tác liên kết",
     listProperty: "Đăng Cơ Sở Lưu Trú",
     security: "Bảo Mật",
     paymentMethods: "Phương thức thanh toán",
     ourPartners: "Đối Tác Của Chúng Tôi",
     copyright: "Bản quyền © 2025 Datxe.com Travel VietNam Pte. Ltd. Bảo lưu mọi quyền. Nhà điều hành trang: Datxe.com Travel VietNam Pte. Ltd.",
+
+
+    // PACKAGE SEARCH 
+    package: "Đặt theo gói",
+    roundTrip: "Khứ hồi",
+    oneWay: "Một chiều",
+    from: "Từ",
+    to: "Đến",
+    search: "Tìm kiếm",
+    apply: "Áp dụng",
+    departureDate: "Chiều đi",
+    returnDate: "Chiều về",
+    hotel: "Khách sạn",
+    hotelDestination: "Điểm đến",
+    checkin: "Nhận phòng",
+    checkout: "Trả phòng",
+    nights: "đêm",
+    rooms: " Số phòng",
+    adult: "Người lớn",
+    child: "Trẻ em",
+
+  
+  
   },
+
+   
 
   en: {
     // Header
@@ -291,7 +316,31 @@ const translations = {
   paymentMethods: "Payment Methods",
   ourPartners: "Our Partners",
   copyright: "Copyright © 2025 Datxe.com Travel VietNam Pte. Ltd. All rights reserved. Operator: Datxe.com Travel VietNam Pte. Ltd.",
-  },
+
+    // Package Search
+   search: "Search",
+    apply: "Apply",
+    package: "Package Booking",
+    roundTrip: "Round trip",
+    oneWay: "One way",
+    from: "From",
+    to: "To",
+    departureDate: "Departure",
+    returnDate: "Return",
+    hotel: "Hotel",
+    hotelDestination: "Destination",
+    checkin: "Check-in",
+    checkout: "Check-out",
+    nights: "nights",
+    rooms: "rooms",
+    adult: "Adults",
+    child: "Children",
+  
+
+},
+
+
+   
 
   ja: {
     // Header
@@ -437,7 +486,29 @@ const translations = {
   paymentMethods: "お支払い方法",
   ourPartners: "パートナー",
   copyright: "著作権 © 2025 Datxe.com Travel VietNam Pte. Ltd. 全著作権所有。運営会社: Datxe.com Travel VietNam Pte. Ltd.",
+
+    // Package Search
+    search: "検索",
+    apply: "適用",
+    package: "パッケージ予約",
+    roundTrip: "往復",
+    oneWay: "片道",
+    from: "出発",
+    to: "到着",
+    departureDate: "出発日",
+    returnDate: "帰国日",
+    hotel: "ホテル",
+    hotelDestination: "目的地",
+    checkin: "チェックイン",
+    checkout: "チェックアウト",
+    nights: "泊",
+    rooms: "部屋",
+    adult: "大人",
+    child: "子供",
+
   },
+
+ 
 
   zh: {
     // Header
@@ -583,7 +654,30 @@ const translations = {
   paymentMethods: "付款方式",
   ourPartners: "合作夥伴",
   copyright: "版權所有 © 2025 Datxe.com Travel VietNam Pte. Ltd. 保留所有權利。運營商：Datxe.com Travel VietNam Pte. Ltd.",
+  
+   
+   //Package Search
+   
+    search: "搜尋",
+    apply: "套用",
+    package: "套裝預訂",
+    roundTrip: "往返",
+    oneWay: "單程",
+    from: "出發地",
+    to: "目的地",
+    departureDate: "出發日期",
+    returnDate: "回程日期",
+    hotel: "酒店",
+    hotelDestination: "目的地",
+    checkin: "入住",
+    checkout: "退房",
+    nights: "晚",
+    rooms: "房間",
+    adult: "成人",
+    child: "兒童",
   }
+
+  
 };
 
 const LanguageContext = createContext();

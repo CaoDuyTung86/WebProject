@@ -11,7 +11,7 @@ const TrainSearch = () => {
   const { t } = useLanguage();
   const [tripType, setTripType] = useState("oneway");
   
-  // State cho ga đi/đến
+  
   const [from, setFrom] = useState("");
   const [fromCity, setFromCity] = useState(null);
   const [to, setTo] = useState("");
@@ -29,7 +29,7 @@ const TrainSearch = () => {
   const [onlyHighSpeed, setOnlyHighSpeed] = useState(false);
   const [showHotel, setShowHotel] = useState(false);
   
-  // State cho CitySelector
+
   const [showCitySelector, setShowCitySelector] = useState(false);
   const [citySelectorType, setCitySelectorType] = useState(null);
 
@@ -90,7 +90,7 @@ const TrainSearch = () => {
       boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
       marginTop: "20px",
     }}>
-      {/* Header với icon tàu */}
+      
       <div style={{
         display: "flex",
         alignItems: "center",
@@ -105,7 +105,7 @@ const TrainSearch = () => {
         </h3>
       </div>
 
-      {/* Trip type tabs */}
+      
       <div style={{
         display: "flex",
         gap: "8px",
@@ -132,14 +132,13 @@ const TrainSearch = () => {
         ))}
       </div>
 
-      {/* From - To */}
       <div style={{
         display: "grid",
         gridTemplateColumns: "1fr auto 1fr",
         gap: "12px",
         marginBottom: "16px",
       }}>
-        {/* From */}
+ 
         <div 
           style={{
             border: "1px solid #e0e0e0",
@@ -168,7 +167,7 @@ const TrainSearch = () => {
           </div>
         </div>
 
-        {/* Swap button */}
+      
         <button 
           onClick={handleSwapCities}
           style={{
@@ -187,7 +186,7 @@ const TrainSearch = () => {
           <IoIosSwap style={{ fontSize: "20px", color: "#4f7cff" }} />
         </button>
 
-        {/* To */}
+       
         <div 
           style={{
             border: "1px solid #e0e0e0",
@@ -205,7 +204,7 @@ const TrainSearch = () => {
             {t.to} · {t.arrivalStation || "Ga đến"}
           </label>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <FaTrain style={{ color: "#4f7cff", fontSize: "16px", transform: "rotate(180deg)" }} />
+            <FaTrain style={{ color: "#4f7cff", fontSize: "16px", }} />
             <span style={{ 
               fontSize: "15px", 
               color: to ? "#333" : "#999",
