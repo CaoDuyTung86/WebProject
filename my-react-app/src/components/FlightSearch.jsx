@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
 import { IoIosSwap } from "react-icons/io";
-import { FaCalendarAlt, FaUser, FaSearch, FaPlus } from "react-icons/fa";
+import { FaCalendarAlt, FaUser, FaSearch, FaPlus, FaPlane } from "react-icons/fa";
 import { MdFlightTakeoff, MdFlightLand } from "react-icons/md";
 import CitySelector from "./CitySelector";
 
@@ -365,6 +365,21 @@ const FlightSearch = () => {
       boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
       marginTop: "20px",
     }}>
+      {/* Header với icon máy bay */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        marginBottom: "20px",
+        paddingBottom: "12px",
+        borderBottom: "2px solid #4f7cff",
+      }}>
+        <FaPlane style={{ fontSize: "28px", color: "#4f7cff" }} />
+        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#333", margin: 0 }}>
+          {t.flight || "Máy bay"}
+        </h3>
+      </div>
+
       {/* Trip type tabs */}
       <div style={{
         display: "flex",
