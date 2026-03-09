@@ -8,6 +8,7 @@ import BusTickets from "./Page/BusTickets";
 import TrainTickets from "./Page/TrainTickets";
 import OrderByPackage from "./Page/OrderByPackage"; 
 import { LanguageProvider } from "./context/LanguageContext";
+import { AuthProvider } from "./context/AuthContext";
 import Footer from "./LayOut/Footer"; 
 
 function AppWrapper() {
@@ -36,7 +37,9 @@ function App() {
   return (
     <BrowserRouter>
       <LanguageProvider>
-        <AppWrapper />
+        <AuthProvider>
+          <AppWrapper />
+        </AuthProvider>
       </LanguageProvider>
     </BrowserRouter>
   );

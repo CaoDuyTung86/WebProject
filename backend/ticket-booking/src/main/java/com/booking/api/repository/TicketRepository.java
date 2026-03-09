@@ -9,4 +9,3 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     long countByTripId(Long tripId);
 }
-

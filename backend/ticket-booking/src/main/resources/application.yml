@@ -16,3 +16,22 @@ spring:
   
 server:
   port: 8080
+
+jwt:
+  secret: YTJiM2M0ZDVlNmY3ZzhoOWkwajFrMmwzbTRuNW82cDdxOHI5czB0MXUydjN3NHg1eTZ6
+  expiration: 86400000
+
+# VNPay Sandbox Configuration (Demo credentials từ sandbox.vnpayment.vn)
+vnpay:
+  tmn-code: 3JZ7QBUX
+  hash-secret: WOX93XWGGLC2YUHTZUOB7ALN5LPG8VRE
+  pay-url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  return-url: http://localhost:8080/api/payment/vnpay-return
+  api-url: https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+
+# Swagger
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

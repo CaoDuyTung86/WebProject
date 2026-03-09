@@ -5,15 +5,22 @@ import A from "../Picture/A.svg";
 import { IoIosWarning } from "react-icons/io";
 import { TiTick } from "react-icons/ti";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 const Auth = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
+  const [mode, setMode] = useState("register"); // register | login
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [apiError, setApiError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const { t, currentLanguage } = useLanguage();
+  const { loginSuccess } = useAuth();
 
   useEffect(() => {
     const savedEmail = sessionStorage.getItem("tempEmail");
@@ -60,8 +67,11 @@ const Auth = ({ isOpen, onClose }) => {
     setStep(2);
   };
 
-  const handleRegister = (password) => {
+  const isValidPhone = (value) => /^0\d{9}$/.test(value);
+
+  const handleRegister = async (password) => {
     setPasswordError("");
+    setApiError("");
     
     if (!password) {
       setPasswordError(t.passwordRequired);
@@ -72,33 +82,143 @@ const Auth = ({ isOpen, onClose }) => {
       setPasswordError(t.passwordInvalid);
       return;
     }
-    
-    console.log("Đăng ký với:", email, password);
-    
-    setSuccessMessage(t.registerSuccess.replace("{email}", email));
-    setShowSuccess(true);
-    
-    clearTempData();
-    
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 3000);
-    
-    setTimeout(() => {
-      onClose();
-      setStep(1);
-      setEmail("");
-      setEmailError("");
-      setPasswordError("");
-    }, 1500);
+
+    if (!fullName.trim() || !phone.trim()) {
+      setApiError("Vui lòng nhập đầy đủ họ tên và số điện thoại.");
+      return;
+    }
+
+    if (!isValidPhone(phone.trim())) {
+      setApiError("Số điện thoại phải bắt đầu bằng 0 và có đúng 10 chữ số.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          email: email.trim(),
+          password,
+          phone: phone.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const message = data?.message || "Đăng ký thất bại. Vui lòng thử lại.";
+        setApiError(message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (data?.token) {
+        loginSuccess(data);
+      }
+
+      setSuccessMessage(t.registerSuccess.replace("{email}", email));
+      setShowSuccess(true);
+
+      clearTempData();
+
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+
+      setTimeout(() => {
+        onClose();
+        setStep(1);
+        setEmail("");
+        setEmailError("");
+        setPasswordError("");
+        setFullName("");
+        setPhone("");
+        setApiError("");
+      }, 1500);
+    } catch (error) {
+      setApiError("Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại backend.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleBack = () => {
     setStep(1);
-    setEmail("");
-    setEmailError("");
     setPasswordError("");
-    sessionStorage.removeItem("tempEmail");
+    setApiError("");
+  };
+
+  const handleToggleMode = () => {
+    setMode((prev) => (prev === "register" ? "login" : "register"));
+    setStep(1);
+    setPasswordError("");
+    setApiError("");
+  };
+
+  const handleLogin = async (password) => {
+    setPasswordError("");
+    setApiError("");
+
+    if (!password) {
+      setPasswordError(t.passwordRequired);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const message = data?.message || "Đăng nhập thất bại. Vui lòng thử lại.";
+        setApiError(message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (data?.token) {
+        loginSuccess(data);
+      }
+
+      setSuccessMessage("Đăng nhập thành công!");
+      setShowSuccess(true);
+
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 2000);
+
+      setTimeout(() => {
+        onClose();
+        setStep(1);
+        setEmail("");
+        setEmailError("");
+        setPasswordError("");
+        setFullName("");
+        setPhone("");
+        setApiError("");
+      }, 1000);
+    } catch (error) {
+      setApiError("Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại backend.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const iconStyle = {
@@ -187,9 +307,26 @@ const Auth = ({ isOpen, onClose }) => {
         {step === 1 && (
           <>
             <div style={{ flex: 1, padding: "50px 40px", display: "flex", flexDirection: "column" }}>
-              <h3 style={{ textAlign: "center", marginBottom: "30px", fontSize: "22px", fontWeight: "500" }}>
-                {t.authTitle}
-              </h3>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+                <h3 style={{ margin: 0, fontSize: "22px", fontWeight: "500" }}>
+                  {t.authTitle}
+                </h3>
+                <button
+                  type="button"
+                  onClick={handleToggleMode}
+                  style={{
+                    border: "none",
+                    background: "none",
+                    color: "#4f7cff",
+                    cursor: "pointer",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    textDecoration: "underline",
+                  }}
+                >
+                  {mode === "register" ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký"}
+                </button>
+              </div>
 
               <input
                 type="email"
@@ -238,7 +375,7 @@ const Auth = ({ isOpen, onClose }) => {
                   color: "#fff",
                 }}
               >
-                {t.continueWithEmail}
+                {mode === "register" ? t.continueWithEmail : "Tiếp tục để đăng nhập"}
               </button>
 
               <div
@@ -298,7 +435,7 @@ const Auth = ({ isOpen, onClose }) => {
               textAlign: "center",
               fontWeight: "600"
             }}>
-              {t.createAccount}
+              {mode === "register" ? t.createAccount : "Đăng nhập"}
             </h2>
             
             <p style={{ 
@@ -307,7 +444,7 @@ const Auth = ({ isOpen, onClose }) => {
               textAlign: "center",
               fontSize: "16px"
             }}>
-              {t.setPassword}
+              {mode === "register" ? t.setPassword : `Nhập mật khẩu cho tài khoản ${email}`}
             </p>
             
             <div style={{
@@ -351,8 +488,86 @@ const Auth = ({ isOpen, onClose }) => {
             <form onSubmit={(e) => {
               e.preventDefault();
               const password = e.target.password.value;
-              handleRegister(password);
+              if (mode === "register") {
+                handleRegister(password);
+              } else {
+                handleLogin(password);
+              }
             }}>
+              {mode === "register" && (
+              <>
+              <div style={{ marginBottom: "16px" }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    color: "#555",
+                  }}
+                >
+                  Họ và tên
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Nhập họ và tên"
+                  value={fullName}
+                  onChange={(e) => {
+                    setFullName(e.target.value);
+                    setApiError("");
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "14px 16px",
+                    border: "2px solid #e0e0e0",
+                    borderRadius: "10px",
+                    fontSize: "15px",
+                    boxSizing: "border-box",
+                    outline: "none",
+                    marginBottom: "4px",
+                  }}
+                  required
+                />
+              </div>
+
+              <div style={{ marginBottom: "16px" }}>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    color: "#555",
+                  }}
+                >
+                  Số điện thoại
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Nhập số điện thoại"
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    setApiError("");
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "14px 16px",
+                    border: "2px solid #e0e0e0",
+                    borderRadius: "10px",
+                    fontSize: "15px",
+                    boxSizing: "border-box",
+                    outline: "none",
+                    marginBottom: "4px",
+                  }}
+                  required
+                />
+              </div>
+              </>
+              )}
+
               <div style={{ marginBottom: "16px" }}>
                 <label style={{ 
                   display: "block", 
@@ -405,19 +620,39 @@ const Auth = ({ isOpen, onClose }) => {
                   <span><IoIosWarning /></span> {passwordError}
                 </p>
               )}
+
+              {apiError && (
+                <p
+                  style={{
+                    color: "#ff4444",
+                    fontSize: "13px",
+                    marginBottom: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <span>
+                    <IoIosWarning />
+                  </span>
+                  {apiError}
+                </p>
+              )}
               
-              <p style={{
-                fontSize: "13px",
-                color: "#666",
-                marginBottom: "28px",
-                fontStyle: "italic",
-                background: "#f9f9f9",
-                padding: "12px",
-                borderRadius: "8px",
-                borderLeft: "3px solid #4f7cff",
-              }}>
-                <span style={{ fontWeight: "600" }}>{t.passwordRequirement}</span>
-              </p>
+              {mode === "register" && (
+                <p style={{
+                  fontSize: "13px",
+                  color: "#666",
+                  marginBottom: "28px",
+                  fontStyle: "italic",
+                  background: "#f9f9f9",
+                  padding: "12px",
+                  borderRadius: "8px",
+                  borderLeft: "3px solid #4f7cff",
+                }}>
+                  <span style={{ fontWeight: "600" }}>{t.passwordRequirement}</span>
+                </p>
+              )}
               
               <button
                 type="submit"
@@ -435,10 +670,15 @@ const Auth = ({ isOpen, onClose }) => {
                   transition: "background-color 0.2s",
                   boxShadow: "0 4px 10px rgba(79,124,255,0.3)",
                 }}
+                disabled={isSubmitting}
                 onMouseOver={(e) => e.target.style.backgroundColor = "#3a5fd0"}
                 onMouseOut={(e) => e.target.style.backgroundColor = "#4f7cff"}
               >
-                {t.registerAndLogin}
+                {isSubmitting
+                  ? "Đang xử lý..."
+                  : mode === "register"
+                    ? t.registerAndLogin
+                    : "Đăng nhập"}
               </button>
             </form>
             

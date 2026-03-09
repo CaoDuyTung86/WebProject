@@ -4,6 +4,7 @@ import { MdOutlinePhone } from "react-icons/md";
 import { IoChevronDown } from "react-icons/io5";
 import Auth from "../Page/Auth"; 
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 import { AiOutlineGlobal } from "react-icons/ai";
 import { useNavigate } from "react-router-dom"; 
 import VNFlag from "../Picture/flags/vn.png";
@@ -16,6 +17,7 @@ const Header = ({ setIsSidebarOpen }) => {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false); 
   const { currentLanguage, t, changeLanguage } = useLanguage();
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate(); 
 
   const languages = [
@@ -320,20 +322,42 @@ const Header = ({ setIsSidebarOpen }) => {
             )}
           </div>
 
-          <button
-            onClick={() => setIsAuthOpen(true)}
-            style={{
-              padding: "8px 14px",
-              borderRadius: "8px",
-              border: "none",
-              background: "#4f7cff",
-              color: "#fff",
-              cursor: "pointer",
-              fontWeight: "600"
-            }}
-          >
-            {t.login}
-          </button>
+          {isAuthenticated ? (
+            <>
+              <span style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>
+                {user?.fullName || user?.email}
+              </span>
+              <button
+                onClick={logout}
+                style={{
+                  padding: "8px 14px",
+                  borderRadius: "8px",
+                  border: "1px solid #ddd",
+                  background: "#fff",
+                  color: "#333",
+                  cursor: "pointer",
+                  fontWeight: "500",
+                }}
+              >
+                Đăng xuất
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setIsAuthOpen(true)}
+              style={{
+                padding: "8px 14px",
+                borderRadius: "8px",
+                border: "none",
+                background: "#4f7cff",
+                color: "#fff",
+                cursor: "pointer",
+                fontWeight: "600"
+              }}
+            >
+              {t.login}
+            </button>
+          )}
         </div>
       </header>
 
