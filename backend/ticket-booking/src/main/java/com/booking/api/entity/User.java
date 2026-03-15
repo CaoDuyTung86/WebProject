@@ -43,4 +43,16 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expiry")
+    private java.time.LocalDateTime resetTokenExpiry;
+
+    @Column(name = "enabled")
+    private Boolean enabled = false;
+
+    @Column(name = "verification_code")
+    private String verificationCode;
 }

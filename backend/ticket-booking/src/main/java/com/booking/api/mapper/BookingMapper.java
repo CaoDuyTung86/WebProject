@@ -27,6 +27,7 @@ public interface BookingMapper {
     @Mapping(target = "providerName", source = "trip.vehicle.provider.providerName")
     @Mapping(target = "seatNumbers", source = "booking.tickets", qualifiedByName = "ticketsToSeatNumbers")
     @Mapping(target = "additionalServices", source = "booking.additionalServices", qualifiedByName = "servicesToNames")
+    @Mapping(target = "refundAmount", source = "booking.refunds", qualifiedByName = "calculateRefundAmount")
     BookingResponse toBookingResponse(Booking booking, Trip trip);
 
     @Named("ticketsToSeatNumbers")
@@ -46,5 +47,11 @@ public interface BookingMapper {
         return services.stream()
                 .map(AdditionalService::getServiceName)
                 .collect(Collectors.toList());
+    }
+
+    @Named("calculateRefundAmount")
+    default Double calculateRefundAmount(List<com.booking.api.entity.Refund> refunds) {
+        if (refunds == null || refunds.isEmpty()) return null;
+        return refunds.stream().mapToDouble(r -> r.getRefundAmount() != null ? r.getRefundAmount() : 0.0).sum();
     }
 }

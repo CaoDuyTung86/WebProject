@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -38,22 +36,20 @@ public class PaymentController {
 
     @Operation(summary = "VNPay callback", description = "Endpoint VNPay gọi sau khi user thanh toán xong (public endpoint)")
     @GetMapping("/vnpay-return")
-    public ResponseEntity<Map<String, String>> vnPayReturn(
+    public ResponseEntity<Void> vnPayReturn(
             @RequestParam Map<String, String> params) {
         String result = paymentService.handleVNPayReturn(params);
 
-        Map<String, String> response = new HashMap<>();
-        response.put("result", result);
-
+        String redirectUrl = "http://localhost:5173/my-bookings";
         if ("SUCCESS".equals(result)) {
-            response.put("message", "Thanh toán thành công!");
-        } else if ("INVALID_SIGNATURE".equals(result)) {
-            response.put("message", "Chữ ký không hợp lệ");
+            redirectUrl += "?payment=success";
         } else {
-            response.put("message", "Thanh toán thất bại: " + result);
+            redirectUrl += "?payment=failed";
         }
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(org.springframework.http.HttpStatus.FOUND)
+                .location(java.net.URI.create(redirectUrl))
+                .build();
     }
 
     private String getClientIpAddress(HttpServletRequest request) {

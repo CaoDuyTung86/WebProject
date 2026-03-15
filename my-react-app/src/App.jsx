@@ -1,22 +1,26 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Header from "./LayOut/Header";
 import Home from "./Page/Home";
 import Auth from "./Page/Auth";
 import AirlineTickets from "./Page/AirlineTickets";
 import BusTickets from "./Page/BusTickets";
 import TrainTickets from "./Page/TrainTickets";
-import OrderByPackage from "./Page/OrderByPackage"; 
+import OrderByPackage from "./Page/OrderByPackage";
 import { LanguageProvider } from "./context/LanguageContext";
 import { AuthProvider } from "./context/AuthContext";
-import Footer from "./LayOut/Footer"; 
+import Footer from "./LayOut/Footer";
+import MyBookings from "./Page/MyBookings";
+import ForgotPassword from "./Page/ForgotPassword";
+import VerifyEmail from "./Page/VerifyEmail";
 import AdminTrips from "./Page/AdminTrips";
 
 function AppWrapper() {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const showHeader = location.pathname !== "/auth";
-  const showFooter = location.pathname !== "/auth"; 
+  const showHeader = location.pathname !== "/auth" && location.pathname !== "/my-bookings" && location.pathname !== "/forgot-password" && location.pathname !== "/verify-email";
+  const showFooter = location.pathname !== "/auth" && location.pathname !== "/my-bookings" && location.pathname !== "/forgot-password" && location.pathname !== "/verify-email";
 
   return (
     <>
@@ -26,8 +30,11 @@ function AppWrapper() {
         <Route path="/ve-may-bay" element={<AirlineTickets />} />
         <Route path="/ve-tau-hoa" element={<TrainTickets />} />
         <Route path="/xe-khach" element={<BusTickets />} />
-        <Route path="/dat-theo-goi" element={<OrderByPackage />} /> 
+        <Route path="/dat-theo-goi" element={<OrderByPackage />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/admin/trips" element={<AdminTrips />} />
       </Routes>
       {showFooter && <Footer />} {/* Thêm Footer */}
@@ -37,13 +44,15 @@ function AppWrapper() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <LanguageProvider>
-        <AuthProvider>
-          <AppWrapper />
-        </AuthProvider>
-      </LanguageProvider>
-    </BrowserRouter>
+    <GoogleOAuthProvider clientId="326005367827-9hc363n1hv4sls4rcnb4caish7v8fhk2.apps.googleusercontent.com">
+      <BrowserRouter>
+        <LanguageProvider>
+          <AuthProvider>
+            <AppWrapper />
+          </AuthProvider>
+        </LanguageProvider>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }
 

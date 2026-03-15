@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const API_BASE = "http://localhost:8080/api";
+const API_BASE = "http://192.168.1.101:8080/api";
 
 const AdminTrips = () => {
   const { token, user } = useAuth();

@@ -30,4 +30,7 @@ public class BookingResponse {
 
     // Additional services
     private List<String> additionalServices;
+
+    // Refund
+    private Double refundAmount;
 }

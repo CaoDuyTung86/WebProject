@@ -28,6 +28,7 @@ public class BookingService {
     private final TicketRepository ticketRepository;
     private final AdditionalServiceRepository additionalServiceRepository;
     private final BookingMapper bookingMapper;
+    private final EmailService emailService;
 
     @Transactional
     public BookingResponse createBooking(String email, BookingRequest request) {
@@ -136,8 +137,68 @@ public class BookingService {
             throw new BookingException("Booking này đã được hủy trước đó");
         }
 
+        Trip trip = null;
+        if (booking.getTickets() != null && !booking.getTickets().isEmpty()) {
+            trip = booking.getTickets().get(0).getTrip();
+        }
+
+        if (trip != null) {
+            LocalDateTime now = LocalDateTime.now();
+            long hoursUntilDeparture = java.time.temporal.ChronoUnit.HOURS.between(now, trip.getDepartureTime());
+
+            if ("PAID".equals(booking.getStatus()) || "CONFIRMED".equals(booking.getStatus())) {
+                if (hoursUntilDeparture < 4) {
+                    throw new BookingException("Không thể hủy/hoàn vé khi chỉ còn dưới 4 tiếng là khởi hành hoặc xe đã chạy");
+                }
+
+                double refundAmount = 0.0;
+                if (hoursUntilDeparture > 24) {
+                    refundAmount = booking.getTotalPrice(); // Hoàn 100%
+                } else {
+                    refundAmount = booking.getTotalPrice() * 0.9; // Phạt 10%, hoàn 90%
+                }
+
+                Refund refund = new Refund();
+                refund.setBooking(booking);
+                refund.setRefundAmount(refundAmount);
+                refund.setRefundDate(now);
+                refund.setStatus("COMPLETED");
+
+                if (booking.getRefunds() == null) {
+                    booking.setRefunds(new java.util.ArrayList<>());
+                }
+                booking.getRefunds().add(refund);
+            }
+        }
+
         booking.setStatus("CANCELLED");
         bookingRepository.save(booking);
+
+        return bookingMapper.toBookingResponse(booking, trip);
+    }
+
+    @Transactional
+    public BookingResponse completeBooking(String email, Long bookingId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user"));
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking", bookingId));
+
+        if (!booking.getUser().getId().equals(user.getId())) {
+            throw new BookingException("Bạn không có quyền thao tác trên booking này");
+        }
+
+        if (!"CONFIRMED".equals(booking.getStatus())) {
+            throw new BookingException("Chỉ có thể hoàn thành chuyến đi với vé đã xác nhận (CONFIRMED)");
+        }
+
+        booking.setStatus("COMPLETED");
+        bookingRepository.save(booking);
+
+        try {
+            emailService.sendSurveyEmail(user.getEmail(), booking.getId());
+        } catch (Exception e) {}
 
         Trip trip = null;
         if (booking.getTickets() != null && !booking.getTickets().isEmpty()) {

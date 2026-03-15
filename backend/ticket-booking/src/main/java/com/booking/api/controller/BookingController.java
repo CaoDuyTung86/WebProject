@@ -49,4 +49,12 @@ public class BookingController {
         BookingResponse response = bookingService.cancelBooking(userDetails.getUsername(), id);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<BookingResponse> completeBooking(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long id) {
+        BookingResponse response = bookingService.completeBooking(userDetails.getUsername(), id);
+        return ResponseEntity.ok(response);
+    }
 }

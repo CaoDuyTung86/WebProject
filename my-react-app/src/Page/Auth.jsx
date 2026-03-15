@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import G from "../Picture/G.png";
 import FB from "../Picture/FB.png";
 import A from "../Picture/A.svg";
 import { IoIosWarning } from "react-icons/io";
 import { TiTick } from "react-icons/ti";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { QRCodeSVG } from "qrcode.react";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 
@@ -19,8 +23,9 @@ const Auth = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const { t, currentLanguage } = useLanguage();
+   const { t, currentLanguage } = useLanguage();
   const { loginSuccess } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedEmail = sessionStorage.getItem("tempEmail");
@@ -42,7 +47,7 @@ const Auth = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const isValidEmail = (email) => {
-    return email.includes('@gmail.com') && email.trim() !== '';
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   };
 
   const isValidPassword = (password) => {
@@ -96,7 +101,7 @@ const Auth = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/register", {
+      const response = await fetch("http://192.168.1.101:8080/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -122,24 +127,14 @@ const Auth = ({ isOpen, onClose }) => {
         loginSuccess(data);
       }
 
-      setSuccessMessage(t.registerSuccess.replace("{email}", email));
+      setSuccessMessage("Đăng ký thành công! Vui lòng kiểm tra email để lấy mã xác thực.");
       setShowSuccess(true);
 
       clearTempData();
 
       setTimeout(() => {
-        setShowSuccess(false);
-      }, 3000);
-
-      setTimeout(() => {
         onClose();
-        setStep(1);
-        setEmail("");
-        setEmailError("");
-        setPasswordError("");
-        setFullName("");
-        setPhone("");
-        setApiError("");
+        navigate(`/verify-email?email=${email}`);
       }, 1500);
     } catch (error) {
       setApiError("Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại backend.");
@@ -173,7 +168,7 @@ const Auth = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await fetch("http://192.168.1.101:8080/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -388,13 +383,52 @@ const Auth = ({ isOpen, onClose }) => {
                   margin: "10px 0 30px",
                 }}
               >
-                <span style={{ background: "#fff", padding: "0 15px", color: "#999", fontSize: "14px" }}>{t.or}</span>
+                <span style={{ background: "#fff", padding: "0 15px", color: "#999", fontSize: "14px" }}>hoặc</span>
               </div>
 
-              <button style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", padding: "12px", marginBottom: "12px", border: "1px solid #ddd", borderRadius: "4px", cursor: "pointer", fontSize: "15px", fontWeight: "500", width: "100%", backgroundColor: "#fff", color: "#333" }}>
-                <img src={G} alt="Google" style={iconStyle} />
-                {t.loginWithGoogle}
-              </button>
+              <div style={{ marginBottom: "12px", width: "100%", display: "flex", justifyContent: "center" }}>
+                <GoogleLogin
+                  onSuccess={async (credentialResponse) => {
+                    const decoded = jwtDecode(credentialResponse.credential);
+                    try {
+                      const response = await fetch("http://192.168.1.101:8080/api/auth/google-login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          email: decoded.email,
+                          fullName: decoded.name,
+                          googleId: decoded.sub
+                        }),
+                      });
+                      const data = await response.json();
+                      if (response.ok) {
+                        loginSuccess(data);
+                        setSuccessMessage("Đăng nhập Google thành công!");
+                        setShowSuccess(true);
+                        setTimeout(() => {
+                          onClose();
+                          window.location.reload();
+                        }, 1500);
+                      } else {
+                        setApiError("Backend lỗi: " + (data.message || "Không xác định"));
+                        alert("Lỗi Backend: " + (data.message || "Không xác định"));
+                      }
+                    } catch (error) {
+                      setApiError("Lỗi kết nối: " + error.message);
+                      alert("Lỗi kết nối: " + error.message);
+                    }
+                  }}
+                  onError={() => {
+                    setApiError("Đăng nhập Google thất bại (Google Error)");
+                    alert("Google OAuth Error - Vui lòng kiểm tra Client ID và Origin");
+                  }}
+                  theme="outline"
+                  size="large"
+                  text="continue_with"
+                  shape="rectangular"
+                  width="100%"
+                />
+              </div>
 
               <button style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", padding: "12px", marginBottom: "12px", border: "none", borderRadius: "4px", cursor: "pointer", fontSize: "15px", fontWeight: "500", width: "100%", backgroundColor: "#1877F2", color: "white" }}>
                 <img src={FB} alt="Facebook" style={iconStyle} />
@@ -419,7 +453,25 @@ const Auth = ({ isOpen, onClose }) => {
                 borderLeft: "1px solid #f0f0f0",
               }}
             >
-              <div style={{ width: "170px", height: "170px", backgroundColor: "#777", borderRadius: "8px", marginBottom: "25px" }}></div>
+             <div style={{ 
+                width: "170px", 
+                height: "170px", 
+                backgroundColor: "#fff", 
+                borderRadius: "12px", 
+                marginBottom: "25px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "10px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.05)"
+              }}>
+                <QRCodeSVG 
+                  value="http://192.168.1.101:5173" 
+                  size={150}
+                  level="H"
+                  includeMargin={false}
+                />
+              </div>
               <p style={{ textAlign: "center", fontSize: "14px", color: "#666", lineHeight: "1.6" }}>
                 {t.qrText} <br /> <span style={{ fontWeight: "600" }}>{t.qrHighlight}</span>
               </p>
@@ -654,7 +706,22 @@ const Auth = ({ isOpen, onClose }) => {
                   <span style={{ fontWeight: "600" }}>{t.passwordRequirement}</span>
                 </p>
               )}
-              
+
+              {mode === "login" && (
+
+                <div style={{ textAlign: "right", marginBottom: "20px" }}>
+                  <span 
+                    onClick={() => {
+                      onClose();
+                      navigate("/forgot-password");
+                    }} 
+                    style={{ color: "#4f7cff", cursor: "pointer", fontSize: "14px", fontWeight: "500", textDecoration: "underline" }}
+                  >
+                    Quên mật khẩu?
+                  </span>
+                </div>
+              )}
+
               <button
                 type="submit"
                 style={{

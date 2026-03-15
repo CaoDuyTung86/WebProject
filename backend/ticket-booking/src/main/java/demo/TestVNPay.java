@@ -31,8 +31,8 @@ public class TestVNPay {
         vnp_Params.put("vnp_IpAddr", "0:0:0:0:0:0:0:1");
         vnp_Params.put("vnp_CreateDate", "20260309104325"); // from user's image
 
-        String queryUrl = buildQueryString(vnp_Params);
-        String vnp_SecureHash = hmacSHA512(secretKey, queryUrl);
+        String queryUrl = com.booking.api.util.VNPayUtil.buildQueryString(vnp_Params);
+        String vnp_SecureHash = com.booking.api.util.VNPayUtil.hmacSHA512(secretKey, queryUrl);
 
         System.out.println("Query URL (Hash Data): " + queryUrl);
         System.out.println("Secure Hash Generated: " + vnp_SecureHash);

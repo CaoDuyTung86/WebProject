@@ -23,13 +23,13 @@ public class AdditionalServiceSeeder {
             }
 
             List<AdditionalService> services = List.of(
-                    new AdditionalService(null, "Chọn chỗ ngồi (sơ đồ ghế)", 0.0),
-                    new AdditionalService(null, "Hành lý ký gửi 10kg", 150000.0),
+                    new AdditionalService(null, "Hành lý ký gửi 15kg", 180000.0),
                     new AdditionalService(null, "Hành lý ký gửi 20kg", 250000.0),
                     new AdditionalService(null, "Hành lý ký gửi 30kg", 350000.0),
                     new AdditionalService(null, "Suất ăn tiêu chuẩn", 89000.0),
                     new AdditionalService(null, "Suất ăn đặc biệt", 129000.0),
-                    new AdditionalService(null, "Bảo hiểm chuyến bay", 49000.0),
+                    new AdditionalService(null, "Bảo hiểm du lịch cơ bản", 49000.0),
+                    new AdditionalService(null, "Bảo hiểm du lịch cao cấp", 99000.0),
                     new AdditionalService(null, "Taxi đưa đón sân bay (Xanh SM)", 199000.0)
             );
 

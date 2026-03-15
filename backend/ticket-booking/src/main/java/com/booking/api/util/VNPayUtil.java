@@ -43,8 +43,11 @@ public class VNPayUtil {
         for (Map.Entry<String, String> entry : params.entrySet()) {
             if (entry.getValue() != null && !entry.getValue().isEmpty()) {
                 try {
-                    String key = URLEncoder.encode(entry.getKey(), StandardCharsets.US_ASCII.toString());
-                    String value = URLEncoder.encode(entry.getValue(), StandardCharsets.US_ASCII.toString());
+                    String key = URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.toString());
+                    String value = URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString());
+                    // VNPay yêu cầu khoảng trắng Encode thành %20, nhưng URLEncoder trong Java ra dấu +
+                    key = key.replace("+", "%20");
+                    value = value.replace("+", "%20");
                     queryString.append(key).append("=").append(value).append("&");
                 } catch (Exception e) {
                     // ignore
@@ -63,16 +66,8 @@ public class VNPayUtil {
      * key=value (được URLEncoder)
      */
     public static String buildHashData(SortedMap<String, String> params) {
-        StringBuilder hashData = new StringBuilder();
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            if (entry.getValue() != null && !entry.getValue().isEmpty()) {
-                hashData.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
-            }
-        }
-        if (hashData.length() > 0) {
-            hashData.setLength(hashData.length() - 1);
-        }
-        return hashData.toString();
+        // Từ bản v2.1.0, hashData là chuỗi giống hệt query string (các value đã được Url Encode)
+        return buildQueryString(params);
     }
 
     /**

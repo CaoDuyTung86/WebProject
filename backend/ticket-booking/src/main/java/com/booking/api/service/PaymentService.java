@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class PaymentService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final VNPayConfig vnPayConfig;
+    private final EmailService emailService;
 
     /**
      * Tạo URL thanh toán VNPay
@@ -132,6 +134,18 @@ public class PaymentService {
             booking.getPayments().add(payment);
 
             bookingRepository.save(booking);
+
+            String seats = "";
+            if (booking.getTickets() != null) {
+                seats = booking.getTickets().stream().map(t -> t.getSeat().getSeatNumber()).collect(Collectors.joining(", "));
+            }
+
+            emailService.sendBookingConfirmation(
+                    booking.getUser().getEmail(),
+                    booking.getId(),
+                    booking.getTotalPrice(),
+                    seats
+            );
 
             return "SUCCESS";
         } else {

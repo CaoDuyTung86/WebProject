@@ -36,15 +36,12 @@ public class DataSeeder {
     @Bean
     CommandLineRunner seedCoreData() {
         return args -> {
-            // Luôn seed "core data" (provider/route/vehicle/seat) nếu thiếu,
-            // chỉ seed trips mẫu khi DB chưa có trips.
 
             Provider vietjet = ensureProvider("Vietjet Air", "AIRLINE", "https://vietjetair.com");
             Provider bamboo = ensureProvider("Bamboo Airways", "AIRLINE", "https://www.bambooairways.com");
             Provider futa = ensureProvider("FUTA Bus Lines", "BUS", "https://futabus.vn");
             Provider vnr = ensureProvider("Vietnam Railways", "TRAIN", "https://dsvn.vn");
 
-            // Routes dùng chung cho cả PLANE/BUS/TRAIN
             Route hanSgn = ensureRoute("HAN", "SGN");
             Route sgnHan = ensureRoute("SGN", "HAN");
             Route hanDad = ensureRoute("HAN", "DAD");
@@ -55,13 +52,10 @@ public class DataSeeder {
             Vehicle bus40 = ensureVehicle(futa, "BUS", 40);
             Vehicle train120 = ensureVehicle(vnr, "TRAIN", 120);
 
-            // Seats: tạo nếu vehicle chưa có ghế
             ensureSeatsForVehicle(airbusA321);
             ensureSeatsForVehicle(airbusA320);
             ensureSeatsForVehicle(bus40);
             ensureSeatsForVehicle(train120);
-
-            // Seed trips mẫu nếu chưa có trips
             if (tripRepository.count() == 0) {
                 LocalDate today = LocalDate.now();
                 List<Trip> trips = new ArrayList<>();
@@ -184,7 +178,6 @@ public class DataSeeder {
         int total = vehicle.getTotalSeats() == null ? 0 : vehicle.getTotalSeats();
 
         if ("PLANE".equals(type)) {
-            // 30 hàng x 6 ghế A-F (180 ghế). Nếu total khác, vẫn tạo tối đa 30x6.
             for (int row = 1; row <= 30; row++) {
                 for (char col : new char[]{'A', 'B', 'C', 'D', 'E', 'F'}) {
                     Seat seat = new Seat();
@@ -195,7 +188,6 @@ public class DataSeeder {
                 }
             }
         } else {
-            // BUS/TRAIN: đánh số ghế đơn giản 1..total
             int n = Math.max(total, 0);
             for (int i = 1; i <= n; i++) {
                 Seat seat = new Seat();

@@ -3,6 +3,7 @@ import { IoIosPhonePortrait } from "react-icons/io";
 import { MdOutlinePhone } from "react-icons/md";
 import { IoChevronDown } from "react-icons/io5";
 import Auth from "../Page/Auth"; 
+import QRCodeModal from "../components/QRCodeModal";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { AiOutlineGlobal } from "react-icons/ai";
@@ -16,6 +17,7 @@ const Header = ({ setIsSidebarOpen }) => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false); 
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const { currentLanguage, t, changeLanguage } = useLanguage();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate(); 
@@ -112,8 +114,23 @@ const Header = ({ setIsSidebarOpen }) => {
         </div>
 
         <div className="app-header-actions">
-          <span style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer" }}>
-            <IoIosPhonePortrait /> {t.app}
+          <span 
+            onClick={() => setIsQRModalOpen(true)}
+            style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "6px", 
+              cursor: "pointer",
+              padding: "6px 12px",
+              borderRadius: "20px",
+              background: "#f0fdf4",
+              border: "1px solid #20c997",
+              color: "#059669",
+              fontSize: "13px",
+              fontWeight: "600"
+            }}
+          >
+            <IoIosPhonePortrait style={{ fontSize: "18px" }} /> Mobile QR
           </span>
 
           <div className="language-selector" style={{ position: "relative" }}>
@@ -330,15 +347,29 @@ const Header = ({ setIsSidebarOpen }) => {
           )}
 
           {isAuthenticated ? (
-            <>
+            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <span style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>
                 {user?.fullName || user?.email}
               </span>
               <button
+                onClick={() => navigate("/my-bookings")}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "6px",
+                  border: "1px solid #4f7cff",
+                  background: "#eef2ff",
+                  color: "#4f7cff",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
+              >
+                Lịch sử đặt vé
+              </button>
+              <button
                 onClick={logout}
                 style={{
-                  padding: "8px 14px",
-                  borderRadius: "8px",
+                  padding: "6px 14px",
+                  borderRadius: "6px",
                   border: "1px solid #ddd",
                   background: "#fff",
                   color: "#333",
@@ -348,7 +379,7 @@ const Header = ({ setIsSidebarOpen }) => {
               >
                 Đăng xuất
               </button>
-            </>
+            </div>
           ) : (
             <button
               onClick={() => setIsAuthOpen(true)}
@@ -369,6 +400,7 @@ const Header = ({ setIsSidebarOpen }) => {
       </header>
 
       <Auth isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      <QRCodeModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
     </>
   );
 };

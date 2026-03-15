@@ -43,6 +43,12 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/verify-email")
+    public ResponseEntity<AuthResponse> verifyEmail(@RequestParam String email, @RequestParam String code) {
+        AuthResponse response = authService.verifyEmail(email, code);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/google-login")
     public ResponseEntity<AuthResponse> googleLogin(@Valid @RequestBody GoogleLoginRequest request) {
         AuthResponse response = authService.googleLogin(request);
