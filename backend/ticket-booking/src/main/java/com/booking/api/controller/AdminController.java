@@ -1,15 +1,18 @@
 package com.booking.api.controller;
 
+import com.booking.api.dto.TripUpdateRequest;
 import com.booking.api.entity.Provider;
 import com.booking.api.entity.Route;
 import com.booking.api.entity.Trip;
 import com.booking.api.entity.Vehicle;
 import com.booking.api.service.AdminService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -114,9 +117,21 @@ public class AdminController {
         return ResponseEntity.ok(adminService.updateTripPrice(id, price));
     }
 
+    @PutMapping("/trips/{id}/delay")
+    public ResponseEntity<Trip> delayTrip(@PathVariable Long id, @Valid @RequestBody TripUpdateRequest request) {
+        return ResponseEntity.ok(adminService.delayTrip(id, request));
+    }
+
+    @PutMapping("/trips/{id}/cancel")
+    public ResponseEntity<Trip> cancelTrip(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String reason = body.getOrDefault("reason", "Không có lý do");
+        return ResponseEntity.ok(adminService.cancelTripByAdmin(id, reason));
+    }
+
     @DeleteMapping("/trips/{id}")
     public ResponseEntity<Void> deleteTrip(@PathVariable Long id) {
         adminService.deleteTrip(id);
         return ResponseEntity.noContent().build();
     }
 }
+

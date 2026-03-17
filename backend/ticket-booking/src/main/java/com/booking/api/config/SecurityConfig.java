@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/trips/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/additional-services/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/trip/**").permitAll()
                         // Swagger
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         // VNPay callback

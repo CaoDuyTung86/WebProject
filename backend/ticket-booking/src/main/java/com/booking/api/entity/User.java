@@ -26,6 +26,9 @@ public class User {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(name = "points")
+    private Integer points = 0;
+
     @Column(name = "email")
     private String email;
 

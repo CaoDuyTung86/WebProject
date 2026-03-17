@@ -122,7 +122,14 @@ public class AuthService {
         user.setResetTokenExpiry(java.time.LocalDateTime.now().plusMinutes(15));
         userRepository.save(user);
 
-        emailService.sendResetPasswordEmail(user.getEmail(), otpCode);
+        try {
+            emailService.sendResetPasswordEmail(user.getEmail(), otpCode);
+        } catch (Exception e) {
+            System.out.println("\n========================================================");
+            System.out.println("[DEBUG LỖI EMAIL] Không thể gửi email do chưa cấu hình SMTP");
+            System.out.println("Mã OTP của " + request.getEmail() + " là: " + otpCode);
+            System.out.println("========================================================\n");
+        }
     }
 
     @Transactional

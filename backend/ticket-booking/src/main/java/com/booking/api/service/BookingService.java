@@ -49,13 +49,18 @@ public class BookingService {
                 throw new BookingException("Ghế " + seat.getSeatNumber() + " đã được đặt cho chuyến này");
             }
 
+            double seatPrice = trip.getPrice();
+            if ("VIP".equalsIgnoreCase(seat.getSeatType())) {
+                seatPrice *= 2; // Ghế VIP giá gấp đôi
+            }
+
             Ticket ticket = new Ticket();
             ticket.setTrip(trip);
             ticket.setSeat(seat);
-            ticket.setPrice(trip.getPrice());
+            ticket.setPrice(seatPrice);
             tickets.add(ticket);
 
-            totalPrice += trip.getPrice();
+            totalPrice += seatPrice;
         }
 
         Booking booking = new Booking();
@@ -71,6 +76,13 @@ public class BookingService {
             booking.setTotalPrice(totalPrice + servicesTotal);
         } else {
             booking.setAdditionalServices(Collections.emptyList());
+        }
+
+        // Apply membership discount
+        double discountPercent = UserService.getDiscount(user.getPoints() != null ? user.getPoints() : 0);
+        if (discountPercent > 0) {
+            double discountAmount = booking.getTotalPrice() * (discountPercent / 100.0);
+            booking.setTotalPrice(booking.getTotalPrice() - discountAmount);
         }
 
         for (Ticket ticket : tickets) {
@@ -195,6 +207,14 @@ public class BookingService {
 
         booking.setStatus("COMPLETED");
         bookingRepository.save(booking);
+
+        // Tích điểm: 1 điểm / 10,000đ
+        if (booking.getTotalPrice() != null && booking.getTotalPrice() > 0) {
+            int earnedPoints = (int) (booking.getTotalPrice() / 10000);
+            int currentPoints = user.getPoints() != null ? user.getPoints() : 0;
+            user.setPoints(currentPoints + earnedPoints);
+            userRepository.save(user);
+        }
 
         try {
             emailService.sendSurveyEmail(user.getEmail(), booking.getId());

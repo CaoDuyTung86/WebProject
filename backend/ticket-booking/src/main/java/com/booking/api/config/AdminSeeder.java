@@ -56,6 +56,33 @@ public class AdminSeeder {
                     log.info("[AdminSeeder] Đã tạo mới tài khoản admin@gmail.com");
                 }
             );
+
+            userRepository.findByEmail("provider@gmail.com").ifPresentOrElse(
+                provider -> {
+                    boolean changed = false;
+                    if (!Boolean.TRUE.equals(provider.getEnabled())) {
+                        provider.setEnabled(true);
+                        changed = true;
+                    }
+                    if (!"ROLE_PROVIDER".equals(provider.getRole())) {
+                        provider.setRole("ROLE_PROVIDER");
+                        changed = true;
+                    }
+                    if (changed) {
+                        userRepository.save(provider);
+                    }
+                },
+                () -> {
+                    User provider = new User();
+                    provider.setFullName("Provider Account");
+                    provider.setEmail("provider@gmail.com");
+                    provider.setPassword(passwordEncoder.encode("Abc123456!"));
+                    provider.setRole("ROLE_PROVIDER");
+                    provider.setEnabled(true);
+                    userRepository.save(provider);
+                    log.info("[AdminSeeder] Đã tạo mới tài khoản provider@gmail.com");
+                }
+            );
         };
     }
 }

@@ -6,7 +6,7 @@ const QRCodeModal = ({ isOpen, onClose }) => {
 
   // URL hiện tại hoặc URL production
   // Khi test local, anh nên dùng IP mạng nội bộ của máy tính để điện thoại quét được
-  const currentURL = "http://192.168.1.101:5173";
+  const currentURL = "http://localhost:5173";
 
   return (
     <div style={{

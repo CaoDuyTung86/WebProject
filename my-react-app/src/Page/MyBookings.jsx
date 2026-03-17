@@ -16,11 +16,15 @@ const MyBookings = () => {
   // Modal Hoàn vé
   const [cancelModal, setCancelModal] = useState({ show: false, booking: null, loading: false, error: null });
 
+  // Modal Đánh Giá
+  const [reviewModal, setReviewModal] = useState({ show: false, booking: null, rating: 0, hovered: 0, comment: "", loading: false, error: null, success: false });
+
+
   const fetchBookings = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("authToken");
-      const res = await axios.get("http://192.168.1.101:8080/api/bookings", {
+      const res = await axios.get("http://localhost:8080/api/bookings", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(res.data);
@@ -62,7 +66,7 @@ const MyBookings = () => {
     try {
       setCancelModal(prev => ({ ...prev, loading: true, error: null }));
       const token = localStorage.getItem("authToken");
-      await axios.put(`http://192.168.1.101:8080/api/bookings/${cancelModal.booking.id}/cancel`, {}, {
+      await axios.put(`http://localhost:8080/api/bookings/${cancelModal.booking.id}/cancel`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -92,6 +96,36 @@ const MyBookings = () => {
       return { canRefund: true, penaltyPercent: 10, text: "Dưới 24 tiếng đến lúc khởi hành. PHÍ PHẠT LÀ 10%." };
     } else {
       return { canRefund: true, penaltyPercent: 0, text: "Trước 24 tiếng khởi hành. HỖ TRỢ HOÀN TRẢ 100%." };
+    }
+  };
+
+  // Handlers cho Review Modal
+  const openReviewModal = (booking) => {
+    setReviewModal({ show: true, booking, rating: 0, hovered: 0, comment: "", loading: false, error: null, success: false });
+  };
+
+  const closeReviewModal = () => {
+    setReviewModal({ show: false, booking: null, rating: 0, hovered: 0, comment: "", loading: false, error: null, success: false });
+  };
+
+  const handleSubmitReview = async () => {
+    if (reviewModal.rating === 0) {
+      setReviewModal(prev => ({ ...prev, error: "Vui lòng chọn số sao đánh giá (1–5)." }));
+      return;
+    }
+    try {
+      setReviewModal(prev => ({ ...prev, loading: true, error: null }));
+      const token = localStorage.getItem("authToken");
+      await axios.post("http://localhost:8080/api/reviews", {
+        bookingId: reviewModal.booking.id,
+        rating: reviewModal.rating,
+        comment: reviewModal.comment
+      }, { headers: { Authorization: `Bearer ${token}` } });
+      setReviewModal(prev => ({ ...prev, loading: false, success: true }));
+      // Đóng modal sau 1.5 giây
+      setTimeout(() => closeReviewModal(), 1500);
+    } catch (err) {
+      setReviewModal(prev => ({ ...prev, loading: false, error: err.response?.data?.message || err.message }));
     }
   };
 
@@ -170,8 +204,11 @@ const MyBookings = () => {
 
                       {/* Right side Price & Actions */}
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ fontSize: 20, fontWeight: 800, color: "#ff6b00", marginBottom: 16 }}>
+                        <div style={{ fontSize: 20, fontWeight: 800, color: "#ff6b00", marginBottom: 4 }}>
                           {bk.totalPrice.toLocaleString("vi-VN")} đ
+                        </div>
+                        <div style={{ fontSize: 13, color: "#16a34a", fontWeight: "bold", marginBottom: 12 }}>
+                          (Đã áp dụng ưu đãi thành viên)
                         </div>
                         
                         <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
@@ -182,7 +219,7 @@ const MyBookings = () => {
                                   try {
                                     setLoading(true);
                                     const token = localStorage.getItem("authToken");
-                                    await axios.put(`http://192.168.1.101:8080/api/bookings/${bk.id}/complete`, {}, { headers: { Authorization: `Bearer ${token}` }});
+                                    await axios.put(`http://localhost:8080/api/bookings/${bk.id}/complete`, {}, { headers: { Authorization: `Bearer ${token}` }});
                                     alert("Chuyến đi đã hoàn thành. Cảm ơn bạn!");
                                     await fetchBookings();
                                   } catch (e) {
@@ -198,6 +235,33 @@ const MyBookings = () => {
                             </button>
                           )}
 
+                          {bk.status === "PENDING" && (
+                            <button 
+                              onClick={async () => {
+                                try {
+                                  setLoading(true);
+                                  const token = localStorage.getItem("authToken");
+                                  const res = await axios.post(`http://localhost:8080/api/payment/resume`, 
+                                    { bookingId: bk.id, language: "vn" }, 
+                                    { headers: { Authorization: `Bearer ${token}` } }
+                                  );
+                                  if (res.data && res.data.paymentUrl) {
+                                    window.location.href = res.data.paymentUrl;
+                                  } else {
+                                    alert("Lỗi tạo link thanh toán, vui lòng thử lại.");
+                                  }
+                                } catch (e) {
+                                  alert("Lỗi tiếp tục thanh toán: " + (e.response?.data?.message || e.message));
+                                } finally {
+                                  setLoading(false);
+                                }
+                              }}
+                              style={{ padding: "8px 16px", borderRadius: 6, border: "none", background: "#ff6b00", color: "#fff", fontWeight: 700, cursor: "pointer", fontSize: 13, transition: "0.2s" }}
+                            >
+                              Thanh toán ngay
+                            </button>
+                          )}
+
                           {bk.status !== "CANCELLED" && bk.status !== "COMPLETED" && (
                             <button 
                               onClick={() => openCancelModal(bk)}
@@ -210,9 +274,11 @@ const MyBookings = () => {
                           )}
 
                           {bk.status === "COMPLETED" && (
-                            <button 
-                              onClick={() => alert("Cảm ơn bạn! Tính năng Gửi Đánh Giá chi tiết đang được phát triển.")}
+                            <button
+                              onClick={() => openReviewModal(bk)}
                               style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #4f46e5", background: "#eff6ff", color: "#4f46e5", fontWeight: 700, cursor: "pointer", fontSize: 13, transition: "0.2s" }}
+                              onMouseOver={e => { e.target.style.background = "#e0e7ff" }}
+                              onMouseOut={e => { e.target.style.background = "#eff6ff" }}
                             >
                               Gửi Đánh Giá ⭐️
                             </button>
@@ -297,8 +363,103 @@ const MyBookings = () => {
           </div>
         );
       })()}
+
+      {/* Modal Đánh Giá */}
+      {reviewModal.show && reviewModal.booking && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000, padding: 20 }}>
+          <div style={{ background: "#fff", padding: 32, borderRadius: 16, width: "100%", maxWidth: 480, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}>
+
+            {reviewModal.success ? (
+              <div style={{ textAlign: "center", padding: "20px 0" }}>
+                <div style={{ fontSize: 56, marginBottom: 12 }}>🎉</div>
+                <h3 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", marginBottom: 8 }}>Cảm ơn bạn đã đánh giá!</h3>
+                <p style={{ color: "#666", fontSize: 14 }}>Phản hồi của bạn giúp chúng tôi cải thiện dịch vụ mỗi ngày.</p>
+              </div>
+            ) : (
+              <>
+                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 4, color: "#111827" }}>Đánh giá chuyến đi</h3>
+                <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 20 }}>
+                  {reviewModal.booking.origin} → {reviewModal.booking.destination} &nbsp;•&nbsp;
+                  {reviewModal.booking.vehicleType === "PLANE" ? "✈️" : reviewModal.booking.vehicleType === "BUS" ? "🚌" : "🚂"} {reviewModal.booking.providerName}
+                </p>
+
+                {/* Star Rating */}
+                <div style={{ marginBottom: 20 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 10, color: "#374151" }}>Chọn số sao <span style={{ color: "#ef4444" }}>*</span></div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <span
+                        key={star}
+                        onClick={() => setReviewModal(prev => ({ ...prev, rating: star }))}
+                        onMouseEnter={() => setReviewModal(prev => ({ ...prev, hovered: star }))}
+                        onMouseLeave={() => setReviewModal(prev => ({ ...prev, hovered: 0 }))}
+                        style={{
+                          fontSize: 38,
+                          cursor: "pointer",
+                          color: star <= (reviewModal.hovered || reviewModal.rating) ? "#f59e0b" : "#d1d5db",
+                          transition: "color 0.15s, transform 0.1s",
+                          transform: star <= (reviewModal.hovered || reviewModal.rating) ? "scale(1.15)" : "scale(1)",
+                          display: "inline-block",
+                          userSelect: "none"
+                        }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  {reviewModal.rating > 0 && (
+                    <div style={{ marginTop: 6, fontSize: 12, color: "#6b7280" }}>
+                      {["", "Tệ 😞", "Không hài lòng 😐", "Ổn 🙂", "Tốt 😊", "Tuyệt vời! 🤩"][reviewModal.rating]}
+                    </div>
+                  )}
+                </div>
+
+                {/* Comment */}
+                <div style={{ marginBottom: 20 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: "#374151" }}>Nhận xét (tùy chọn)</div>
+                  <textarea
+                    value={reviewModal.comment}
+                    onChange={e => setReviewModal(prev => ({ ...prev, comment: e.target.value }))}
+                    placeholder="Chia sẻ trải nghiệm của bạn về chuyến đi này..."
+                    rows={4}
+                    maxLength={500}
+                    style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #d1d5db", fontSize: 14, resize: "vertical", outline: "none", boxSizing: "border-box", lineHeight: 1.5 }}
+                  />
+                  <div style={{ textAlign: "right", fontSize: 11, color: "#9ca3af", marginTop: 4 }}>{reviewModal.comment.length}/500</div>
+                </div>
+
+                {/* Error */}
+                {reviewModal.error && (
+                  <div style={{ padding: "10px 14px", background: "#fee2e2", color: "#dc2626", borderRadius: 8, fontSize: 13, marginBottom: 16, fontWeight: 600 }}>
+                    ⚠️ {reviewModal.error}
+                  </div>
+                )}
+
+                {/* Buttons */}
+                <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+                  <button
+                    onClick={closeReviewModal}
+                    disabled={reviewModal.loading}
+                    style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer", color: "#555", fontSize: 14 }}
+                  >
+                    Hủy
+                  </button>
+                  <button
+                    onClick={handleSubmitReview}
+                    disabled={reviewModal.loading}
+                    style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: reviewModal.loading ? "#a5b4fc" : "#4f46e5", color: "#fff", fontWeight: 700, cursor: reviewModal.loading ? "not-allowed" : "pointer", fontSize: 14, transition: "0.2s" }}
+                  >
+                    {reviewModal.loading ? "Đang gửi..." : "Gửi Đánh Giá ⭐️"}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+
 
 export default MyBookings;

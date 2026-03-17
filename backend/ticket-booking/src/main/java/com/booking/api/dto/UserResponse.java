@@ -1,10 +1,12 @@
 package com.booking.api.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse {
@@ -14,4 +16,8 @@ public class UserResponse {
     private String email;
     private String phone;
     private String role;
+    private Integer points;
+    private String membershipLevel;
+    private Double discountPercent;
+    private boolean hasPassword;
 }

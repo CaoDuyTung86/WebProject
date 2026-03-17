@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start:backend": "cd ../backend/ticket-booking && mvnw spring-boot:run",
+    "start:backend": "cd ../backend/ticket-booking && mvnw clean compile spring-boot:run",
     "start:all": "concurrently \"npm run dev\" \"npm run start:backend\""
   },
   "dependencies": {

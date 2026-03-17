@@ -101,7 +101,7 @@ const Auth = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://192.168.1.101:8080/api/auth/register", {
+      const response = await fetch("http://localhost:8080/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +168,7 @@ const Auth = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://192.168.1.101:8080/api/auth/login", {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -391,7 +391,7 @@ const Auth = ({ isOpen, onClose }) => {
                   onSuccess={async (credentialResponse) => {
                     const decoded = jwtDecode(credentialResponse.credential);
                     try {
-                      const response = await fetch("http://192.168.1.101:8080/api/auth/google-login", {
+                      const response = await fetch("http://localhost:8080/api/auth/google-login", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -466,7 +466,7 @@ const Auth = ({ isOpen, onClose }) => {
                 boxShadow: "0 4px 12px rgba(0,0,0,0.05)"
               }}>
                 <QRCodeSVG 
-                  value="http://192.168.1.101:5173" 
+                  value="http://localhost:5173" 
                   size={150}
                   level="H"
                   includeMargin={false}

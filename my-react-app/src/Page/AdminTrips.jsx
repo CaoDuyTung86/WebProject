@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const API_BASE = "http://192.168.1.101:8080/api";
+const API_BASE = "http://localhost:8080/api";
 
 const AdminTrips = () => {
   const { token, user } = useAuth();
@@ -22,6 +22,11 @@ const AdminTrips = () => {
     price: "",
     status: "ACTIVE",
   });
+
+  // Delay modal state
+  const [delayModal, setDelayModal] = useState({ show: false, trip: null, newDeparture: "", newArrival: "", reason: "", loading: false });
+  // Cancel modal state
+  const [cancelAdminModal, setCancelAdminModal] = useState({ show: false, trip: null, reason: "", loading: false });
 
   useEffect(() => {
     if (!token) return;
@@ -218,6 +223,39 @@ const AdminTrips = () => {
     } finally {
       setCreating(false);
     }
+  };
+
+  const handleDelay = async () => {
+    if (!delayModal.reason.trim()) { setError("Cần nhập lý do hoãn."); return; }
+    setDelayModal(prev => ({ ...prev, loading: true }));
+    try {
+      const body = { reason: delayModal.reason };
+      if (delayModal.newDeparture) body.newDepartureTime = delayModal.newDeparture;
+      if (delayModal.newArrival) body.newArrivalTime = delayModal.newArrival;
+      const res = await fetch(`${API_BASE}/admin/trips/${delayModal.trip.id}/delay`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setDelayModal({ show: false, trip: null, newDeparture: "", newArrival: "", reason: "", loading: false });
+      await loadTrips();
+    } catch (e) { setError("Lỗi hoãn: " + e.message); setDelayModal(prev => ({ ...prev, loading: false })); }
+  };
+
+  const handleCancelTrip = async () => {
+    if (!cancelAdminModal.reason.trim()) { setError("Cần nhập lý do hủy."); return; }
+    setCancelAdminModal(prev => ({ ...prev, loading: true }));
+    try {
+      const res = await fetch(`${API_BASE}/admin/trips/${cancelAdminModal.trip.id}/cancel`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: cancelAdminModal.reason }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setCancelAdminModal({ show: false, trip: null, reason: "", loading: false });
+      await loadTrips();
+    } catch (e) { setError("Lỗi hủy: " + e.message); setCancelAdminModal(prev => ({ ...prev, loading: false })); }
   };
 
   if (!user || user.role !== "ROLE_ADMIN") {
@@ -467,9 +505,9 @@ const AdminTrips = () => {
               <th style={{ padding: 8, borderBottom: "1px solid #eee" }}>
                 Giá hiện tại
               </th>
-              <th style={{ padding: 8, borderBottom: "1px solid #eee" }}>
-                Sửa giá
-              </th>
+              <th style={{ padding: 8, borderBottom: "1px solid #eee" }}>Sửa giá</th>
+              <th style={{ padding: 8, borderBottom: "1px solid #eee" }}>Trạng thái</th>
+              <th style={{ padding: 8, borderBottom: "1px solid #eee" }}>Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -493,33 +531,31 @@ const AdminTrips = () => {
                 <td style={{ padding: 8, borderBottom: "1px solid #f3f3f3" }}>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     <input
-                      type="number"
-                      placeholder="Giá mới"
+                      type="number" placeholder="Giá mới"
                       value={editingPrice[trip.id] ?? ""}
-                      onChange={(e) =>
-                        handlePriceChange(trip.id, e.target.value)
-                      }
-                      style={{
-                        width: 120,
-                        padding: "4px 6px",
-                        borderRadius: 4,
-                        border: "1px solid #ddd",
-                      }}
+                      onChange={(e) => handlePriceChange(trip.id, e.target.value)}
+                      style={{ width: 100, padding: "4px 6px", borderRadius: 4, border: "1px solid #ddd" }}
                     />
-                    <button
-                      type="button"
-                      onClick={() => savePrice(trip.id)}
-                      style={{
-                        padding: "4px 10px",
-                        borderRadius: 4,
-                        border: "none",
-                        background: "#4f7cff",
-                        color: "#fff",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Lưu
-                    </button>
+                    <button type="button" onClick={() => savePrice(trip.id)}
+                      style={{ padding: "4px 10px", borderRadius: 4, border: "none", background: "#4f7cff", color: "#fff", cursor: "pointer" }}
+                    >Lưu</button>
+                  </div>
+                </td>
+                <td style={{ padding: 8, borderBottom: "1px solid #f3f3f3" }}>
+                  <span style={{
+                    padding: "3px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700,
+                    background: trip.status === "CANCELLED" ? "#fee2e2" : trip.status === "DELAYED" ? "#fef3c7" : "#dcfce7",
+                    color: trip.status === "CANCELLED" ? "#dc2626" : trip.status === "DELAYED" ? "#d97706" : "#16a34a",
+                  }}>{trip.status}</span>
+                </td>
+                <td style={{ padding: 8, borderBottom: "1px solid #f3f3f3" }}>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <button onClick={() => setDelayModal({ show: true, trip, newDeparture: "", newArrival: "", reason: "", loading: false })}
+                      style={{ padding: "4px 10px", borderRadius: 4, border: "none", background: "#f59e0b", color: "#fff", cursor: "pointer", fontWeight: 600, fontSize: 12 }}
+                    >⏰ Hoãn</button>
+                    <button onClick={() => setCancelAdminModal({ show: true, trip, reason: "", loading: false })}
+                      style={{ padding: "4px 10px", borderRadius: 4, border: "none", background: "#ef4444", color: "#fff", cursor: "pointer", fontWeight: 600, fontSize: 12 }}
+                    >❌ Hủy</button>
                   </div>
                 </td>
               </tr>
@@ -541,9 +577,65 @@ const AdminTrips = () => {
           </tbody>
         </table>
       </div>
+
+      {delayModal.show && delayModal.trip && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 }}>
+          <div style={{ background: "#fff", padding: 28, borderRadius: 16, width: 440, maxWidth: "95vw" }}>
+            <h3 style={{ fontWeight: 800, color: "#92400e", marginBottom: 4 }}>⏰ Hoãn chuyến đi</h3>
+            <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 14 }}>{delayModal.trip.route?.origin} → {delayModal.trip.route?.destination}</p>
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ fontWeight: 600, fontSize: 12, display: "block", marginBottom: 5 }}>Giờ khởi hành mới</label>
+              <input type="datetime-local" value={delayModal.newDeparture}
+                onChange={e => setDelayModal(p => ({ ...p, newDeparture: e.target.value }))}
+                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #ddd", boxSizing: "border-box" }} />
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ fontWeight: 600, fontSize: 12, display: "block", marginBottom: 5 }}>Lý do <span style={{ color: "red" }}>*</span></label>
+              <textarea rows={3} value={delayModal.reason} onChange={e => setDelayModal(p => ({ ...p, reason: e.target.value }))}
+                placeholder="Ví dụ: Thời tiết xấu..." maxLength={300}
+                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #ddd", boxSizing: "border-box", resize: "vertical" }} />
+            </div>
+            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+              <button onClick={() => setDelayModal({ show: false, trip: null, newDeparture: "", newArrival: "", reason: "", loading: false })}
+                style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer" }}>Hủy</button>
+              <button onClick={handleDelay} disabled={delayModal.loading}
+                style={{ padding: "8px 16px", borderRadius: 6, border: "none", background: "#f59e0b", color: "#fff", cursor: "pointer", fontWeight: 700 }}>
+                {delayModal.loading ? "Đang xử lý..." : "Xác nhận Hoãn"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {cancelAdminModal.show && cancelAdminModal.trip && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 }}>
+          <div style={{ background: "#fff", padding: 28, borderRadius: 16, width: 420, maxWidth: "95vw" }}>
+            <h3 style={{ fontWeight: 800, color: "#dc2626", marginBottom: 4 }}>❌ Hủy chuyến đi</h3>
+            <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>{cancelAdminModal.trip.route?.origin} → {cancelAdminModal.trip.route?.destination}</p>
+            <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "10px 14px", marginBottom: 14, fontSize: 12 }}>
+              ⚠️ Booking CONFIRMED/PAID sẽ bị hủy và hoàn tiền 100%. Email thông báo gửi tự động.
+            </div>
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontWeight: 600, fontSize: 12, display: "block", marginBottom: 5 }}>Lý do <span style={{ color: "red" }}>*</span></label>
+              <textarea rows={3} value={cancelAdminModal.reason} onChange={e => setCancelAdminModal(p => ({ ...p, reason: e.target.value }))}
+                placeholder="Ví dụ: Sự cố kỹ thuật..." maxLength={300}
+                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #ddd", boxSizing: "border-box", resize: "vertical" }} />
+            </div>
+            <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+              <button onClick={() => setCancelAdminModal({ show: false, trip: null, reason: "", loading: false })}
+                style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer" }}>Đóng</button>
+              <button onClick={handleCancelTrip} disabled={cancelAdminModal.loading}
+                style={{ padding: "8px 16px", borderRadius: 6, border: "none", background: "#ef4444", color: "#fff", cursor: "pointer", fontWeight: 700 }}>
+                {cancelAdminModal.loading ? "Đang xử lý..." : "Xác nhận Hủy"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default AdminTrips;
+
 

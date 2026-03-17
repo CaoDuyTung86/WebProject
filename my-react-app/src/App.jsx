@@ -15,6 +15,8 @@ import MyBookings from "./Page/MyBookings";
 import ForgotPassword from "./Page/ForgotPassword";
 import VerifyEmail from "./Page/VerifyEmail";
 import AdminTrips from "./Page/AdminTrips";
+import AdminReviews from "./Page/AdminReviews";
+import AccountPage from "./Page/AccountPage";
 
 function AppWrapper() {
   const location = useLocation();
@@ -36,6 +38,8 @@ function AppWrapper() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/admin/trips" element={<AdminTrips />} />
+        <Route path="/admin/reviews" element={<AdminReviews />} />
+        <Route path="/account" element={<AccountPage />} />
       </Routes>
       {showFooter && <Footer />} {/* Thêm Footer */}
     </>

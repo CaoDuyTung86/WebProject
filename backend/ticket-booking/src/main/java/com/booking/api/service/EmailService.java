@@ -107,7 +107,7 @@ public class EmailService {
             mailSender.send(message);
             
             log.info("Booking confirmation email sent successfully to {}", toEmail);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Failed to send booking confirmation email to {}", toEmail, e);
         }
     }
@@ -137,8 +137,64 @@ public class EmailService {
             mailSender.send(message);
             
             log.info("Survey email sent successfully to {}", toEmail);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Failed to send survey email to {}", toEmail, e);
+        }
+    }
+
+    public void sendTripDelayEmail(String toEmail, String route, String oldDeparture, String newDeparture, String reason) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(toEmail);
+            helper.setSubject("⚠️ Thông báo: Chuyến đi của bạn bị hoãn giờ - Datxe.com");
+
+            String html = "<div style='font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto;'>"
+                    + "<h2 style='color: #f59e0b;'>⚠️ Chuyến đi của bạn bị điều chỉnh giờ</h2>"
+                    + "<p>Xin chào,</p>"
+                    + "<p>Chuyến đi <strong>" + route + "</strong> mà bạn đã đặt vé có sự thay đổi lịch trình:</p>"
+                    + "<div style='background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:16px; margin:20px 0;'>"
+                    + "<p><b>Giờ khởi hành cũ:</b> <s style='color:#ef4444'>" + oldDeparture + "</s></p>"
+                    + "<p><b>Giờ khởi hành mới:</b> <span style='color:#16a34a; font-weight:bold'>" + newDeparture + "</span></p>"
+                    + "<p><b>Lý do:</b> " + reason + "</p>"
+                    + "</div>"
+                    + "<p>Chúng tôi xin lỗi vì sự bất tiện này. Vé của bạn vẫn có hiệu lực với giờ khởi hành mới.</p>"
+                    + "<p>Nếu bạn không thể tham gia, vui lòng vào <a href='http://localhost:5174/quan-ly-ve'>trang quản lý vé</a> để hủy và nhận hoàn tiền 100%.</p>"
+                    + "<hr/><p style='font-size:12px;color:#888;'>Trân trọng,<br>Đội ngũ Datxe.com</p></div>";
+
+            helper.setText(html, true);
+            mailSender.send(message);
+            log.info("Trip delay email sent to {}", toEmail);
+        } catch (Exception e) {
+            log.error("Failed to send trip delay email to {}", toEmail, e);
+        }
+    }
+
+    public void sendTripCancelledEmail(String toEmail, Long bookingId, String route, Double refundAmount) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(toEmail);
+            helper.setSubject("❌ Thông báo: Chuyến đi của bạn bị hủy - Datxe.com");
+
+            String html = "<div style='font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto;'>"
+                    + "<h2 style='color: #ef4444;'>❌ Chuyến đi bị hủy</h2>"
+                    + "<p>Xin chào,</p>"
+                    + "<p>Rất tiếc, chuyến đi <strong>" + route + "</strong> (Mã booking: #" + bookingId + ") đã bị hủy bởi nhà vận hành.</p>"
+                    + "<div style='background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px; margin:20px 0;'>"
+                    + "<h3 style='color:#dc2626; margin-top:0;'>Thông tin hoàn tiền</h3>"
+                    + "<p>Số tiền được hoàn: <strong style='color:#16a34a; font-size:18px;'>" + String.format("%,.0f đ", refundAmount) + "</strong></p>"
+                    + "<p>Hoàn tiền 100% do chuyến đi bị hủy từ phía nhà vận hành.</p>"
+                    + "</div>"
+                    + "<p>Chúng tôi thành thật xin lỗi vì sự cố này và sẽ xử lý hoàn tiền trong vòng 3-5 ngày làm việc.</p>"
+                    + "<p>Để đặt lại chuyến đi khác: <a href='http://localhost:5174'>Datxe.com</a></p>"
+                    + "<hr/><p style='font-size:12px;color:#888;'>Trân trọng,<br>Đội ngũ Datxe.com</p></div>";
+
+            helper.setText(html, true);
+            mailSender.send(message);
+            log.info("Trip cancelled email sent to {}", toEmail);
+        } catch (Exception e) {
+            log.error("Failed to send trip cancelled email to {}", toEmail, e);
         }
     }
 }

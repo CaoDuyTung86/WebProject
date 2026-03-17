@@ -328,22 +328,41 @@ const Header = ({ setIsSidebarOpen }) => {
             )}
           </div>
 
-          {isAuthenticated && user?.role === "ROLE_ADMIN" && (
-            <button
-              onClick={() => navigate("/admin/trips")}
-              style={{
-                padding: "6px 12px",
-                borderRadius: "6px",
-                border: "1px solid #20c997",
-                background: "#e6fff5",
-                color: "#059669",
-                cursor: "pointer",
-                fontSize: "13px",
-                fontWeight: "600",
-              }}
-            >
-              Admin
-            </button>
+          {(isAuthenticated && (user?.role === "ROLE_ADMIN" || user?.role === "ROLE_PROVIDER")) && (
+            <div style={{ display: "flex", gap: "10px" }}>
+              {user?.role === "ROLE_ADMIN" && (
+                <button
+                  onClick={() => navigate("/admin/trips")}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: "6px",
+                    border: "1px solid #20c997",
+                    background: "#e6fff5",
+                    color: "#059669",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Admin Trips
+                </button>
+              )}
+              <button
+                onClick={() => navigate("/admin/reviews")}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid #4f7cff",
+                  background: "#e6edff",
+                  color: "#4f7cff",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "600",
+                }}
+              >
+                {user?.role === "ROLE_PROVIDER" ? "Reviews (Provider)" : "Admin Reviews"}
+              </button>
+            </div>
           )}
 
           {isAuthenticated ? (
@@ -351,6 +370,20 @@ const Header = ({ setIsSidebarOpen }) => {
               <span style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>
                 {user?.fullName || user?.email}
               </span>
+              <button
+                onClick={() => navigate("/account")}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "6px",
+                  border: "1px solid #eab308",
+                  background: "#fef9c3",
+                  color: "#ca8a04",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
+              >
+                Tài khoản
+              </button>
               <button
                 onClick={() => navigate("/my-bookings")}
                 style={{

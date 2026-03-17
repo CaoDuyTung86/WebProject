@@ -34,6 +34,18 @@ public class PaymentController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Tiếp tục thanh toán VNPay", description = "Tạo lại URL thanh toán cho booking PENDING")
+    @PostMapping("/resume")
+    public ResponseEntity<PaymentResponse> resumePayment(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody PaymentRequest request,
+            HttpServletRequest httpRequest) {
+        String ipAddress = getClientIpAddress(httpRequest);
+        PaymentResponse response = paymentService.createVNPayPayment(
+                userDetails.getUsername(), request, ipAddress);
+        return ResponseEntity.ok(response);
+    }
+
     @Operation(summary = "VNPay callback", description = "Endpoint VNPay gọi sau khi user thanh toán xong (public endpoint)")
     @GetMapping("/vnpay-return")
     public ResponseEntity<Void> vnPayReturn(

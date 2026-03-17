@@ -1,27 +1,28 @@
 package com.booking.api.service;
 
-import com.booking.api.entity.Provider;
-import com.booking.api.entity.Route;
-import com.booking.api.entity.Trip;
-import com.booking.api.entity.Vehicle;
-import com.booking.api.repository.ProviderRepository;
-import com.booking.api.repository.RouteRepository;
-import com.booking.api.repository.TripRepository;
-import com.booking.api.repository.VehicleRepository;
+import com.booking.api.dto.TripUpdateRequest;
+import com.booking.api.entity.*;
+import com.booking.api.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AdminService {
 
     private final RouteRepository routeRepository;
     private final VehicleRepository vehicleRepository;
     private final ProviderRepository providerRepository;
     private final TripRepository tripRepository;
+    private final BookingRepository bookingRepository;
+    private final EmailService emailService;
 
     // ==================== ROUTE ====================
 
@@ -172,5 +173,78 @@ public class AdminService {
             throw new IllegalArgumentException("Không tìm thấy chuyến đi với ID: " + id);
         }
         tripRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Trip delayTrip(Long tripId, TripUpdateRequest request) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy chuyến đi với ID: " + tripId));
+
+        String route = trip.getRoute().getOrigin() + " → " + trip.getRoute().getDestination();
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+        String oldDeparture = trip.getDepartureTime() != null ? trip.getDepartureTime().format(fmt) : "N/A";
+
+        if (request.getNewDepartureTime() != null) {
+            trip.setDepartureTime(request.getNewDepartureTime());
+        }
+        if (request.getNewArrivalTime() != null) {
+            trip.setArrivalTime(request.getNewArrivalTime());
+        }
+        trip.setStatus("DELAYED");
+        tripRepository.save(trip);
+
+        String newDeparture = trip.getDepartureTime() != null ? trip.getDepartureTime().format(fmt) : "N/A";
+        String reason = request.getReason();
+
+        // Gửi email cho tất cả hành khách
+        List<Booking> bookings = bookingRepository.findActiveBookingsByTripId(tripId);
+        for (Booking booking : bookings) {
+            try {
+                emailService.sendTripDelayEmail(booking.getUser().getEmail(), route, oldDeparture, newDeparture, reason);
+            } catch (Exception e) {
+                log.error("Failed to send delay email to {}", booking.getUser().getEmail(), e);
+            }
+        }
+
+        log.info("Trip {} delayed. {} passengers notified.", tripId, bookings.size());
+        return trip;
+    }
+
+    @Transactional
+    public Trip cancelTripByAdmin(Long tripId, String reason) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy chuyến đi với ID: " + tripId));
+
+        String route = trip.getRoute().getOrigin() + " → " + trip.getRoute().getDestination();
+        trip.setStatus("CANCELLED");
+        tripRepository.save(trip);
+
+        // Hủy tất cả booking và hoàn tiền 100%, gửi email
+        List<Booking> bookings = bookingRepository.findActiveBookingsByTripId(tripId);
+        for (Booking booking : bookings) {
+            double refundAmount = booking.getTotalPrice() != null ? booking.getTotalPrice() : 0;
+
+            Refund refund = new Refund();
+            refund.setBooking(booking);
+            refund.setRefundAmount(refundAmount);
+            refund.setRefundDate(java.time.LocalDateTime.now());
+            refund.setStatus("COMPLETED");
+
+            if (booking.getRefunds() == null) {
+                booking.setRefunds(new ArrayList<>());
+            }
+            booking.getRefunds().add(refund);
+            booking.setStatus("CANCELLED");
+
+            try {
+                emailService.sendTripCancelledEmail(booking.getUser().getEmail(), booking.getId(), route, refundAmount);
+            } catch (Exception e) {
+                log.error("Failed to send cancel email to {}", booking.getUser().getEmail(), e);
+            }
+        }
+        bookingRepository.saveAll(bookings);
+
+        log.info("Trip {} cancelled by admin. {} bookings refunded.", tripId, bookings.size());
+        return trip;
     }
 }

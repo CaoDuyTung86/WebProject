@@ -9,6 +9,7 @@ import com.booking.api.entity.User;
 import com.booking.api.exception.BookingException;
 import com.booking.api.exception.ResourceNotFoundException;
 import com.booking.api.repository.BookingRepository;
+import com.booking.api.repository.PromotionRepository;
 import com.booking.api.repository.UserRepository;
 import com.booking.api.util.VNPayUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class PaymentService {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
+    private final PromotionRepository promotionRepository;
     private final VNPayConfig vnPayConfig;
     private final EmailService emailService;
 
@@ -134,6 +136,30 @@ public class PaymentService {
             booking.getPayments().add(payment);
 
             bookingRepository.save(booking);
+
+            // Tích điểm cho User
+            User user = booking.getUser();
+            if (user != null) {
+                int earnedPoints = (int) (booking.getTotalPrice() / 10000);
+                int currentPoints = user.getPoints() == null ? 0 : user.getPoints();
+                int newPoints = currentPoints + earnedPoints;
+                user.setPoints(newPoints);
+
+                // Nâng hạng thành viên
+                String newLevel = null;
+                if (newPoints >= 2000) {
+                    newLevel = "Kim cương";
+                } else if (newPoints >= 500) {
+                    newLevel = "Vàng";
+                } else if (newPoints >= 100) {
+                    newLevel = "Bạc";
+                }
+
+                if (newLevel != null) {
+                    promotionRepository.findByLevelName(newLevel).ifPresent(user::setPromotion);
+                }
+                userRepository.save(user);
+            }
 
             String seats = "";
             if (booking.getTickets() != null) {
