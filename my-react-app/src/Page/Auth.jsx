@@ -7,13 +7,13 @@ import { IoIosWarning } from "react-icons/io";
 import { TiTick } from "react-icons/ti";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { QRCodeSVG } from "qrcode.react";
+
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 
 const Auth = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
-  const [mode, setMode] = useState("register"); // register | login
+  const [mode, setMode] = useState("register"); 
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -266,7 +266,7 @@ const Auth = ({ isOpen, onClose }) => {
       <div
         style={{
           position: "relative",
-          width: step === 1 ? "750px" : "500px",
+          width: "500px",
           maxWidth: "95vw",
           display: "flex",
           backgroundColor: "#fff",
@@ -274,6 +274,7 @@ const Auth = ({ isOpen, onClose }) => {
           overflow: "hidden",
           boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
           transition: "width 0.3s ease",
+           padding: "10px" 
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -439,42 +440,6 @@ const Auth = ({ isOpen, onClose }) => {
                 <img src={A} alt="Apple" style={{ ...iconStyle, filter: "invert(1)" }} />
                 {t.loginWithApple}
               </button>
-            </div>
-
-            <div
-              style={{
-                flex: 0.85,
-                backgroundColor: "#f9f9f9",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "40px",
-                borderLeft: "1px solid #f0f0f0",
-              }}
-            >
-             <div style={{ 
-                width: "170px", 
-                height: "170px", 
-                backgroundColor: "#fff", 
-                borderRadius: "12px", 
-                marginBottom: "25px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "10px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.05)"
-              }}>
-                <QRCodeSVG 
-                  value="http://localhost:5173" 
-                  size={150}
-                  level="H"
-                  includeMargin={false}
-                />
-              </div>
-              <p style={{ textAlign: "center", fontSize: "14px", color: "#666", lineHeight: "1.6" }}>
-                {t.qrText} <br /> <span style={{ fontWeight: "600" }}>{t.qrHighlight}</span>
-              </p>
             </div>
           </>
         )}

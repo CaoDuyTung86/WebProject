@@ -15,4 +15,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findActiveBookingsByTripId(@Param("tripId") Long tripId);
 
     List<Booking> findByStatusAndBookingDateBefore(String status, java.time.LocalDateTime cutoffTime);
+
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b JOIN b.tickets t WHERE t.trip.vehicle.provider.id = :providerId AND b.status IN ('CONFIRMED', 'PAID', 'COMPLETED')")
+    Double calculateTotalRevenueByProvider(@Param("providerId") Long providerId);
 }

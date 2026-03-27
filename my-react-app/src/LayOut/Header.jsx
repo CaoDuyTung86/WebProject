@@ -3,7 +3,7 @@ import { IoIosPhonePortrait } from "react-icons/io";
 import { MdOutlinePhone } from "react-icons/md";
 import { IoChevronDown } from "react-icons/io5";
 import Auth from "../Page/Auth"; 
-import QRCodeModal from "../components/QRCodeModal";
+
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { AiOutlineGlobal } from "react-icons/ai";
@@ -17,7 +17,7 @@ const Header = ({ setIsSidebarOpen }) => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [showPhone, setShowPhone] = useState(false); 
-  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+
   const { currentLanguage, t, changeLanguage } = useLanguage();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate(); 
@@ -114,25 +114,6 @@ const Header = ({ setIsSidebarOpen }) => {
         </div>
 
         <div className="app-header-actions">
-          <span 
-            onClick={() => setIsQRModalOpen(true)}
-            style={{ 
-              display: "flex", 
-              alignItems: "center", 
-              gap: "6px", 
-              cursor: "pointer",
-              padding: "6px 12px",
-              borderRadius: "20px",
-              background: "#f0fdf4",
-              border: "1px solid #20c997",
-              color: "#059669",
-              fontSize: "13px",
-              fontWeight: "600"
-            }}
-          >
-            <IoIosPhonePortrait style={{ fontSize: "18px" }} /> Mobile QR
-          </span>
-
           <div className="language-selector" style={{ position: "relative" }}>
             <span 
               style={{ 
@@ -362,6 +343,21 @@ const Header = ({ setIsSidebarOpen }) => {
               >
                 {user?.role === "ROLE_PROVIDER" ? "Reviews (Provider)" : "Admin Reviews"}
               </button>
+              <button
+                onClick={() => navigate("/admin/revenue")}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid #f59e0b",
+                  background: "#fef3c7",
+                  color: "#d97706",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "600",
+                }}
+              >
+                Doanh thu
+              </button>
             </div>
           )}
 
@@ -433,7 +429,6 @@ const Header = ({ setIsSidebarOpen }) => {
       </header>
 
       <Auth isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
-      <QRCodeModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
     </>
   );
 };

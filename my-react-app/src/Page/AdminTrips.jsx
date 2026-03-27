@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 
 const API_BASE = "http://localhost:8080/api";
 
 const AdminTrips = () => {
   const { token, user } = useAuth();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("PLANE");
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -294,7 +296,7 @@ const AdminTrips = () => {
               cursor: "pointer",
             }}
           >
-            {tab === "PLANE" ? "Máy bay" : tab === "BUS" ? "Xe khách" : "Tàu hỏa"}
+            {tab === "PLANE" ? t.flight : tab === "BUS" ? t.bus : t.train}
           </button>
         ))}
       </div>
@@ -309,7 +311,7 @@ const AdminTrips = () => {
         }}
       >
         <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>
-          Tạo chuyến đi mới ({activeTab === "PLANE" ? "Máy bay" : activeTab === "BUS" ? "Xe khách" : "Tàu hỏa"})
+          Tạo chuyến đi mới ({activeTab === "PLANE" ? t.flight : activeTab === "BUS" ? t.bus : t.train})
         </h3>
         <div className="admin-form-grid" style={{ marginBottom: 12 }}>
           <div>

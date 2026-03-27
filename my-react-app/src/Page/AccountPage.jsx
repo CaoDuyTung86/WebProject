@@ -16,13 +16,13 @@ const AccountPage = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Profile state
+  
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [profileMsg, setProfileMsg] = useState(null);
   const [profileLoading, setProfileLoading] = useState(false);
 
-  // Password state
+ 
   const [oldPwd, setOldPwd] = useState("");
   const [newPwd, setNewPwd] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
@@ -117,7 +117,7 @@ const AccountPage = () => {
       color: msg.type === "success" ? "#16a34a" : "#dc2626",
       border: `1px solid ${msg.type === "success" ? "#bbf7d0" : "#fecaca"}`,
     }}>
-      {msg.type === "success" ? "✅ " : "⚠️ "}{msg.text}
+      {msg.type === "success" ? "✅" : "⚠️ "}{msg.text}
     </div>
   );
 

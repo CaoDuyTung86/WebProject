@@ -5,7 +5,17 @@ import Header from "../LayOut/Header";
 import Sidebar from "../components/Sidebar"; 
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
-// Chuyển chuỗi tiếng Việt có dấu → in hoa không dấu (VD: "Cao Duy Tùng" → "CAO DUY TUNG")
+import { MdOutlineCreditCard } from "react-icons/md";
+import { TbTrain } from "react-icons/tb";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { IoMdSearch } from "react-icons/io";
+import { CgSandClock } from "react-icons/cg";
+import { CiCreditCard1 } from "react-icons/ci";
+import { FaChair } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
+import { FaTicketAlt } from "react-icons/fa";
+
 const toLatinUpper = (str) => {
   const map = {
     à:'a',á:'a',â:'a',ã:'a',ả:'a',ạ:'a',ă:'a',ằ:'a',ắ:'a',ẵ:'a',ẳ:'a',ặ:'a',
@@ -21,7 +31,7 @@ const toLatinUpper = (str) => {
   return str.split('').map(c => map[c.toLowerCase()] ? (map[c.toLowerCase()]).toUpperCase() : c.toUpperCase()).join('');
 };
 
-// Auto-mask ngày sinh → DD/MM/YYYY (chỉ nhập số, dấu / tự thêm)
+
 const formatDob = (raw) => {
   const digits = raw.replace(/\D/g, '').slice(0, 8);
   if (digits.length <= 2) return digits;
@@ -59,7 +69,7 @@ const TrainTickets = () => {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [seats, setSeats] = useState([]);
   const [selectedSeatIds, setSelectedSeatIds] = useState([]);
-  const [step, setStep] = useState("search"); // search | chooseTrip | passenger | extras | review
+  const [step, setStep] = useState("search"); 
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [calendarLoading, setCalendarLoading] = useState(false);
@@ -109,12 +119,12 @@ const TrainTickets = () => {
     }
 
     if (qFrom && qTo && qPassengers && mode === "calendar") {
-      // Từ trang chủ: mở thẳng lịch giá
+      
       setTimeout(() => {
         loadCalendar();
       }, 0);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, []);
 
   useEffect(() => {
@@ -131,15 +141,15 @@ const TrainTickets = () => {
         setPassengerInfo((prev) => ({ ...prev, ...parsed }));
       }
     } catch {
-      // ignore
+     
     }
   }, []);
 
   const handleSearch = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
-    // Reset calendar when searching
+  
     setCalendarOpen(false);
-    // Per-field validation
+    
     const errs = {};
     if (!from || !from.trim()) errs.from = "Vui lòng nhập điểm đi";
     if (!to || !to.trim()) errs.to = "Vui lòng nhập điểm đến";
@@ -183,7 +193,7 @@ const TrainTickets = () => {
     }
   };
 
-  // Called when user clicks a date cell in the calendar - triggers search with that date
+  
   const handleSearchWithDate = async (selectedDate) => {
     setDate(selectedDate);
     setCalendarOpen(false);
@@ -295,7 +305,7 @@ const TrainTickets = () => {
       }
       const data = await res.json();
       setSeats(data);
-      // Get unique seat types to show class selector
+     
       setStep("seatClass");
     } catch (err) {
       console.error(err);
@@ -514,9 +524,9 @@ const TrainTickets = () => {
             >
               <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr 1fr auto", gap: 12, alignItems: "start" }}>
 
-                {/* Điểm đi */}
+               
                 <div style={{ position: "relative" }}>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}>🚂 {t.from}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><TbTrain /> {t.from}</label>
                   <div
                     onClick={() => { setShowFromDropdown(!showFromDropdown); setShowToDropdown(false); }}
                     style={{ padding: "10px 14px", borderRadius: 10, border: formErrors.from ? "2px solid #e53935" : "2px solid #e0e7ff",
@@ -546,7 +556,7 @@ const TrainTickets = () => {
                   )}
                 </div>
 
-                {/* Nút swap */}
+                
                 <button type="button"
                   onClick={() => { const t2 = from; setFrom(to); setTo(t2); }}
                   style={{ marginTop: 28, width: 38, height: 38, borderRadius: "50%", border: "2px solid #e0e7ff",
@@ -557,9 +567,9 @@ const TrainTickets = () => {
                   title={t.swapDestinations}
                 >⇄</button>
 
-                {/* Điểm đến */}
+                
                 <div style={{ position: "relative" }}>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}>📍 {t.to}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><TbTrain /> {t.to}</label>
                   <div
                     onClick={() => { setShowToDropdown(!showToDropdown); setShowFromDropdown(false); }}
                     style={{ padding: "10px 14px", borderRadius: 10, border: formErrors.to ? "2px solid #e53935" : "2px solid #e0e7ff",
@@ -589,9 +599,9 @@ const TrainTickets = () => {
                   )}
                 </div>
 
-                {/* Ngày đi */}
+               
                 <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}>📅 {t.departureDate}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaRegCalendarAlt /> {t.departureDate}</label>
                   <input type="date" value={date}
                     onChange={(e) => { setDate(e.target.value); setFormErrors(p => ({...p, date: undefined})); }}
                     min={todayISO}
@@ -601,9 +611,9 @@ const TrainTickets = () => {
                   {formErrors.date && <div style={{ color: "#e53935", fontSize: 12, marginTop: 4 }}>{formErrors.date}</div>}
                 </div>
 
-                {/* Hành khách + Buttons */}
+                
                 <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}>👤 {t.passengers}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaUser /> {t.passengers}</label>
                   <input type="number" min={1} max={9} value={passengers}
                     onChange={(e) => setPassengers(Math.max(1, Number(e.target.value) || 1))}
                     style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid #e0e7ff",
@@ -611,16 +621,16 @@ const TrainTickets = () => {
                   />
                   <button type="button" onClick={handleSearch} disabled={loading}
                     style={{ width: "100%", padding: "11px", borderRadius: 10, border: "none",
-                      background: loading ? "#aaa" : "linear-gradient(135deg, #ff6b00, #ff9500)",
+                      background: loading ? "#aaa" : "linear-gradient(135deg,blue,blue)",
                       color: "#fff", fontWeight: 700, cursor: loading ? "not-allowed" : "pointer", fontSize: 14, marginBottom: 8 }}
                   >
-                    {loading ? `⏳ ${t.searching}` : `🔍 ${t.searchTrain}`}
+                    {loading ? <><CgSandClock /> ${t.searching}</> : <><IoMdSearch /> {t.searchTrain}</>}
                   </button>
                   <button type="button" onClick={loadCalendar} disabled={calendarLoading}
                     style={{ width: "100%", padding: "10px", borderRadius: 10, border: "2px solid #e0e7ff",
                       background: "#fff", color: "#333", fontWeight: 600, cursor: calendarLoading ? "not-allowed" : "pointer", fontSize: 13 }}
                   >
-                    {calendarLoading ? `⏳ ${t.loadingCalendar}` : `📅 ${t.viewCheapCalendar}`}
+                    {calendarLoading ? <><CgSandClock /> {t.loadingCalendar}</> : <><FaRegCalendarAlt /> {t.viewCheapCalendar}</>}
                   </button>
                 </div>
               </div>
@@ -755,17 +765,17 @@ const TrainTickets = () => {
               </div>
             )}
 
-            {/* STEP INDICATOR */}
+            
             {["seatClass", "passenger", "extras", "review"].includes(step) && (
               <div style={{ marginBottom: 20, background: "#fff", borderRadius: 12, padding: "16px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }}>
-                  {/* connector line */}
+                
                   <div style={{ position: "absolute", top: 20, left: "10%", right: "10%", height: 3, background: "#e0e7ff", zIndex: 0 }} />
                   {[
-                    { key: "seatClass", icon: "🪑", label: t.step1Title },
-                    { key: "passenger", icon: "👤", label: t.step2Title },
-                    { key: "extras", icon: "🛎️", label: t.step3Title },
-                    { key: "review", icon: "💳", label: t.step4Title },
+                    { key: "seatClass", icon:  <FaChair />, label: t.step1Title },
+                    { key: "passenger", icon: <FaUser />, label: t.step2Title },
+                    { key: "extras", icon: <FaBell />, label: t.step3Title },
+                    { key: "review", icon: <CiCreditCard1 />, label: t.step4Title },
                   ].map((s) => {
                     const orderMap = { seatClass: 0, passenger: 1, extras: 2, review: 3 };
                     const current = orderMap[step];
@@ -787,7 +797,7 @@ const TrainTickets = () => {
               </div>
             )}
 
-            {/* STEP 1: Chọn hạng ghế & sơ đồ ghế */}
+          
             {selectedTrip && step === "seatClass" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
                 <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
@@ -796,7 +806,7 @@ const TrainTickets = () => {
 
                   {loading && <p style={{ color: "#888" }}>Đang tải sơ đồ ghế...</p>}
 
-                  {/* Seat class pills */}
+                
                   {!loading && (() => {
                     const classTypes = [...new Set(seats.map(s => s.seatType || "ECONOMY"))];
                     return (
@@ -819,7 +829,7 @@ const TrainTickets = () => {
                     );
                   })()}
 
-                  {/* Seat map */}
+                
                   {!loading && seats.length > 0 && (() => {
                     const filteredSeats = selectedSeatClass
                       ? seats.filter(s => (s.seatType || "ECONOMY") === selectedSeatClass)
@@ -831,14 +841,14 @@ const TrainTickets = () => {
                     const rows = [...new Set(items.map(i => i.row))].sort((a,b) => a-b);
                     const smap = new Map(items.map(i => [`${i.row}${i.col}`, i]));
 
-                    // Split aisle: cols A B C | D E F
+                   
                     const half = Math.ceil(cols.length / 2);
                     const leftCols = cols.slice(0, half);
                     const rightCols = cols.slice(half);
 
                     return (
                       <div style={{ overflowX: "auto" }}>
-                        {/* Column headers */}
+                      
                         <div style={{ display: "flex", gap: 6, marginBottom: 8, paddingLeft: 48 }}>
                           {leftCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "#888", fontSize: 12 }}>{c}</div>)}
                           <div style={{ width: 32 }} />
@@ -878,7 +888,7 @@ const TrainTickets = () => {
                             })}
                           </div>
                         ))}
-                        {/* Legend */}
+                       
                         <div style={{ display: "flex", gap: 16, marginTop: 12, fontSize: 12, color: "#666" }}>
                           <span><span style={{ display: "inline-block", width: 14, height: 14, background: "#dcfce7", borderRadius: 3, marginRight: 4 }} />{t.seatClassEco}</span>
                           <span><span style={{ display: "inline-block", width: 14, height: 14, background: "#dbeafe", borderRadius: 3, marginRight: 4 }} />{t.seatClassBiz}</span>
@@ -898,7 +908,7 @@ const TrainTickets = () => {
                   </div>
                 </div>
 
-                {/* Right: booking summary */}
+               
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content", position: "sticky", top: 16 }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.bookingSummary}</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.8 }}>
@@ -912,7 +922,7 @@ const TrainTickets = () => {
               </div>
             )}
 
-            {/* STEP 2: Thông tin hành khách */}
+        
             {selectedTrip && step === "passenger" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
                 <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
@@ -985,7 +995,7 @@ const TrainTickets = () => {
                   </div>
                 </div>
 
-                {/* Right: booking summary */}
+             
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>Thông tin đặt chỗ</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.9 }}>
@@ -998,7 +1008,7 @@ const TrainTickets = () => {
               </div>
             )}
 
-            {/* STEP 3: Dịch vụ bổ sung */}
+         
             {selectedTrip && step === "extras" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
                 <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
@@ -1009,7 +1019,7 @@ const TrainTickets = () => {
 
                   {!servicesLoading && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                      {/* Hành lý */}
+             
                       <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, background: "#f9fafb" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                           <span style={{ fontSize: 24 }}>🧳</span>
@@ -1037,7 +1047,7 @@ const TrainTickets = () => {
                         </div>
                       </div>
 
-                      {/* Suất ăn */}
+                  
                       <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: 16, background: "#f9fafb" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                           <span style={{ fontSize: 24 }}>🍱</span>
@@ -1065,7 +1075,7 @@ const TrainTickets = () => {
                         </div>
                       </div>
 
-                      {/* Bảo hiểm + Taxi (toggle cards) */}
+                  
                       {[{cat: categories.insurance, icon: "🛡️", title: "Bảo hiểm du lịch", sub: "Bảo vệ chuyến đi của bạn", color: "#f0fdf4", border: "#bbf7d0"},
                         {cat: categories.taxi, icon: "🚕", title: "Xe đón sân bay", sub: "Tiện lợi với dịch vụ xe riêng", color: "#fef9c3", border: "#fde68a"}]
                       .map(({cat, icon, title, sub, color, border}) => (
@@ -1106,7 +1116,7 @@ const TrainTickets = () => {
                   </div>
                 </div>
 
-                {/* Right: total summary */}
+        
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.totalCost}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>
@@ -1123,14 +1133,14 @@ const TrainTickets = () => {
               </div>
             )}
 
-            {/* STEP 4: Review & Thanh toán */}
+       
             {selectedTrip && step === "review" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
                 <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step4}</h2>
                   <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>{t.reviewInstruction}</p>
 
-                  {/* Chuyến bay */}
+         
                   <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
                     <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>✈ Chuyến bay</div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -1142,7 +1152,7 @@ const TrainTickets = () => {
                     </div>
                   </div>
 
-                  {/* Hành khách */}
+             
                   <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
                     <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>👤 Hành khách</div>
                     <div style={{ fontSize: 14 }}>
@@ -1152,7 +1162,7 @@ const TrainTickets = () => {
                     </div>
                   </div>
 
-                  {/* Dịch vụ */}
+              
                   {selectedServiceIds.length > 0 && (
                     <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
                       <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>🛎 Dịch vụ bổ sung</div>
@@ -1164,7 +1174,7 @@ const TrainTickets = () => {
                     </div>
                   )}
 
-                  {/* Promo code */}
+                 
                   <div style={{ border: "1px dashed #d1d5db", borderRadius: 12, padding: 16, marginBottom: 14 }}>
                     <div style={{ fontWeight: 700, marginBottom: 10 }}>🎫 {t.promoCodeLabel}</div>
                     <div style={{ display: "flex", gap: 8 }}>
@@ -1179,7 +1189,7 @@ const TrainTickets = () => {
 
                   {bookingResult ? (
                     <div style={{ padding: 20, borderRadius: 12, background: "#f0fdf4", border: "1px solid #bbf7d0", marginTop: 8 }}>
-                      <div style={{ fontWeight: 800, color: "#16a34a", fontSize: 16, marginBottom: 8 }}>✅ {t.successBooking}</div>
+                      <div style={{ fontWeight: 800, color: "#16a34a", fontSize: 16, marginBottom: 8 }}><MdOutlineDone /> {t.successBooking}</div>
                       <div style={{ fontSize: 14, color: "#166534", lineHeight: 1.9 }}>
                         <div>Mã booking: <b>#{bookingResult.id}</b></div>
                         <div>{t.totalCost}: <b>{Number(bookingResult.totalPrice||0).toLocaleString("vi-VN")} đ</b></div>
@@ -1193,7 +1203,7 @@ const TrainTickets = () => {
                           } catch { alert("Lỗi tạo link VNPay, vui lòng thử lại."); }
                         }}
                         style={{ marginTop: 14, width: "100%", padding: "14px", borderRadius: 10, border: "none", background: "#005baa", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                        💳 {t.paymentVNPAY}
+                        <MdOutlineCreditCard /> {t.paymentVNPAY}
                       </button>
                     </div>
                   ) : (
@@ -1201,13 +1211,13 @@ const TrainTickets = () => {
                       <button type="button" onClick={() => setStep("extras")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
                       <button type="button" onClick={submitBooking} disabled={submitLoading}
                         style={{ padding: "12px 32px", borderRadius: 8, border: "none", background: "#ff6b00", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer" }}>
-                        {submitLoading ? "Đang xử lý..." : "🎫 Đặt vé ngay"}
+                        {submitLoading ? "Đang xử lý..." : <><FaTicketAlt /> Đặt vé ngay</>}
                       </button>
                     </div>
                   )}
                 </div>
 
-                {/* Right: price breakdown */}
+              
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.paymentDetails}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>

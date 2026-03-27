@@ -1,0 +1,205 @@
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import Sidebar from "../components/Sidebar";
+import Header from "../LayOut/Header";
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const AdminRevenue = () => {
+  const { token } = useAuth();
+  const [revenues, setRevenues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    fetchRevenue();
+  }, []);
+
+  const fetchRevenue = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:8080/api/admin/revenue", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!res.ok) throw new Error("Failed to fetch revenue");
+      const data = await res.json();
+      setRevenues(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const totalRevenue = revenues.reduce((sum, item) => sum + (item.totalRevenue || 0), 0);
+
+  // Helper function to map providerType string to standard UI type
+  const getMappedType = (type) => {
+    const t = (type || "").toLowerCase();
+    if (t.includes("flight") || t.includes("air") || t.includes("máy bay")) return "Máy bay";
+    if (t.includes("bus") || t.includes("coach") || t.includes("xe khách")) return "Xe khách";
+    return "Tàu hỏa";
+  };
+
+  // Process data for charts
+  const revenueByTypeMap = { "Máy bay": 0, "Xe khách": 0, "Tàu hỏa": 0 };
+  revenues.forEach(item => {
+    const t = getMappedType(item.providerType);
+    revenueByTypeMap[t] += (item.totalRevenue || 0);
+  });
+  
+  const pieData = [
+    { name: "Máy bay", value: revenueByTypeMap["Máy bay"] },
+    { name: "Xe khách", value: revenueByTypeMap["Xe khách"] },
+    { name: "Tàu hỏa", value: revenueByTypeMap["Tàu hỏa"] }
+  ].filter(d => d.value > 0);
+  
+  const COLORS = ['#3b82f6', '#10b981', '#f59e0b']; // Blue, Green, Yellow
+
+  const topProviders = [...revenues]
+    .sort((a, b) => (b.totalRevenue || 0) - (a.totalRevenue || 0))
+    .slice(0, 5)
+    .map(item => ({
+      name: item.providerName,
+      "Doanh thu": item.totalRevenue || 0
+    }));
+
+  // Custom formatting for chart tooltip
+  const formatCurrency = (val) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val);
+
+  return (
+    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa", display: "flex", flexDirection: "column" }}>
+      <Header setIsSidebarOpen={setIsSidebarOpen} />
+      <div className="page-with-sidebar" style={{ display: "flex", flex: 1, marginTop: "70px" }}>
+        <Sidebar isOpen={isSidebarOpen} />
+        <div className={`page-main ${isSidebarOpen ? "with-sidebar" : ""}`} style={{ padding: "30px", flex: 1, overflowY: "auto" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24, color: "#1e293b" }}>Thống kê doanh thu</h1>
+            
+            {error && <div style={{ padding: 16, background: "#fee2e2", color: "#dc2626", borderRadius: 8, marginBottom: 20 }}>{error}</div>}
+            
+            {/* Total Revenue Summary Card */}
+            <div style={{ background: "linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)", padding: 30, borderRadius: 16, boxShadow: "0 10px 25px rgba(59, 130, 246, 0.2)", marginBottom: 30, display: "flex", alignItems: "center", gap: 24, color: "white" }}>
+              <div style={{ width: 70, height: 70, borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32 }}>💰</div>
+              <div>
+                <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 8, opacity: 0.9 }}>TỔNG DOANH THU HỆ THỐNG</div>
+                <div style={{ fontSize: 40, fontWeight: 800 }}>{totalRevenue.toLocaleString("vi-VN")} đ</div>
+              </div>
+            </div>
+
+            {/* Charts Section */}
+            {!loading && revenues.length > 0 && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "24px", marginBottom: "30px" }}>
+                
+                {/* Pie Chart: Revenue by Service Type */}
+                <div style={{ background: "#fff", padding: "24px", borderRadius: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155", textAlign: "center" }}>Doanh thu theo dịch vụ</h3>
+                  <div style={{ height: "300px", width: "100%" }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={pieData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={90}
+                          paddingAngle={5}
+                          dataKey="value"
+                        >
+                          {pieData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => formatCurrency(value)} />
+                        <Legend verticalAlign="bottom" height={36}/>
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Bar Chart: Top Providers */}
+                <div style={{ background: "#fff", padding: "24px", borderRadius: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155" }}>Top 5 Nhà cung cấp doanh thu cao nhất</h3>
+                  <div style={{ height: "300px", width: "100%" }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={topProviders}
+                        layout="vertical"
+                        margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
+                        <XAxis type="number" tickFormatter={(val) => `${(val/1000000).toFixed(1)}M`} stroke="#64748b" />
+                        <YAxis dataKey="name" type="category" width={100} tick={{fill: '#475569', fontSize: 12}} />
+                        <Tooltip formatter={(value) => formatCurrency(value)} cursor={{fill: 'transparent'}} />
+                        <Bar dataKey="Doanh thu" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={30} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Data Table */}
+            <div style={{ background: "#fff", borderRadius: 16, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+              <div style={{ padding: "20px 24px", borderBottom: "1px solid #f1f5f9" }}>
+                <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#334155", margin: 0 }}>Chi tiết doanh thu Nhà cung cấp</h3>
+              </div>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr style={{ background: "#f8fafc", textAlign: "left" }}>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Mã NCC</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Tên nhà cung cấp</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Loại dịch vụ</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0", textAlign: "right" }}>Tổng doanh thu</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr><td colSpan="4" style={{ padding: 24, textAlign: "center", color: "#64748b" }}>Đang tải dữ liệu...</td></tr>
+                  ) : revenues.length === 0 ? (
+                    <tr><td colSpan="4" style={{ padding: 24, textAlign: "center", color: "#64748b" }}>Không có dữ liệu</td></tr>
+                  ) : (
+                    [...revenues]
+                      .sort((a, b) => {
+                        const typeA = getMappedType(a.providerType);
+                        const typeB = getMappedType(b.providerType);
+                        if (typeA < typeB) return -1;
+                        if (typeA > typeB) return 1;
+                        return a.providerId - b.providerId;
+                      })
+                      .map((item, index) => (
+                        <tr key={item.providerId} style={{ borderBottom: "1px solid #f1f5f9", transition: "0.2s" }} onMouseEnter={e => e.currentTarget.style.background = "#f8fafc"} onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                        <td style={{ padding: "16px 24px", color: "#64748b", fontSize: "14px" }}>#{index + 1}</td>
+                        <td style={{ padding: "16px 24px", fontWeight: 600, color: "#334155" }}>{item.providerName}</td>
+                        <td style={{ padding: "16px 24px", color: "#64748b" }}>
+                          <span style={{ 
+                            padding: "4px 10px", 
+                            borderRadius: "20px", 
+                            fontSize: "12px", 
+                            fontWeight: "500",
+                            backgroundColor: getMappedType(item.providerType) === "Máy bay" ? "#dbeafe" : getMappedType(item.providerType) === "Xe khách" ? "#dcfce7" : "#fef3c7",
+                            color: getMappedType(item.providerType) === "Máy bay" ? "#1e40af" : getMappedType(item.providerType) === "Xe khách" ? "#166534" : "#b45309"
+                          }}>
+                            {getMappedType(item.providerType)}
+                          </span>
+                        </td>
+                        <td style={{ padding: "16px 24px", fontWeight: 700, color: "#0f172a", textAlign: "right" }}>
+                          {formatCurrency(item.totalRevenue || 0)}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminRevenue;

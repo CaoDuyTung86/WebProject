@@ -1,5 +1,6 @@
 package com.booking.api.controller;
 
+import com.booking.api.dto.ProviderRevenueDTO;
 import com.booking.api.dto.TripUpdateRequest;
 import com.booking.api.entity.Provider;
 import com.booking.api.entity.Route;
@@ -132,6 +133,13 @@ public class AdminController {
     public ResponseEntity<Void> deleteTrip(@PathVariable Long id) {
         adminService.deleteTrip(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // ==================== REVENUE ====================
+
+    @GetMapping("/revenue")
+    public ResponseEntity<List<ProviderRevenueDTO>> getProviderRevenue() {
+        return ResponseEntity.ok(adminService.getProviderRevenue());
     }
 }
 

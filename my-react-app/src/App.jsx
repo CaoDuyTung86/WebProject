@@ -17,6 +17,7 @@ import VerifyEmail from "./Page/VerifyEmail";
 import AdminTrips from "./Page/AdminTrips";
 import AdminReviews from "./Page/AdminReviews";
 import AccountPage from "./Page/AccountPage";
+import AdminRevenue from "./Page/AdminRevenue";
 
 function AppWrapper() {
   const location = useLocation();
@@ -39,9 +40,10 @@ function AppWrapper() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/admin/trips" element={<AdminTrips />} />
         <Route path="/admin/reviews" element={<AdminReviews />} />
+        <Route path="/admin/revenue" element={<AdminRevenue />} />
         <Route path="/account" element={<AccountPage />} />
       </Routes>
-      {showFooter && <Footer />} {/* Thêm Footer */}
+      {showFooter && <Footer />} 
     </>
   );
 }

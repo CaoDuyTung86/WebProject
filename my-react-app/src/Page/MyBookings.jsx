@@ -3,11 +3,13 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../LayOut/Header";
 import Sidebar from "../components/Sidebar";
+import { useLanguage } from "../context/LanguageContext";
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useLanguage();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -180,7 +182,7 @@ const MyBookings = () => {
                         </div>
                         
                         <div style={{ fontSize: 14, color: "#444", marginBottom: 8 }}>
-                          {bk.vehicleType === "PLANE" ? "✈️ Máy bay" : bk.vehicleType === "BUS" ? "🚌 Xe khách" : "🚂 Tàu hỏa"} 
+                          {bk.vehicleType === "PLANE" ? `✈️ ${t.flight}` : bk.vehicleType === "BUS" ? `🚌 ${t.bus}` : `🚂 ${t.train}`} 
                           <span style={{ marginLeft: 6, color: "#888", fontWeight: 600 }}>({bk.providerName})</span>
                         </div>
 

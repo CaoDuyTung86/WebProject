@@ -25,7 +25,7 @@ const VerifyEmail = () => {
             const response = await axios.post(`http://localhost:8080/api/auth/verify-email?email=${email}&code=${otp}`);
             setMessage({ type: "success", text: "Xác thực thành công! Đang chuyển hướng..." });
             
-            // Lưu token nếu backend trả về
+  
             if (response.data.token) {
                 localStorage.setItem("token", response.data.token);
                 localStorage.setItem("user", JSON.stringify(response.data));
@@ -33,7 +33,7 @@ const VerifyEmail = () => {
 
             setTimeout(() => {
                 navigate("/");
-                window.location.reload(); // Reload để update Header
+                window.location.reload(); 
             }, 2000);
         } catch (err) {
             setMessage({ type: "error", text: err.response?.data?.message || "Mã xác thực không chính xác hoặc đã hết hạn." });

@@ -50,6 +50,7 @@ public class SecurityConfig {
                         // VNPay callback
                         .requestMatchers("/api/payment/vnpay-return").permitAll()
                         // Admin endpoints
+                        .requestMatchers("/api/admin/revenue").hasAnyAuthority("ROLE_ADMIN", "ROLE_PROVIDER")
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                         // Authenticated endpoints
                         .anyRequest().authenticated())

@@ -7,7 +7,7 @@ const ForgotPassword = () => {
     const [otp, setOtp] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [step, setStep] = useState(1); // 1: Email, 2: OTP & New Password
+    const [step, setStep] = useState(1); 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: "", text: "" });
     const navigate = useNavigate();

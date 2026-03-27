@@ -1,5 +1,6 @@
 package com.booking.api.service;
 
+import com.booking.api.dto.ProviderRevenueDTO;
 import com.booking.api.dto.TripUpdateRequest;
 import com.booking.api.entity.*;
 import com.booking.api.repository.*;
@@ -246,5 +247,17 @@ public class AdminService {
 
         log.info("Trip {} cancelled by admin. {} bookings refunded.", tripId, bookings.size());
         return trip;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProviderRevenueDTO> getProviderRevenue() {
+        List<Provider> providers = providerRepository.findAll();
+        List<ProviderRevenueDTO> result = new ArrayList<>();
+        for (Provider p : providers) {
+            Double revenue = bookingRepository.calculateTotalRevenueByProvider(p.getId());
+            if (revenue == null) revenue = 0.0;
+            result.add(new ProviderRevenueDTO(p.getId(), p.getProviderName(), p.getProviderType(), revenue));
+        }
+        return result;
     }
 }

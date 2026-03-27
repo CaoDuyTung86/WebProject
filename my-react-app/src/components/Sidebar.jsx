@@ -26,7 +26,7 @@ const Sidebar = ({ isOpen }) => {
         position: "fixed",
         top: "70px",
         left: 0,
-        width: isOpen ? "220px" : "0",
+        width: isOpen ? "170px" : "0",
         height: "calc(100vh - 70px)",
         backgroundColor: "#ffffff",
         boxShadow: isOpen ? "2px 0 10px rgba(0,0,0,0.05)" : "none",
@@ -39,7 +39,7 @@ const Sidebar = ({ isOpen }) => {
         padding: isOpen ? "20px" : "0",
         opacity: isOpen ? 1 : 0,
         transition: "opacity 0.2s",
-        width: "220px", 
+        width: "190px", 
       }}>
         {menuItems.map((item, index) => (
           <div 
