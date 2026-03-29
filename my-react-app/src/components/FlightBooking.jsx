@@ -139,7 +139,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
       <div style={{
         maxWidth: "900px",
         width: "100%",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "16px",
         padding: "30px",
         maxHeight: "90vh",
@@ -178,9 +178,9 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
             marginBottom: "15px",
           }}>
             <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
-              Chiều đi · <span style={{ color: "#4f7cff" }}>{data.departureDate}</span>
+              Chiều đi · <span style={{ color: "var(--primary)" }}>{data.departureDate}</span>
             </h3>
-            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "#666" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "var(--text-secondary)" }}>
               <FiClock /> {data.duration}
             </div>
           </div>
@@ -191,17 +191,17 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.outboundFlight.departureTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.outboundFlight.departureAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.outboundFlight.departureFull}
               </div>
             </div>
 
             {/* Arrow */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <GiCommercialAirplane style={{ color: "#4f7cff", fontSize: "24px", transform: "rotate(90deg)" }} />
+              <GiCommercialAirplane style={{ color: "var(--primary)", fontSize: "24px", transform: "rotate(90deg)" }} />
             </div>
 
             {/* Arrival */}
@@ -209,10 +209,10 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.outboundFlight.arrivalTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.outboundFlight.arrivalAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.outboundFlight.arrivalFull}
               </div>
             </div>
@@ -223,14 +223,14 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
             paddingTop: "15px",
             borderTop: "1px solid #e0e0e0",
             fontSize: "14px",
-            color: "#666",
+            color: "var(--text-secondary)",
             display: "flex",
             gap: "15px",
             flexWrap: "wrap",
           }}>
             <span><strong>{data.outboundFlight.airline}</strong> {data.outboundFlight.flightNumber}</span>
             <span>{data.outboundFlight.aircraft}</span>
-            <span style={{ color: "#4f7cff" }}>{data.outboundFlight.class}</span>
+            <span style={{ color: "var(--primary)" }}>{data.outboundFlight.class}</span>
           </div>
         </div>
 
@@ -248,9 +248,9 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
             marginBottom: "15px",
           }}>
             <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
-              Chiều về · <span style={{ color: "#4f7cff" }}>{data.returnDate}</span>
+              Chiều về · <span style={{ color: "var(--primary)" }}>{data.returnDate}</span>
             </h3>
-            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "#666" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "var(--text-secondary)" }}>
               <FiClock /> 2g 10p
             </div>
           </div>
@@ -261,19 +261,19 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.inboundFlight.departureTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.inboundFlight.departureAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.inboundFlight.departureFull}
               </div>
             </div>
 
             {/* Arrow */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <GiCommercialAirplane style={{ color: "#4f7cff", fontSize: "24px", transform: "rotate(90deg)" }} />
+              <GiCommercialAirplane style={{ color: "var(--primary)", fontSize: "24px", transform: "rotate(90deg)" }} />
               {data.inboundFlight.arrivalDate && (
-                <div style={{ fontSize: "12px", color: "#999", marginTop: "5px" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "5px" }}>
                   {data.inboundFlight.arrivalDate}
                 </div>
               )}
@@ -284,10 +284,10 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.inboundFlight.arrivalTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.inboundFlight.arrivalAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.inboundFlight.arrivalFull}
               </div>
             </div>
@@ -298,14 +298,14 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
             paddingTop: "15px",
             borderTop: "1px solid #e0e0e0",
             fontSize: "14px",
-            color: "#666",
+            color: "var(--text-secondary)",
             display: "flex",
             gap: "15px",
             flexWrap: "wrap",
           }}>
             <span><strong>{data.inboundFlight.airline}</strong> {data.inboundFlight.flightNumber}</span>
             <span>{data.inboundFlight.aircraft}</span>
-            <span style={{ color: "#4f7cff" }}>{data.inboundFlight.class}</span>
+            <span style={{ color: "var(--primary)" }}>{data.inboundFlight.class}</span>
           </div>
         </div>
 
@@ -329,13 +329,13 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
                 onMouseEnter={(e) => {
                   if (selectedClass !== option.id) {
                     e.currentTarget.style.borderColor = "#4f7cff";
-                    e.currentTarget.style.backgroundColor = "#f5f5f5";
+                    e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (selectedClass !== option.id) {
                     e.currentTarget.style.borderColor = "#e0e0e0";
-                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.backgroundColor = "var(--bg-card)";
                   }
                 }}
               >
@@ -344,32 +344,32 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
                 </div>
                 
                 <div style={{ marginBottom: "10px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "#666", marginBottom: "5px" }}>
-                    <FaSuitcase style={{ color: "#4f7cff" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "var(--text-secondary)", marginBottom: "5px" }}>
+                    <FaSuitcase style={{ color: "var(--primary)" }} />
                     <span>Hành lý xách tay: {option.luggage.carryOn}</span>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "#666" }}>
-                    <FaSuitcase style={{ color: "#4f7cff" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "var(--text-secondary)" }}>
+                    <FaSuitcase style={{ color: "var(--primary)" }} />
                     <span>Hành lý ký gửi: {option.luggage.checked}</span>
                   </div>
                 </div>
 
-                <div style={{ fontSize: "13px", color: "#666", marginBottom: "10px" }}>
+                <div style={{ fontSize: "13px", color: "var(--text-secondary)", marginBottom: "10px" }}>
                   {option.flexibility}
                 </div>
 
                 {option.benefits && (
-                  <div style={{ fontSize: "12px", color: "#4f7cff", marginBottom: "10px" }}>
+                  <div style={{ fontSize: "12px", color: "var(--primary)", marginBottom: "10px" }}>
                     {option.benefits.join(" · ")}
                   </div>
                 )}
 
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "18px", fontWeight: "600", color: "#4f7cff" }}>
+                  <div style={{ fontSize: "18px", fontWeight: "600", color: "var(--primary)" }}>
                     {option.price}
                   </div>
                   {option.originalPrice && option.originalPrice !== option.price && (
-                    <div style={{ fontSize: "12px", color: "#999", textDecoration: "line-through" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)", textDecoration: "line-through" }}>
                       {option.originalPrice}
                     </div>
                   )}
@@ -395,11 +395,11 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               <span>Vé người lớn {priceBreakdown.adult.count} ×</span>
               <span>{priceBreakdown.adult.price}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "#666" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "var(--text-secondary)" }}>
               <span>Giá</span>
               <span>{priceBreakdown.adult.base}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "#666" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "var(--text-secondary)" }}>
               <span>Thuế & phí</span>
               <span>{priceBreakdown.adult.tax}</span>
             </div>
@@ -417,7 +417,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               borderTop: "1px solid #e0e0e0",
             }}>
               <span>Tổng giá khởi hồi</span>
-              <span style={{ color: "#4f7cff" }}>{priceBreakdown.total}</span>
+              <span style={{ color: "var(--primary)" }}>{priceBreakdown.total}</span>
             </div>
           </div>
         </div>
@@ -431,17 +431,17 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
           border: "1px solid #d4e4ff",
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <FiGift style={{ color: "#4f7cff" }} />
+            <FiGift style={{ color: "var(--primary)" }} />
             <span style={{ fontSize: "14px", fontWeight: "600" }}>Quyền lợi khác</span>
           </div>
-          <div style={{ fontSize: "13px", color: "#666", lineHeight: "1.6" }}>
+          <div style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: "1.6" }}>
             <div>• Dặm của hãng hàng không: ít nhất 38</div>
             <div>• Combo chuyến bay: ✓ Giá tốt ✓ Cam kết bảo toàn hành trình</div>
           </div>
           <div style={{
             marginTop: "10px",
             fontSize: "12px",
-            color: "#999",
+            color: "var(--text-muted)",
             fontStyle: "italic",
           }}>
             * Có hiệu lực trước giờ khởi hành của chuyến bay đầu tiên. Không được chuyển sang chuyến bay đã đổi.
@@ -469,24 +469,24 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
                 onMouseEnter={(e) => {
                   if (selectedPayment !== method.id) {
                     e.currentTarget.style.borderColor = "#4f7cff";
-                    e.currentTarget.style.backgroundColor = "#f5f5f5";
+                    e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (selectedPayment !== method.id) {
                     e.currentTarget.style.borderColor = "#e0e0e0";
-                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.backgroundColor = "var(--bg-card)";
                   }
                 }}
               >
                 <div style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>
                   {method.name}
                 </div>
-                <div style={{ fontSize: "18px", fontWeight: "600", color: "#4f7cff" }}>
+                <div style={{ fontSize: "18px", fontWeight: "600", color: "var(--primary)" }}>
                   {method.price}
                 </div>
                 {method.originalPrice !== method.price && (
-                  <div style={{ fontSize: "12px", color: "#999", textDecoration: "line-through" }}>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)", textDecoration: "line-through" }}>
                     {method.originalPrice}
                   </div>
                 )}
@@ -516,25 +516,25 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
           justifyContent: "flex-end",
           marginTop: "20px",
           paddingTop: "20px",
-          borderTop: "2px solid #f0f0f0",
+          borderTop: "2px solid var(--border-light)",
         }}>
           <button
             onClick={onClose}
             style={{
               padding: "12px 24px",
-              border: "1px solid #ddd",
+              border: "1px solid var(--border-input)",
               borderRadius: "8px",
-              background: "#fff",
+              background: "var(--bg-card)",
               fontSize: "16px",
               fontWeight: "500",
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f5f5f5";
+              e.currentTarget.style.backgroundColor = "var(--bg-hover)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
             }}
           >
             Đóng
@@ -545,7 +545,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               padding: "12px 32px",
               border: "none",
               borderRadius: "8px",
-              background: "#4f7cff",
+              background: "var(--primary)",
               color: "#fff",
               fontSize: "16px",
               fontWeight: "600",
@@ -553,11 +553,11 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#3a5fd0";
+              e.target.style.backgroundColor = "var(--primary-hover)";
               e.target.style.transform = "scale(1.02)";
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "#4f7cff";
+              e.target.style.backgroundColor = "var(--primary)";
               e.target.style.transform = "scale(1)";
             }}
           >
@@ -569,7 +569,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
         <div style={{
           marginTop: "15px",
           fontSize: "12px",
-          color: "#999",
+          color: "var(--text-muted)",
           textAlign: "center",
         }}>
           Đăng ký tại đây · Khởi tốt

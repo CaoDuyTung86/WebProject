@@ -86,7 +86,7 @@ const ProviderRefunds = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--bg-main)", display: "flex", flexDirection: "column" }}>
       <Header setIsSidebarOpen={setIsSidebarOpen} />
       <div className="page-with-sidebar" style={{ display: "flex", flex: 1, marginTop: "70px" }}>
         <Sidebar isOpen={isSidebarOpen} />
@@ -135,9 +135,9 @@ const ProviderRefunds = () => {
             </div>
 
             {loading ? (
-              <p style={{ color: "#666" }}>Đang tải...</p>
+              <p style={{ color: "var(--text-secondary)" }}>Đang tải...</p>
             ) : filteredRefunds.length === 0 ? (
-              <div style={{ background: "#fff", padding: 40, borderRadius: 12, textAlign: "center", color: "#666", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
+              <div style={{ background: "var(--bg-card)", padding: 40, borderRadius: 12, textAlign: "center", color: "var(--text-secondary)", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
                 Không có yêu cầu hoàn tiền nào.
               </div>
             ) : (
@@ -146,7 +146,7 @@ const ProviderRefunds = () => {
                   const st = statusMap[r.status] || { bg: "#f3f4f6", color: "#6b7280", text: r.status };
                   return (
                     <div key={r.id} style={{
-                      background: "#fff", border: "1px solid #eee", borderRadius: 12,
+                      background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12,
                       padding: 20, boxShadow: "0 2px 10px rgba(0,0,0,0.02)",
                       borderLeft: r.status === "PENDING" ? "4px solid #f59e0b" : r.status === "APPROVED" ? "4px solid #10b981" : r.status === "REJECTED" ? "4px solid #ef4444" : "4px solid #e5e7eb"
                     }}>
@@ -156,8 +156,8 @@ const ProviderRefunds = () => {
                             <span style={{ background: st.bg, color: st.color, padding: "4px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
                               {st.text}
                             </span>
-                            <span style={{ fontSize: 13, color: "#666", fontWeight: 600 }}>#{r.id}</span>
-                            <span style={{ fontSize: 13, color: "#888" }}>• Booking #{r.bookingId}</span>
+                            <span style={{ fontSize: 13, color: "var(--text-secondary)", fontWeight: 600 }}>#{r.id}</span>
+                            <span style={{ fontSize: 13, color: "var(--text-muted)" }}>• Booking #{r.bookingId}</span>
                           </div>
 
                           <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4, color: "#1e293b" }}>
@@ -170,7 +170,7 @@ const ProviderRefunds = () => {
                           </div>
 
                           {r.reason && (
-                            <div style={{ background: "#f9fafb", border: "1px solid #e5e7eb", padding: 12, borderRadius: 8, marginBottom: 8, fontSize: 13, color: "#374151" }}>
+                            <div style={{ background: "var(--bg-input)", border: "1px solid #e5e7eb", padding: 12, borderRadius: 8, marginBottom: 8, fontSize: 13, color: "#374151" }}>
                               <b>{t.refundReason}:</b> {r.reason}
                             </div>
                           )}
@@ -231,8 +231,8 @@ const ProviderRefunds = () => {
       {/* Modal Từ chối */}
       {rejectModal.show && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000, padding: 20 }}>
-          <div style={{ background: "#fff", padding: 32, borderRadius: 16, width: "100%", maxWidth: 420, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}>
-            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16, color: "#111827" }}>
+          <div style={{ background: "var(--bg-card)", padding: 32, borderRadius: 16, width: "100%", maxWidth: 420, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16, color: "var(--text-heading)" }}>
               Từ chối yêu cầu hoàn tiền
             </h3>
             <div style={{ marginBottom: 20 }}>
@@ -248,7 +248,7 @@ const ProviderRefunds = () => {
             <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
               <button
                 onClick={() => setRejectModal({ show: false, refundId: null, note: "", loading: false })}
-                style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer", color: "#555" }}
+                style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer", color: "var(--text-secondary)" }}
               >
                 Hủy
               </button>

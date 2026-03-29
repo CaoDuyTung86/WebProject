@@ -45,7 +45,7 @@ const AdminReviews = () => {
 
   return (
     <div style={{ padding: "40px", marginTop: "80px", background: "#f5f7fa", minHeight: "100vh" }}>
-      <h2 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px", color: "#333" }}>
+      <h2 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px", color: "var(--text-main)" }}>
         {t.providerReviews}
       </h2>
       
@@ -55,7 +55,7 @@ const AdminReviews = () => {
           placeholder="Tìm kiếm theo chuyến bay, hãng, hoặc nội dung..." 
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          style={{ padding: "10px", width: "300px", borderRadius: "8px", border: "1px solid #ddd" }}
+          style={{ padding: "10px", width: "300px", borderRadius: "8px", border: "1px solid var(--border-input)" }}
         />
       </div>
 
@@ -64,7 +64,7 @@ const AdminReviews = () => {
       {loading ? (
         <p>Đang tải...</p>
       ) : (
-        <div style={{ background: "#fff", borderRadius: "12px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", overflowX: "auto" }}>
+        <div style={{ background: "var(--bg-card)", borderRadius: "12px", boxShadow: "var(--shadow-md)", overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr style={{ background: "#f8fafc", textAlign: "left", color: "#64748b", fontSize: "14px" }}>
@@ -78,10 +78,10 @@ const AdminReviews = () => {
             </thead>
             <tbody>
               {filteredReviews.length === 0 ? (
-                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#888" }}>{t.noReviews}</td></tr>
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "var(--text-muted)" }}>{t.noReviews}</td></tr>
               ) : (
                 filteredReviews.map(r => (
-                  <tr key={r.id} style={{ borderBottom: "1px solid #eee", fontSize: "14px", color: "#333" }}>
+                  <tr key={r.id} style={{ borderBottom: "1px solid #eee", fontSize: "14px", color: "var(--text-main)" }}>
                     <td style={{ padding: "16px" }}>#{r.id}</td>
                     <td style={{ padding: "16px", fontWeight: 600 }}>{r.userName}</td>
                     <td style={{ padding: "16px", color: "#ff6b00", fontWeight: 600 }}>{r.providerName || "N/A"}</td>

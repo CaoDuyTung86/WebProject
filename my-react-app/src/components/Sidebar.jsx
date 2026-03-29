@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen }) => {
         left: 0,
         width: isOpen ? "170px" : "0",
         height: "calc(100vh - 70px)",
-        backgroundColor: "#ffffff",
+        backgroundColor: "var(--bg-card)",
         boxShadow: isOpen ? "2px 0 10px rgba(0,0,0,0.05)" : "none",
         transition: "width 0.3s",
         overflow: "hidden",
@@ -54,14 +54,14 @@ const Sidebar = ({ isOpen }) => {
               gap: "12px",
               borderRadius: "8px",
               transition: "background 0.2s",
-              color: "#333",
+              color: "var(--text-main)",
               fontSize: "15px",
               fontWeight: "500",
             }}
-            onMouseEnter={(e) => e.currentTarget.style.background = "#f5f5f5"}
+            onMouseEnter={(e) => e.currentTarget.style.background = "var(--bg-hover)"}
             onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
           >
-            <span style={{ fontSize: "20px", color: "#4f7cff" }}>{item.icon}</span>
+            <span style={{ fontSize: "20px", color: "var(--primary)" }}>{item.icon}</span>
             {item.label}
           </div>
         ))}

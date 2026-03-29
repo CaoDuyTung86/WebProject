@@ -140,7 +140,7 @@ const PackageSearch = () => {
 
   return (
     <div style={{
-      background: "#fff",
+      background: "var(--bg-card)",
       borderRadius: "16px",
       padding: "24px",
       boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
@@ -155,8 +155,8 @@ const PackageSearch = () => {
         paddingBottom: "12px",
         borderBottom: "2px solid #4f7cff",
       }}>
-        <IoTicketSharp style={{ fontSize: "28px", color: "#4f7cff" }} />
-        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#333", margin: 0 }}>
+        <IoTicketSharp style={{ fontSize: "28px", color: "var(--primary)" }} />
+        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "var(--text-main)", margin: 0 }}>
           {t.package || "Đặt theo gói"}
         </h3>
       </div>
@@ -205,10 +205,10 @@ const PackageSearch = () => {
         onClick={() => setShowPassengerModal(!showPassengerModal)}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <FaUser style={{ color: "#4f7cff" }} />
-          <span style={{ fontWeight: "500", color: "#333" }}>{getRoomText()}</span>
+          <FaUser style={{ color: "var(--primary)" }} />
+          <span style={{ fontWeight: "500", color: "var(--text-main)" }}>{getRoomText()}</span>
         </div>
-        <span style={{ color: "#4f7cff", fontSize: "13px" }}>▼</span>
+        <span style={{ color: "var(--primary)", fontSize: "13px" }}>▼</span>
 
         {/* Passenger modal */}
         {showPassengerModal && (
@@ -218,7 +218,7 @@ const PackageSearch = () => {
               top: "100%",
               left: 0,
               right: 0,
-              background: "#fff",
+              background: "var(--bg-card)",
               borderRadius: "12px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
               padding: "16px",
@@ -246,8 +246,8 @@ const PackageSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >-</button>
@@ -262,8 +262,8 @@ const PackageSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >+</button>
@@ -289,8 +289,8 @@ const PackageSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >-</button>
@@ -305,8 +305,8 @@ const PackageSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >+</button>
@@ -332,8 +332,8 @@ const PackageSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >-</button>
@@ -348,8 +348,8 @@ const PackageSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >+</button>
@@ -365,7 +365,7 @@ const PackageSearch = () => {
               style={{
                 width: "100%",
                 padding: "10px",
-                background: "#4f7cff",
+                background: "var(--primary)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "8px",
@@ -381,7 +381,7 @@ const PackageSearch = () => {
 
       {/* Flight Section - Vé máy bay */}
       <div style={{
-        background: "#f8f9fa",
+        background: "var(--bg-main)",
         borderRadius: "12px",
         padding: "16px",
         marginBottom: "20px",
@@ -389,13 +389,13 @@ const PackageSearch = () => {
         <h4 style={{
           fontSize: "15px",
           fontWeight: "600",
-          color: "#333",
+          color: "var(--text-main)",
           marginBottom: "16px",
           display: "flex",
           alignItems: "center",
           gap: "8px",
         }}>
-          <MdOutlineFlight style={{ color: "#4f7cff" }} />
+          <MdOutlineFlight style={{ color: "var(--primary)" }} />
           {t.flight || "Vé máy bay"}
         </h4>
 
@@ -413,7 +413,7 @@ const PackageSearch = () => {
                 border: "1px solid #e0e0e0",
                 borderRadius: "8px",
                 padding: "10px",
-                background: "#fff",
+                background: "var(--bg-card)",
                 cursor: "pointer",
               }}
               onClick={() => {
@@ -422,12 +422,12 @@ const PackageSearch = () => {
                 setShowHotelDropdown(false);
               }}
             >
-              <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+              <label style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block", marginBottom: "2px" }}>
                 {t.from || "Từ"}
               </label>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <IoLocationOutline style={{ color: "#4f7cff", fontSize: "14px" }} />
-                <span style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>{from}</span>
+                <IoLocationOutline style={{ color: "var(--primary)", fontSize: "14px" }} />
+                <span style={{ fontSize: "14px", color: "var(--text-main)", fontWeight: "500" }}>{from}</span>
               </div>
             </div>
 
@@ -439,7 +439,7 @@ const PackageSearch = () => {
                   top: "100%",
                   left: 0,
                   right: 0,
-                  background: "#fff",
+                  background: "var(--bg-card)",
                   borderRadius: "8px",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
                   padding: "8px",
@@ -478,7 +478,7 @@ const PackageSearch = () => {
                 height: "32px",
                 borderRadius: "50%",
                 border: "1px solid #e0e0e0",
-                background: "#fff",
+                background: "var(--bg-card)",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -486,7 +486,7 @@ const PackageSearch = () => {
                 marginTop: "16px",
               }}
             >
-              <IoIosAirplane style={{ fontSize: "18px", color: "#4f7cff", transform: "rotate(0deg)" }} />
+              <IoIosAirplane style={{ fontSize: "18px", color: "var(--primary)", transform: "rotate(0deg)" }} />
             </button>
           )}
 
@@ -498,7 +498,7 @@ const PackageSearch = () => {
                   border: "1px solid #e0e0e0",
                   borderRadius: "8px",
                   padding: "10px",
-                  background: "#fff",
+                  background: "var(--bg-card)",
                   cursor: "pointer",
                 }}
                 onClick={() => {
@@ -507,12 +507,12 @@ const PackageSearch = () => {
                   setShowHotelDropdown(false);
                 }}
               >
-                <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+                <label style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block", marginBottom: "2px" }}>
                   {t.to || "Đến"}
                 </label>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <IoLocationOutline style={{ color: "#4f7cff", fontSize: "14px" }} />
-                  <span style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>{to}</span>
+                  <IoLocationOutline style={{ color: "var(--primary)", fontSize: "14px" }} />
+                  <span style={{ fontSize: "14px", color: "var(--text-main)", fontWeight: "500" }}>{to}</span>
                 </div>
               </div>
 
@@ -524,7 +524,7 @@ const PackageSearch = () => {
                     top: "100%",
                     left: 0,
                     right: 0,
-                    background: "#fff",
+                    background: "var(--bg-card)",
                     borderRadius: "8px",
                     boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
                     padding: "8px",
@@ -567,13 +567,13 @@ const PackageSearch = () => {
             border: "1px solid #e0e0e0",
             borderRadius: "8px",
             padding: "10px",
-            background: "#fff",
+            background: "var(--bg-card)",
           }}>
-            <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+            <label style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block", marginBottom: "2px" }}>
               {t.departureDate || "Chiều đi"}
             </label>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "12px" }} />
+              <FaCalendarAlt style={{ color: "var(--primary)", fontSize: "12px" }} />
               <input
                 type="date"
                 value={departDate}
@@ -595,13 +595,13 @@ const PackageSearch = () => {
               border: "1px solid #e0e0e0",
               borderRadius: "8px",
               padding: "10px",
-              background: "#fff",
+              background: "var(--bg-card)",
             }}>
-              <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+              <label style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block", marginBottom: "2px" }}>
                 {t.returnDate || "Chiều về"}
               </label>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "12px" }} />
+                <FaCalendarAlt style={{ color: "var(--primary)", fontSize: "12px" }} />
                 <input
                   type="date"
                   value={returnDate}
@@ -622,7 +622,7 @@ const PackageSearch = () => {
 
       {/* Hotel Section - Khách sạn */}
       <div style={{
-        background: "#f8f9fa",
+        background: "var(--bg-main)",
         borderRadius: "12px",
         padding: "16px",
         marginBottom: "20px",
@@ -630,13 +630,13 @@ const PackageSearch = () => {
         <h4 style={{
           fontSize: "15px",
           fontWeight: "600",
-          color: "#333",
+          color: "var(--text-main)",
           marginBottom: "16px",
           display: "flex",
           alignItems: "center",
           gap: "8px",
         }}>
-          <FaHotel style={{ color: "#4f7cff" }} />
+          <FaHotel style={{ color: "var(--primary)" }} />
           {t.hotel || "Khách sạn"}
         </h4>
 
@@ -647,7 +647,7 @@ const PackageSearch = () => {
               border: "1px solid #e0e0e0",
               borderRadius: "8px",
               padding: "10px",
-              background: "#fff",
+              background: "var(--bg-card)",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -656,12 +656,12 @@ const PackageSearch = () => {
               setShowToDropdown(false);
             }}
           >
-            <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+            <label style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block", marginBottom: "2px" }}>
               {t.destination || "Điểm đến"}
             </label>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <IoLocationOutline style={{ color: "#4f7cff", fontSize: "14px" }} />
-              <span style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>{hotelDestination}</span>
+              <IoLocationOutline style={{ color: "var(--primary)", fontSize: "14px" }} />
+              <span style={{ fontSize: "14px", color: "var(--text-main)", fontWeight: "500" }}>{hotelDestination}</span>
             </div>
           </div>
 
@@ -673,7 +673,7 @@ const PackageSearch = () => {
                 top: "100%",
                 left: 0,
                 right: 0,
-                background: "#fff",
+                background: "var(--bg-card)",
                 borderRadius: "8px",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
                 padding: "8px",
@@ -715,13 +715,13 @@ const PackageSearch = () => {
             border: "1px solid #e0e0e0",
             borderRadius: "8px",
             padding: "10px",
-            background: "#fff",
+            background: "var(--bg-card)",
           }}>
-            <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+            <label style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block", marginBottom: "2px" }}>
               {t.checkin || "Nhận phòng"}
             </label>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "12px" }} />
+              <FaCalendarAlt style={{ color: "var(--primary)", fontSize: "12px" }} />
               <input
                 type="date"
                 value={checkinDate}
@@ -741,7 +741,7 @@ const PackageSearch = () => {
           <div style={{
             fontSize: "14px",
             fontWeight: "600",
-            color: "#4f7cff",
+            color: "var(--primary)",
             textAlign: "center",
             minWidth: "60px",
           }}>
@@ -753,13 +753,13 @@ const PackageSearch = () => {
             border: "1px solid #e0e0e0",
             borderRadius: "8px",
             padding: "10px",
-            background: "#fff",
+            background: "var(--bg-card)",
           }}>
-            <label style={{ fontSize: "11px", color: "#666", display: "block", marginBottom: "2px" }}>
+            <label style={{ fontSize: "11px", color: "var(--text-secondary)", display: "block", marginBottom: "2px" }}>
               {t.checkout || "Trả phòng"}
             </label>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "12px" }} />
+              <FaCalendarAlt style={{ color: "var(--primary)", fontSize: "12px" }} />
               <input
                 type="date"
                 value={checkoutDate}
@@ -783,7 +783,7 @@ const PackageSearch = () => {
         style={{
           width: "100%",
           padding: "14px",
-          background: "#4f7cff",
+          background: "var(--primary)",
           color: "#fff",
           border: "none",
           borderRadius: "12px",
@@ -796,8 +796,8 @@ const PackageSearch = () => {
           gap: "8px",
           transition: "background 0.2s",
         }}
-        onMouseEnter={(e) => e.target.style.background = "#3a5fd0"}
-        onMouseLeave={(e) => e.target.style.background = "#4f7cff"}
+        onMouseEnter={(e) => e.target.style.background = "var(--primary-hover)"}
+        onMouseLeave={(e) => e.target.style.background = "var(--primary)"}
       >
         <FaSearch />
         {t.search || "Tìm kiếm"}

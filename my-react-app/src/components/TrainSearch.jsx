@@ -84,7 +84,7 @@ const TrainSearch = () => {
 
   return (
     <div style={{
-      background: "#fff",
+      background: "var(--bg-card)",
       borderRadius: "16px",
       padding: "24px",
       boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
@@ -99,8 +99,8 @@ const TrainSearch = () => {
         paddingBottom: "12px",
         borderBottom: "2px solid #4f7cff",
       }}>
-        <MdOutlineTrain style={{ fontSize: "28px", color: "#4f7cff" }} />
-        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#333", margin: 0 }}>
+        <MdOutlineTrain style={{ fontSize: "28px", color: "var(--primary)" }} />
+        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "var(--text-main)", margin: 0 }}>
           {t.train}
         </h3>
       </div>
@@ -144,7 +144,7 @@ const TrainSearch = () => {
             border: "1px solid #e0e0e0",
             borderRadius: "12px",
             padding: "12px",
-            background: "#f8f9fa",
+            background: "var(--bg-main)",
             cursor: "pointer",
           }}
           onClick={() => {
@@ -152,11 +152,11 @@ const TrainSearch = () => {
             setShowCitySelector(true);
           }}
         >
-          <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+          <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
             {t.from} · {t.departureStation || "Ga khởi hành"}
           </label>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <FaTrain style={{ color: "#4f7cff", fontSize: "16px" }} />
+            <FaTrain style={{ color: "var(--primary)", fontSize: "16px" }} />
             <span style={{ 
               fontSize: "15px", 
               color: from ? "#333" : "#999",
@@ -175,7 +175,7 @@ const TrainSearch = () => {
             height: "40px",
             borderRadius: "50%",
             border: "1px solid #e0e0e0",
-            background: "#fff",
+            background: "var(--bg-card)",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -183,7 +183,7 @@ const TrainSearch = () => {
             marginTop: "20px",
           }}
         >
-          <IoIosSwap style={{ fontSize: "20px", color: "#4f7cff" }} />
+          <IoIosSwap style={{ fontSize: "20px", color: "var(--primary)" }} />
         </button>
 
        
@@ -192,7 +192,7 @@ const TrainSearch = () => {
             border: "1px solid #e0e0e0",
             borderRadius: "12px",
             padding: "12px",
-            background: "#f8f9fa",
+            background: "var(--bg-main)",
             cursor: "pointer",
           }}
           onClick={() => {
@@ -200,11 +200,11 @@ const TrainSearch = () => {
             setShowCitySelector(true);
           }}
         >
-          <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+          <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
             {t.to} · {t.arrivalStation || "Ga đến"}
           </label>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <FaTrain style={{ color: "#4f7cff", fontSize: "16px", }} />
+            <FaTrain style={{ color: "var(--primary)", fontSize: "16px", }} />
             <span style={{ 
               fontSize: "15px", 
               color: to ? "#333" : "#999",
@@ -228,13 +228,13 @@ const TrainSearch = () => {
           border: "1px solid #e0e0e0",
           borderRadius: "12px",
           padding: "12px",
-          background: "#f8f9fa",
+          background: "var(--bg-main)",
         }}>
-          <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+          <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
             {t.departureDate}
           </label>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "14px" }} />
+            <FaCalendarAlt style={{ color: "var(--primary)", fontSize: "14px" }} />
             <input
               type="date"
               value={departDate}
@@ -256,15 +256,15 @@ const TrainSearch = () => {
             border: "1px solid #e0e0e0",
             borderRadius: "12px",
             padding: "12px",
-            background: "#f8f9fa",
+            background: "var(--bg-main)",
           }}>
-            <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
-              {t.returnDate} · <span style={{ color: "#4f7cff", cursor: "pointer" }}>
+            <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
+              {t.returnDate} · <span style={{ color: "var(--primary)", cursor: "pointer" }}>
                 {t.addReturn || "Thêm chuyến về"}
               </span>
             </label>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "14px" }} />
+              <FaCalendarAlt style={{ color: "var(--primary)", fontSize: "14px" }} />
               <input
                 type="date"
                 value={returnDate}
@@ -289,7 +289,7 @@ const TrainSearch = () => {
         gap: "8px",
         marginBottom: "16px",
         padding: "8px 12px",
-        background: "#f8f9fa",
+        background: "var(--bg-main)",
         borderRadius: "8px",
       }}>
         <input 
@@ -299,7 +299,7 @@ const TrainSearch = () => {
           onChange={(e) => setOnlyHighSpeed(e.target.checked)}
           style={{ width: "16px", height: "16px", cursor: "pointer" }}
         />
-        <label htmlFor="highSpeed" style={{ fontSize: "14px", color: "#333", cursor: "pointer", flex: 1 }}>
+        <label htmlFor="highSpeed" style={{ fontSize: "14px", color: "var(--text-main)", cursor: "pointer", flex: 1 }}>
           {t.onlyHighSpeed || "Chỉ tàu cao tốc"}
         </label>
        
@@ -310,19 +310,19 @@ const TrainSearch = () => {
         border: "1px solid #e0e0e0",
         borderRadius: "12px",
         padding: "12px",
-        background: "#f8f9fa",
+        background: "var(--bg-main)",
         marginBottom: "16px",
         position: "relative",
         cursor: "pointer",
       }}
       onClick={() => setShowPassengerModal(!showPassengerModal)}
       >
-        <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+        <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
           {t.passengers}
         </label>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <FaTrain style={{ color: "#4f7cff", fontSize: "14px" }} />
-          <span style={{ fontSize: "15px", color: "#333" }}>
+          <FaTrain style={{ color: "var(--primary)", fontSize: "14px" }} />
+          <span style={{ fontSize: "15px", color: "var(--text-main)" }}>
             {getPassengerText()}
           </span>
         </div>
@@ -335,7 +335,7 @@ const TrainSearch = () => {
               top: "100%",
               left: 0,
               right: 0,
-              background: "#fff",
+              background: "var(--bg-card)",
               borderRadius: "12px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
               padding: "16px",
@@ -363,8 +363,8 @@ const TrainSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >-</button>
@@ -379,8 +379,8 @@ const TrainSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >+</button>
@@ -406,8 +406,8 @@ const TrainSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >-</button>
@@ -422,8 +422,8 @@ const TrainSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >+</button>
@@ -449,8 +449,8 @@ const TrainSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >-</button>
@@ -465,8 +465,8 @@ const TrainSearch = () => {
                     height: "28px",
                     borderRadius: "50%",
                     border: "1px solid #4f7cff",
-                    background: "#fff",
-                    color: "#4f7cff",
+                    background: "var(--bg-card)",
+                    color: "var(--primary)",
                     cursor: "pointer",
                   }}
                 >+</button>
@@ -512,7 +512,7 @@ const TrainSearch = () => {
               style={{
                 width: "100%",
                 padding: "10px",
-                background: "#4f7cff",
+                background: "var(--primary)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "8px",
@@ -534,7 +534,7 @@ const TrainSearch = () => {
         style={{
           width: "100%",
           padding: "14px",
-          background: "#4f7cff",
+          background: "var(--primary)",
           color: "#fff",
           border: "none",
           borderRadius: "12px",
@@ -547,8 +547,8 @@ const TrainSearch = () => {
           gap: "8px",
           transition: "background 0.2s",
         }}
-        onMouseEnter={(e) => e.target.style.background = "#3a5fd0"}
-        onMouseLeave={(e) => e.target.style.background = "#4f7cff"}
+        onMouseEnter={(e) => e.target.style.background = "var(--primary-hover)"}
+        onMouseLeave={(e) => e.target.style.background = "var(--primary)"}
       >
         <FaSearch />
         {t.search}

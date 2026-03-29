@@ -11,7 +11,8 @@ const AdminRevenue = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const { t } = useLanguage();
+  const { t } = useLanguage();
+
 
   useEffect(() => {
     fetchRevenue();
@@ -72,7 +73,7 @@ const AdminRevenue = () => {
   const formatCurrency = (val) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val);
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--bg-main)", display: "flex", flexDirection: "column" }}>
       <Header setIsSidebarOpen={setIsSidebarOpen} />
       <div className="page-with-sidebar" style={{ display: "flex", flex: 1, marginTop: "70px" }}>
         <Sidebar isOpen={isSidebarOpen} />
@@ -96,7 +97,7 @@ const AdminRevenue = () => {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "24px", marginBottom: "30px" }}>
                 
                 {/* Pie Chart: Revenue by Service Type */}
-                <div style={{ background: "#fff", padding: "24px", borderRadius: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", padding: "24px", borderRadius: "16px", boxShadow: "var(--shadow-md)" }}>
                   <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155", textAlign: "center" }}>{t.revenueByService}</h3>
                   <div style={{ height: "300px", width: "100%" }}>
                     <ResponsiveContainer width="100%" height="100%">
@@ -122,7 +123,7 @@ const AdminRevenue = () => {
                 </div>
 
                 {/* Bar Chart: Top Providers */}
-                <div style={{ background: "#fff", padding: "24px", borderRadius: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", padding: "24px", borderRadius: "16px", boxShadow: "var(--shadow-md)" }}>
                   <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155" }}>Top 5 Nhà cung cấp doanh thu cao nhất</h3>
                   <div style={{ height: "300px", width: "100%" }}>
                     <ResponsiveContainer width="100%" height="100%">
@@ -144,7 +145,7 @@ const AdminRevenue = () => {
             )}
 
             {/* Data Table */}
-            <div style={{ background: "#fff", borderRadius: 16, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+            <div style={{ background: "var(--bg-card)", borderRadius: 16, boxShadow: "var(--shadow-md)", overflow: "hidden" }}>
               <div style={{ padding: "20px 24px", borderBottom: "1px solid #f1f5f9" }}>
                 <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#334155", margin: 0 }}>{t.revenueByService}</h3>
               </div>

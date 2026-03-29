@@ -58,7 +58,7 @@ const BusSearch = () => {
 
   return (
     <div style={{
-      background: "#fff",
+      background: "var(--bg-card)",
       borderRadius: "16px",
       padding: "24px",
       boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
@@ -73,8 +73,8 @@ const BusSearch = () => {
         paddingBottom: "12px",
         borderBottom: "2px solid #4f7cff",
       }}>
-        <FaBus style={{ fontSize: "28px", color: "#4f7cff" }} />
-        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#333", margin: 0 }}>
+        <FaBus style={{ fontSize: "28px", color: "var(--primary)" }} />
+        <h3 style={{ fontSize: "20px", fontWeight: "600", color: "var(--text-main)", margin: 0 }}>
           {t.bus || "Xe khách"}
         </h3>
       </div>
@@ -95,7 +95,7 @@ const BusSearch = () => {
               border: "1px solid #e0e0e0",
               borderRadius: "12px",
               padding: "12px",
-              background: "#f8f9fa",
+              background: "var(--bg-main)",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -103,11 +103,11 @@ const BusSearch = () => {
               setShowToDropdown(false);
             }}
           >
-            <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+            <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
               {t.from || "Từ"} · {t.departurePoint || "Điểm đi"}
             </label>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <IoLocationOutline style={{ color: "#4f7cff", fontSize: "18px" }} />
+              <IoLocationOutline style={{ color: "var(--primary)", fontSize: "18px" }} />
               <span style={{ 
                 fontSize: "15px", 
                 color: from ? "#333" : "#999",
@@ -126,7 +126,7 @@ const BusSearch = () => {
                 top: "100%",
                 left: 0,
                 right: 0,
-                background: "#fff",
+                background: "var(--bg-card)",
                 borderRadius: "12px",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
                 padding: "8px",
@@ -164,7 +164,7 @@ const BusSearch = () => {
             height: "40px",
             borderRadius: "50%",
             border: "1px solid #e0e0e0",
-            background: "#fff",
+            background: "var(--bg-card)",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -172,7 +172,7 @@ const BusSearch = () => {
             marginTop: "20px",
           }}
         >
-          <IoIosSwap style={{ fontSize: "20px", color: "#4f7cff" }} />
+          <IoIosSwap style={{ fontSize: "20px", color: "var(--primary)" }} />
         </button>
 
 
@@ -184,7 +184,7 @@ const BusSearch = () => {
               border: "1px solid #e0e0e0",
               borderRadius: "12px",
               padding: "12px",
-              background: "#f8f9fa",
+              background: "var(--bg-main)",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -192,11 +192,11 @@ const BusSearch = () => {
               setShowFromDropdown(false);
             }}
           >
-            <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+            <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
               {t.to || "Đến"} · {t.destinationPoint || "Điểm đến"}
             </label>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <IoLocationOutline style={{ color: "#4f7cff", fontSize: "18px" }} />
+              <IoLocationOutline style={{ color: "var(--primary)", fontSize: "18px" }} />
               <span style={{ 
                 fontSize: "15px", 
                 color: to ? "#333" : "#999",
@@ -215,7 +215,7 @@ const BusSearch = () => {
                 top: "100%",
                 left: 0,
                 right: 0,
-                background: "#fff",
+                background: "var(--bg-card)",
                 borderRadius: "12px",
                 boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
                 padding: "8px",
@@ -251,14 +251,14 @@ const BusSearch = () => {
         border: "1px solid #e0e0e0",
         borderRadius: "12px",
         padding: "12px",
-        background: "#f8f9fa",
+        background: "var(--bg-main)",
         marginBottom: "20px",
       }}>
-        <label style={{ fontSize: "12px", color: "#666", display: "block", marginBottom: "4px" }}>
+        <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
           {t.departureTime || "Ngày đi"}
         </label>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <FaCalendarAlt style={{ color: "#4f7cff", fontSize: "14px" }} />
+          <FaCalendarAlt style={{ color: "var(--primary)", fontSize: "14px" }} />
           <input
             type="date"
             value={departDate}
@@ -280,7 +280,7 @@ const BusSearch = () => {
         style={{
           width: "100%",
           padding: "14px",
-          background: "#4f7cff",
+          background: "var(--primary)",
           color: "#fff",
           border: "none",
           borderRadius: "12px",
@@ -293,8 +293,8 @@ const BusSearch = () => {
           gap: "8px",
           transition: "background 0.2s",
         }}
-        onMouseEnter={(e) => e.target.style.background = "#3a5fd0"}
-        onMouseLeave={(e) => e.target.style.background = "#4f7cff"}
+        onMouseEnter={(e) => e.target.style.background = "var(--primary-hover)"}
+        onMouseLeave={(e) => e.target.style.background = "var(--primary)"}
       >
         <FaSearch />
         {t.search || "Tìm kiếm"}

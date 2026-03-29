@@ -76,7 +76,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
           width: "700px",
           maxWidth: "90vw",
           maxHeight: "80vh",
-          backgroundColor: "#fff",
+          backgroundColor: "var(--bg-card)",
           borderRadius: "16px",
           padding: "24px",
           overflow: "hidden",
@@ -92,7 +92,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
           alignItems: "center",
           marginBottom: "20px",
         }}>
-          <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#333" }}>
+          <h3 style={{ fontSize: "20px", fontWeight: "600", color: "var(--text-main)" }}>
             {type === "from" ? t.selectDeparture : t.selectDestination}
           </h3>
           <button
@@ -102,7 +102,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
               border: "none",
               cursor: "pointer",
               fontSize: "24px",
-              color: "#666",
+              color: "var(--text-secondary)",
             }}
           >
             <IoClose />
@@ -119,7 +119,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
             left: "12px",
             top: "50%",
             transform: "translateY(-50%)",
-            color: "#999",
+            color: "var(--text-muted)",
           }} />
           <input
             type="text"
@@ -180,7 +180,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
               <h4 style={{
                 fontSize: "14px",
                 fontWeight: "600",
-                color: "#666",
+                color: "var(--text-secondary)",
                 marginBottom: "12px",
                 textTransform: "uppercase",
               }}>
@@ -203,7 +203,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                       padding: "12px",
                       border: "1px solid #e0e0e0",
                       borderRadius: "8px",
-                      background: "#fff",
+                      background: "var(--bg-card)",
                       cursor: "pointer",
                       textAlign: "left",
                       transition: "all 0.2s",
@@ -220,7 +220,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                     <div style={{ fontWeight: "600", marginBottom: "4px" }}>
                       {getCityName(city)}
                     </div>
-                    <div style={{ fontSize: "12px", color: "#999" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                       {city.code}
                     </div>
                   </button>
@@ -235,7 +235,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
               <h4 style={{
                 fontSize: "14px",
                 fontWeight: "600",
-                color: "#666",
+                color: "var(--text-secondary)",
                 marginBottom: "12px",
                 textTransform: "uppercase",
               }}>
@@ -258,7 +258,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                       padding: "12px",
                       border: "1px solid #e0e0e0",
                       borderRadius: "8px",
-                      background: "#fff",
+                      background: "var(--bg-card)",
                       cursor: "pointer",
                       textAlign: "left",
                       transition: "all 0.2s",
@@ -275,7 +275,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                     <div style={{ fontWeight: "600", marginBottom: "4px" }}>
                       {getCityName(city)}
                     </div>
-                    <div style={{ fontSize: "12px", color: "#999" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                       {city.code}
                     </div>
                   </button>
@@ -290,7 +290,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
               <h4 style={{
                 fontSize: "14px",
                 fontWeight: "600",
-                color: "#666",
+                color: "var(--text-secondary)",
                 marginBottom: "12px",
                 textTransform: "uppercase",
               }}>
@@ -313,7 +313,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                       padding: "12px",
                       border: "1px solid #e0e0e0",
                       borderRadius: "8px",
-                      background: "#fff",
+                      background: "var(--bg-card)",
                       cursor: "pointer",
                       textAlign: "left",
                       transition: "all 0.2s",
@@ -330,7 +330,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                     <div style={{ fontWeight: "600", marginBottom: "4px" }}>
                       {getCityName(city)}
                     </div>
-                    <div style={{ fontSize: "12px", color: "#999" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                       {city.code}
                     </div>
                   </button>
@@ -345,7 +345,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
               <h4 style={{
                 fontSize: "14px",
                 fontWeight: "600",
-                color: "#666",
+                color: "var(--text-secondary)",
                 marginBottom: "12px",
                 textTransform: "uppercase",
               }}>
@@ -368,7 +368,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                       padding: "12px",
                       border: "1px solid #e0e0e0",
                       borderRadius: "8px",
-                      background: "#fff",
+                      background: "var(--bg-card)",
                       cursor: "pointer",
                       textAlign: "left",
                       transition: "all 0.2s",
@@ -385,7 +385,7 @@ const CitySelector = ({ isOpen, onClose, onSelect, type }) => {
                     <div style={{ fontWeight: "600", marginBottom: "4px" }}>
                       {getCityName(city)}
                     </div>
-                    <div style={{ fontSize: "12px", color: "#999" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
                       {city.code}
                     </div>
                   </button>

@@ -132,13 +132,13 @@ const MyBookings = () => {
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "#f3f4f6" }}>
+    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--bg-main)" }}>
       <Sidebar />
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <Header />
         <div style={{ padding: "100px 40px 40px", flex: 1 }}>
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
-            <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 24, color: "#111827" }}>
+            <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 24, color: "var(--text-heading)" }}>
               {t.yourBookings}
             </h1>
 
@@ -152,9 +152,9 @@ const MyBookings = () => {
             {error && <div style={{ padding: 16, background: "#fee2e2", color: "#dc2626", borderRadius: 8, marginBottom: 20 }}>{error}</div>}
 
             {loading ? (
-              <p style={{ color: "#666" }}>Đang tải danh sách vé...</p>
+              <p style={{ color: "var(--text-secondary)" }}>Đang tải danh sách vé...</p>
             ) : bookings.length === 0 ? (
-              <div style={{ background: "#fff", padding: 40, borderRadius: 12, textAlign: "center", color: "#666", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
+              <div style={{ background: "var(--bg-card)", padding: 40, borderRadius: 12, textAlign: "center", color: "var(--text-secondary)", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
                 {t.noBookings}
               </div>
             ) : (
@@ -165,7 +165,7 @@ const MyBookings = () => {
                   const statusText = bk.status === "PAID" ? "Đã thanh toán" : bk.status === "CONFIRMED" ? "Đã xác nhận" : bk.status === "COMPLETED" ? "Đã hoàn thành" : bk.status === "CANCELLED" ? "Đã hủy/Hoàn" : "Chờ thanh toán";
                   
                   return (
-                    <div key={bk.id} style={{ background: "#fff", border: "1px solid #eee", borderRadius: 12, padding: 20, boxShadow: "0 2px 10px rgba(0,0,0,0.02)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div key={bk.id} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: 20, boxShadow: "0 2px 10px rgba(0,0,0,0.02)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       
                       {/* Left side info */}
                       <div>
@@ -173,26 +173,26 @@ const MyBookings = () => {
                           <span style={{ background: statusBg, color: statusColor, padding: "4px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
                             {statusText}
                           </span>
-                          <span style={{ fontSize: 13, color: "#666", fontWeight: 600 }}>{t.ticketCode}: #{bk.id}</span>
-                          <span style={{ fontSize: 13, color: "#888" }}>• {t.bookedAt}: {new Date(bk.bookingDate).toLocaleString("vi-VN")}</span>
+                          <span style={{ fontSize: 13, color: "var(--text-secondary)", fontWeight: 600 }}>{t.ticketCode}: #{bk.id}</span>
+                          <span style={{ fontSize: 13, color: "var(--text-muted)" }}>• {t.bookedAt}: {new Date(bk.bookingDate).toLocaleString("vi-VN")}</span>
                         </div>
                         
                         <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>
-                          {bk.origin} <span style={{ color: "#aaa", margin: "0 6px" }}>→</span> {bk.destination}
+                          {bk.origin} <span style={{ color: "var(--text-muted)", margin: "0 6px" }}>→</span> {bk.destination}
                         </div>
                         
                         <div style={{ fontSize: 14, color: "#444", marginBottom: 8 }}>
                           {bk.vehicleType === "PLANE" ? `✈️ ${t.flight}` : bk.vehicleType === "BUS" ? `🚌 ${t.bus}` : `🚂 ${t.train}`} 
-                          <span style={{ marginLeft: 6, color: "#888", fontWeight: 600 }}>({bk.providerName})</span>
+                          <span style={{ marginLeft: 6, color: "var(--text-muted)", fontWeight: 600 }}>({bk.providerName})</span>
                         </div>
 
-                        <div style={{ display: "flex", gap: 24, fontSize: 13, color: "#555" }}>
+                        <div style={{ display: "flex", gap: 24, fontSize: 13, color: "var(--text-secondary)" }}>
                           <div><b>Khởi hành:</b> {new Date(bk.departureTime).toLocaleString("vi-VN")}</div>
                           <div><b>Ghế:</b> {bk.seatNumbers ? bk.seatNumbers.join(", ") : "N/A"}</div>
                         </div>
 
                         {bk.additionalServices && bk.additionalServices.length > 0 && (
-                          <div style={{ fontSize: 12, color: "#666", marginTop: 8 }}>
+                          <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 8 }}>
                             <b>Dịch vụ:</b> {bk.additionalServices.join(", ")}
                           </div>
                         )}
@@ -267,9 +267,9 @@ const MyBookings = () => {
                           {bk.status !== "CANCELLED" && bk.status !== "COMPLETED" && (
                             <button 
                               onClick={() => openCancelModal(bk)}
-                              style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #ef4444", background: "#fff", color: "#ef4444", fontWeight: 700, cursor: "pointer", fontSize: 13, transition: "0.2s" }}
+                              style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #ef4444", background: "var(--bg-card)", color: "#ef4444", fontWeight: 700, cursor: "pointer", fontSize: 13, transition: "0.2s" }}
                               onMouseOver={e => { e.target.style.background = "#fee2e2" }}
-                              onMouseOut={e => { e.target.style.background = "#fff" }}
+                              onMouseOut={e => { e.target.style.background = "var(--bg-card)" }}
                             >
                               Hủy / Hoàn vé
                             </button>
@@ -278,7 +278,7 @@ const MyBookings = () => {
                           {bk.status === "COMPLETED" && (
                             <button
                               onClick={() => openReviewModal(bk)}
-                              style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #4f46e5", background: "#eff6ff", color: "#4f46e5", fontWeight: 700, cursor: "pointer", fontSize: 13, transition: "0.2s" }}
+                              style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #4f46e5", background: "var(--bg-accent)", color: "#4f46e5", fontWeight: 700, cursor: "pointer", fontSize: 13, transition: "0.2s" }}
                               onMouseOver={e => { e.target.style.background = "#e0e7ff" }}
                               onMouseOut={e => { e.target.style.background = "#eff6ff" }}
                             >
@@ -304,12 +304,12 @@ const MyBookings = () => {
 
         return (
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000, padding: 20 }}>
-            <div style={{ background: "#fff", padding: 32, borderRadius: 16, width: "100%", maxWidth: 480, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}>
-              <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 16, color: "#111827" }}>
+            <div style={{ background: "var(--bg-card)", padding: 32, borderRadius: 16, width: "100%", maxWidth: 480, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}>
+              <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 16, color: "var(--text-heading)" }}>
                 Xác nhận hoàn/hủy vé
               </h3>
               
-              <div style={{ background: "#f9fafb", border: "1px solid #eee", padding: 16, borderRadius: 8, marginBottom: 20 }}>
+              <div style={{ background: "var(--bg-input)", border: "1px solid var(--border-light)", padding: 16, borderRadius: 8, marginBottom: 20 }}>
                 <p style={{ margin: "0 0 8px 0", fontSize: 14 }}><b>Chuyến:</b> {cancelModal.booking.origin} → {cancelModal.booking.destination}</p>
                 <p style={{ margin: "0 0 8px 0", fontSize: 14 }}><b>Khởi hành:</b> {new Date(cancelModal.booking.departureTime).toLocaleString("vi-VN")}</p>
                 <p style={{ margin: 0, fontSize: 14 }}><b>Tổng tiền đã đặt:</b> <span style={{ color: "#ff6b00", fontWeight: 700 }}>{cancelModal.booking.totalPrice.toLocaleString("vi-VN")} đ</span></p>
@@ -347,7 +347,7 @@ const MyBookings = () => {
                 <button 
                   onClick={closeCancelModal}
                   disabled={cancelModal.loading}
-                  style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer", color: "#555" }}
+                  style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer", color: "var(--text-secondary)" }}
                 >
                   Đóng
                 </button>
@@ -369,17 +369,17 @@ const MyBookings = () => {
       {/* Modal Đánh Giá */}
       {reviewModal.show && reviewModal.booking && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000, padding: 20 }}>
-          <div style={{ background: "#fff", padding: 32, borderRadius: 16, width: "100%", maxWidth: 480, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}>
+          <div style={{ background: "var(--bg-card)", padding: 32, borderRadius: 16, width: "100%", maxWidth: 480, boxShadow: "0 10px 25px rgba(0,0,0,0.15)" }}>
 
             {reviewModal.success ? (
               <div style={{ textAlign: "center", padding: "20px 0" }}>
                 <div style={{ fontSize: 56, marginBottom: 12 }}>🎉</div>
                 <h3 style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", marginBottom: 8 }}>Cảm ơn bạn đã đánh giá!</h3>
-                <p style={{ color: "#666", fontSize: 14 }}>Phản hồi của bạn giúp chúng tôi cải thiện dịch vụ mỗi ngày.</p>
+                <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>Phản hồi của bạn giúp chúng tôi cải thiện dịch vụ mỗi ngày.</p>
               </div>
             ) : (
               <>
-                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 4, color: "#111827" }}>Đánh giá chuyến đi</h3>
+                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 4, color: "var(--text-heading)" }}>Đánh giá chuyến đi</h3>
                 <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 20 }}>
                   {reviewModal.booking.origin} → {reviewModal.booking.destination} &nbsp;•&nbsp;
                   {reviewModal.booking.vehicleType === "PLANE" ? "✈️" : reviewModal.booking.vehicleType === "BUS" ? "🚌" : "🚂"} {reviewModal.booking.providerName}
@@ -442,7 +442,7 @@ const MyBookings = () => {
                   <button
                     onClick={closeReviewModal}
                     disabled={reviewModal.loading}
-                    style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer", color: "#555", fontSize: 14 }}
+                    style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer", color: "var(--text-secondary)", fontSize: 14 }}
                   >
                     Hủy
                   </button>

@@ -496,7 +496,7 @@ const TrainTickets = () => {
   }, [seats, selectedSeatIds]);
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--bg-main)" }}>
      
       <Header setIsSidebarOpen={setIsSidebarOpen} />
       
@@ -504,14 +504,14 @@ const TrainTickets = () => {
         <Sidebar isOpen={isSidebarOpen} />
         <div
           className={`page-main ${isSidebarOpen ? "with-sidebar" : ""}`}
-          style={{ backgroundColor: "#f8f9fa" }}
+          style={{ backgroundColor: "var(--bg-main)" }}
         >
           <div className="page-content-wrap" style={{ maxWidth: "1200px" }}>
             <h1
               style={{
                 fontSize: "32px",
                 fontWeight: "700",
-                color: "#333",
+                color: "var(--text-main)",
                 marginBottom: "30px",
               }}
             >
@@ -520,10 +520,10 @@ const TrainTickets = () => {
 
             <div
               style={{
-                background: "#fff",
+                background: "var(--bg-card)",
                 borderRadius: "12px",
                 padding: "24px",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+                boxShadow: "var(--shadow-md)",
                 marginBottom: "24px",
               }}
             >
@@ -531,30 +531,30 @@ const TrainTickets = () => {
 
                
                 <div style={{ position: "relative" }}>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><TbTrain /> {t.from}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><TbTrain /> {t.from}</label>
                   <div
                     onClick={() => { setShowFromDropdown(!showFromDropdown); setShowToDropdown(false); }}
                     style={{ padding: "10px 14px", borderRadius: 10, border: formErrors.from ? "2px solid #e53935" : "2px solid #e0e7ff",
-                      background: "#f8f9ff", cursor: "pointer", userSelect: "none" }}
+                      background: "var(--bg-input)", cursor: "pointer", userSelect: "none" }}
                   >
-                    <div style={{ fontWeight: 700, fontSize: 16, color: "#1a1a2e" }}>{from}</div>
-                    <div style={{ fontSize: 12, color: "#666", marginTop: 2 }}>
+                    <div style={{ fontWeight: 700, fontSize: 16, color: "var(--text-main)" }}>{from}</div>
+                    <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 2 }}>
                       {stations.find(a => a.code === from)?.name || t.selectTrainStation}
                     </div>
                   </div>
                   {formErrors.from && <div style={{ color: "#e53935", fontSize: 12, marginTop: 4 }}>{formErrors.from}</div>}
                   {showFromDropdown && (
-                    <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12,
-                      boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto" }}>
+                    <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "var(--bg-card)", borderRadius: 12,
+                      boxShadow: "var(--shadow-lg)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto" }}>
                       {stations.filter(a => a.code !== to).map(a => (
                         <div key={a.code} onClick={() => { setFrom(a.code); setShowFromDropdown(false); setFormErrors(p => ({...p, from: undefined})); }}
-                          style={{ padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #f0f0f0",
+                          style={{ padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid var(--border-light)",
                             background: from === a.code ? "#eff6ff" : "#fff" }}
                           onMouseEnter={e => e.currentTarget.style.background = "#f5f5ff"}
                           onMouseLeave={e => e.currentTarget.style.background = from === a.code ? "#eff6ff" : "#fff"}
                         >
-                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "#888", fontSize: 13 }}>– {a.name}</span></div>
-                          <div style={{ fontSize: 11, color: "#aaa", marginTop: 2 }}>{a.fullName}</div>
+                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: 13 }}>– {a.name}</span></div>
+                          <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{a.fullName}</div>
                         </div>
                       ))}
                     </div>
@@ -564,40 +564,40 @@ const TrainTickets = () => {
                 
                 <button type="button"
                   onClick={() => { const t2 = from; setFrom(to); setTo(t2); }}
-                  style={{ marginTop: 28, width: 38, height: 38, borderRadius: "50%", border: "2px solid #e0e7ff",
-                    background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 18, color: "#4f7cff", flexShrink: 0, transition: "all 0.2s" }}
+                  style={{ marginTop: 28, width: 38, height: 38, borderRadius: "50%", border: "2px solid var(--border-main)",
+                    background: "var(--bg-card)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 18, color: "var(--primary)", flexShrink: 0, transition: "all 0.2s" }}
                   onMouseEnter={e => { e.currentTarget.style.background = "#eff6ff"; e.currentTarget.style.borderColor = "#4f7cff"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.borderColor = "#e0e7ff"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "var(--bg-card)"; e.currentTarget.style.borderColor = "#e0e7ff"; }}
                   title={t.swapDestinations}
                 >⇄</button>
 
                 
                 <div style={{ position: "relative" }}>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><TbTrain /> {t.to}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><TbTrain /> {t.to}</label>
                   <div
                     onClick={() => { setShowToDropdown(!showToDropdown); setShowFromDropdown(false); }}
                     style={{ padding: "10px 14px", borderRadius: 10, border: formErrors.to ? "2px solid #e53935" : "2px solid #e0e7ff",
-                      background: "#f8f9ff", cursor: "pointer", userSelect: "none" }}
+                      background: "var(--bg-input)", cursor: "pointer", userSelect: "none" }}
                   >
-                    <div style={{ fontWeight: 700, fontSize: 16, color: "#1a1a2e" }}>{to}</div>
-                    <div style={{ fontSize: 12, color: "#666", marginTop: 2 }}>
+                    <div style={{ fontWeight: 700, fontSize: 16, color: "var(--text-main)" }}>{to}</div>
+                    <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 2 }}>
                       {stations.find(a => a.code === to)?.name || t.selectTrainStation}
                     </div>
                   </div>
                   {formErrors.to && <div style={{ color: "#e53935", fontSize: 12, marginTop: 4 }}>{formErrors.to}</div>}
                   {showToDropdown && (
-                    <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12,
-                      boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto" }}>
+                    <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "var(--bg-card)", borderRadius: 12,
+                      boxShadow: "var(--shadow-lg)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto" }}>
                       {stations.filter(a => a.code !== from).map(a => (
                         <div key={a.code} onClick={() => { setTo(a.code); setShowToDropdown(false); setFormErrors(p => ({...p, to: undefined})); }}
-                          style={{ padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #f0f0f0",
+                          style={{ padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid var(--border-light)",
                             background: to === a.code ? "#eff6ff" : "#fff" }}
                           onMouseEnter={e => e.currentTarget.style.background = "#f5f5ff"}
                           onMouseLeave={e => e.currentTarget.style.background = to === a.code ? "#eff6ff" : "#fff"}
                         >
-                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "#888", fontSize: 13 }}>– {a.name}</span></div>
-                          <div style={{ fontSize: 11, color: "#aaa", marginTop: 2 }}>{a.fullName}</div>
+                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: 13 }}>– {a.name}</span></div>
+                          <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{a.fullName}</div>
                         </div>
                       ))}
                     </div>
@@ -606,40 +606,40 @@ const TrainTickets = () => {
 
                
                 <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaRegCalendarAlt /> {t.departureDate}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><FaRegCalendarAlt /> {t.departureDate}</label>
                   <input type="date" value={date}
                     onChange={(e) => { setDate(e.target.value); setFormErrors(p => ({...p, date: undefined})); }}
                     min={todayISO}
                     style={{ width: "100%", padding: "10px 14px", borderRadius: 10, fontSize: 14, boxSizing: "border-box",
-                      border: formErrors.date ? "2px solid #e53935" : "2px solid #e0e7ff", background: "#f8f9ff" }}
+                      border: formErrors.date ? "2px solid #e53935" : "2px solid #e0e7ff", background: "var(--bg-input)" }}
                   />
                   {formErrors.date && <div style={{ color: "#e53935", fontSize: 12, marginTop: 4 }}>{formErrors.date}</div>}
                 </div>
 
                 
                 <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaUser /> {t.passengers}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><FaUser /> {t.passengers}</label>
                   <div style={{ position: "relative", marginBottom: 10 }}>
                     <div
                       onClick={() => setShowPassengersDropdown(!showPassengersDropdown)}
-                      style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid #e0e7ff",
-                        background: "#fff", fontSize: 15, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", boxSizing: "border-box" }}
+                      style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid var(--border-main)",
+                        background: "var(--bg-card)", fontSize: 15, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", boxSizing: "border-box" }}
                     >
                       <span>{passengerCounts.adult} {t.adult || 'Người lớn'}, {passengerCounts.child} {t.child || 'Trẻ em'}, {passengerCounts.infant} {t.infant || 'Em bé'}</span>
                       <FiChevronDown />
                     </div>
                     {showPassengersDropdown && (
-                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12, boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, padding: 16, marginTop: 4 }}>
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "var(--bg-card)", borderRadius: 12, boxShadow: "var(--shadow-lg)", zIndex: 100, padding: 16, marginTop: 4 }}>
                          {['adult', 'child', 'infant'].map(type => (
                            <div key={type} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                              <div>
                                <div style={{ fontWeight: 600 }}>{type === 'adult' ? t.adult || 'Người lớn' : type === 'child' ? t.child || 'Trẻ em' : t.infant || 'Em bé'}</div>
-                               <div style={{ fontSize: 12, color: "#666" }}>{type === 'adult' ? '>12 tuổi' : type === 'child' ? '2-11 tuổi' : '<2 tuổi'}</div>
+                               <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>{type === 'adult' ? '>12 tuổi' : type === 'child' ? '2-11 tuổi' : '<2 tuổi'}</div>
                              </div>
                              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                               <button type="button" disabled={passengerCounts[type] <= (type === 'adult' ? 1 : 0)} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] - 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>-</button>
+                               <button type="button" disabled={passengerCounts[type] <= (type === 'adult' ? 1 : 0)} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] - 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid var(--border-input)", background: "var(--bg-card)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>-</button>
                                <span style={{ fontWeight: 600, width: 16, textAlign: "center" }}>{passengerCounts[type]}</span>
-                               <button type="button" disabled={passengerCounts.adult + passengerCounts.child + passengerCounts.infant >= 5} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] + 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
+                               <button type="button" disabled={passengerCounts.adult + passengerCounts.child + passengerCounts.infant >= 5} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] + 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid var(--border-input)", background: "var(--bg-card)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
                              </div>
                            </div>
                          ))}
@@ -654,8 +654,8 @@ const TrainTickets = () => {
                     {loading ? <><CgSandClock /> ${t.searching}</> : <><IoMdSearch /> {t.searchTrain}</>}
                   </button>
                   <button type="button" onClick={loadCalendar} disabled={calendarLoading}
-                    style={{ width: "100%", padding: "10px", borderRadius: 10, border: "2px solid #e0e7ff",
-                      background: "#fff", color: "#333", fontWeight: 600, cursor: calendarLoading ? "not-allowed" : "pointer", fontSize: 13 }}
+                    style={{ width: "100%", padding: "10px", borderRadius: 10, border: "2px solid var(--border-main)",
+                      background: "var(--bg-card)", color: "var(--text-main)", fontWeight: 600, cursor: calendarLoading ? "not-allowed" : "pointer", fontSize: 13 }}
                   >
                     {calendarLoading ? <><CgSandClock /> {t.loadingCalendar}</> : <><FaRegCalendarAlt /> {t.viewCheapCalendar}</>}
                   </button>
@@ -663,7 +663,7 @@ const TrainTickets = () => {
               </div>
 
               {calendarOpen && (
-                <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid #eee" }}>
+                <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid var(--border-light)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                     <div style={{ fontWeight: 700 }}>{t.calendar30Days}</div>
                     <button
@@ -674,7 +674,7 @@ const TrainTickets = () => {
                         background: "none",
                         cursor: "pointer",
                         fontSize: 18,
-                        color: "#666",
+                        color: "var(--text-secondary)",
                       }}
                     >
                       ×
@@ -695,13 +695,13 @@ const TrainTickets = () => {
                           width: 150,
                           padding: "10px 12px",
                           borderRadius: 10,
-                          border: "1px solid #eee",
+                          border: "1px solid var(--border-light)",
                           background: d.available ? "#fff" : "#f5f5f5",
                           cursor: d.available ? "pointer" : "not-allowed",
                           textAlign: "left",
                         }}
                       >
-                        <div style={{ fontWeight: 700, color: "#333" }}>{d.date}</div>
+                        <div style={{ fontWeight: 700, color: "var(--text-main)" }}>{d.date}</div>
                         <div style={{ marginTop: 6, color: d.available ? "#ff6b00" : "#999", fontWeight: 700 }}>
                           {d.minPrice != null ? `${Number(d.minPrice).toLocaleString("vi-VN")} đ` : "—"}
                         </div>
@@ -710,7 +710,7 @@ const TrainTickets = () => {
                   </div>
 
                   {!calendarLoading && calendarData.every((d) => !d.available) && (
-                    <p style={{ marginTop: 12, color: "#666", fontSize: 13 }}>
+                    <p style={{ marginTop: 12, color: "var(--text-secondary)", fontSize: 13 }}>
                       Hiện chưa có chuyến bay phù hợp trong khoảng ngày này. Bạn có thể bỏ chọn "tìm vé rẻ nhất"
                       và dùng tìm kiếm thường, hoặc đổi điểm đi/điểm đến/ngày khác.
                     </p>
@@ -728,10 +728,10 @@ const TrainTickets = () => {
             {step === "chooseTrip" && trips.length > 0 && (
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--bg-card)",
                   borderRadius: 12,
                   padding: 24,
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+                  boxShadow: "var(--shadow-md)",
                   marginBottom: 24,
                 }}
               >
@@ -753,7 +753,7 @@ const TrainTickets = () => {
                         textAlign: "left",
                         padding: 16,
                         borderRadius: 10,
-                        border: "1px solid #eee",
+                        border: "1px solid var(--border-light)",
                         backgroundColor:
                           selectedTrip && selectedTrip.id === trip.id ? "#fff7ec" : "#fff",
                         cursor: "pointer",
@@ -770,7 +770,7 @@ const TrainTickets = () => {
                           <div style={{ fontWeight: 600 }}>
                             {trip.origin} → {trip.destination}
                           </div>
-                          <div style={{ fontSize: 13, color: "#666" }}>
+                          <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                             Khởi hành: {trip.departureTime}
                           </div>
                         </div>
@@ -778,12 +778,12 @@ const TrainTickets = () => {
                           <div style={{ fontWeight: 700, color: "#ff6b00" }}>
                             {trip.price?.toLocaleString("vi-VN")} đ
                           </div>
-                          <div style={{ fontSize: 13, color: "#666" }}>
+                          <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                             Còn {trip.availableSeats}/{trip.totalSeats} chỗ
                           </div>
                         </div>
                       </div>
-                      <div style={{ fontSize: 13, color: "#666" }}>
+                      <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                         {trip.providerName} · {trip.vehicleType}
                       </div>
                     </button>
@@ -794,7 +794,7 @@ const TrainTickets = () => {
 
             
             {["seatClass", "passenger", "extras", "review"].includes(step) && (
-              <div style={{ marginBottom: 20, background: "#fff", borderRadius: 12, padding: "16px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
+              <div style={{ marginBottom: 20, background: "var(--bg-card)", borderRadius: 12, padding: "16px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }}>
                 
                   <div style={{ position: "absolute", top: 20, left: "10%", right: "10%", height: 3, background: "#e0e7ff", zIndex: 0 }} />
@@ -827,11 +827,11 @@ const TrainTickets = () => {
           
             {selectedTrip && step === "seatClass" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step1}</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 16 }}>{t.selectSeatInstruction}</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 16 }}>{t.selectSeatInstruction}</p>
 
-                  {loading && <p style={{ color: "#888" }}>Đang tải sơ đồ ghế...</p>}
+                  {loading && <p style={{ color: "var(--text-muted)" }}>Đang tải sơ đồ ghế...</p>}
 
                 
                   {!loading && (() => {
@@ -875,21 +875,21 @@ const TrainTickets = () => {
 
                     return (
                       <div style={{ 
-                        overflowX: "auto", background: "#f8f9fa", padding: "20px 30px", 
+                        overflowX: "auto", background: "var(--bg-main)", padding: "20px 30px", 
                         borderRadius: "12px", border: "4px solid #4f7cff", borderLeft: "20px solid #4f7cff",
                         boxShadow: "0 4px 15px rgba(0,0,0,0.1)", position: "relative",
                         minWidth: "fit-content", margin: "0 auto"
                       }}>
-                        <div style={{ textAlign: "left", marginBottom: 20, color: "#4f7cff", fontSize: "18px", fontWeight: "bold" }}>🚂 Đầu Tàu & Toa Xe</div>
+                        <div style={{ textAlign: "left", marginBottom: 20, color: "var(--primary)", fontSize: "18px", fontWeight: "bold" }}>🚂 Đầu Tàu & Toa Xe</div>
                       
                         <div style={{ display: "flex", gap: 6, marginBottom: 8, paddingLeft: 48 }}>
-                          {leftCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "#888", fontSize: 12 }}>{c}</div>)}
+                          {leftCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "var(--text-muted)", fontSize: 12 }}>{c}</div>)}
                           <div style={{ width: 32 }} />
-                          {rightCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "#888", fontSize: 12 }}>{c}</div>)}
+                          {rightCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "var(--text-muted)", fontSize: 12 }}>{c}</div>)}
                         </div>
                         {rows.map(row => (
                           <div key={row} style={{ display: "flex", gap: 6, marginBottom: 6, alignItems: "center" }}>
-                            <div style={{ width: 36, textAlign: "center", fontWeight: 700, color: "#aaa", fontSize: 12 }}>{row}</div>
+                            <div style={{ width: 36, textAlign: "center", fontWeight: 700, color: "var(--text-muted)", fontSize: 12 }}>{row}</div>
                             {leftCols.map(col => {
                               const s = smap.get(`${row}${col}`);
                               if (!s) return <div key={col} style={{ width: 44, height: 38 }} />;
@@ -934,7 +934,7 @@ const TrainTickets = () => {
                           </div>
                         ))}
                        
-                        <div style={{ display: "flex", gap: 16, marginTop: 12, fontSize: 12, color: "#666" }}>
+                        <div style={{ display: "flex", gap: 16, marginTop: 12, fontSize: 12, color: "var(--text-secondary)" }}>
                           <span><span style={{ display: "inline-block", width: 14, height: 14, background: "#dcfce7", borderRadius: 3, marginRight: 4 }} />{t.seatClassEco}</span>
                           <span><span style={{ display: "inline-block", width: 14, height: 14, background: "#dbeafe", borderRadius: 3, marginRight: 4 }} />{t.seatClassBiz}</span>
                           <span><span style={{ display: "inline-block", width: 14, height: 14, background: "#f59e0b", borderRadius: 3, marginRight: 4 }} />{t.seatClassSelected}</span>
@@ -944,22 +944,22 @@ const TrainTickets = () => {
                     );
                   })()}
 
-                  {!loading && seats.length === 0 && <p style={{ color: "#888" }}>Chưa có dữ liệu ghế cho chuyến này.</p>}
+                  {!loading && seats.length === 0 && <p style={{ color: "var(--text-muted)" }}>Chưa có dữ liệu ghế cho chuyến này.</p>}
 
                   {error && <p style={{ color: "red", marginTop: 12 }}>{error}</p>}
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                    <button type="button" onClick={() => setStep("chooseTrip")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
-                    <button type="button" onClick={goToExtras} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "#4f7cff", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.nextStep} →</button>
+                    <button type="button" onClick={() => setStep("chooseTrip")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
+                    <button type="button" onClick={goToExtras} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "var(--primary)", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.nextStep} →</button>
                   </div>
                 </div>
 
                
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content", position: "sticky", top: 16 }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content", position: "sticky", top: 16 }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.bookingSummary}</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.8 }}>
                     <div>&nbsp;&nbsp;&nbsp; <b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
-                    <div style={{ color: "#888" }}>{selectedTrip.departureTime}</div>
-                    <div style={{ color: "#888" }}>{selectedTrip.providerName}</div>
+                    <div style={{ color: "var(--text-muted)" }}>{selectedTrip.departureTime}</div>
+                    <div style={{ color: "var(--text-muted)" }}>{selectedTrip.providerName}</div>
                     <div style={{ marginTop: 8, fontWeight: 700, color: "#ff6b00", fontSize: 15 }}>{Number(selectedTrip.price||0).toLocaleString("vi-VN")} đ / ghế</div>
                     <div style={{ marginTop: 8, color: selectedSeatIds.length >= (passengers||1) ? "#22c55e" : "#888" }}>Ghế đã chọn: {selectedSeatIds.length}/{passengers||1}</div>
                   </div>
@@ -970,9 +970,9 @@ const TrainTickets = () => {
         
             {selectedTrip && step === "passenger" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step2}</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>{t.passengerInstruction}</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 20 }}>{t.passengerInstruction}</p>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                     {passengerInfoList.map((pi, idx) => (
@@ -1010,17 +1010,17 @@ const TrainTickets = () => {
 
                   {error && <p style={{ color: "red", marginTop: 12 }}>{error}</p>}
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                    <button type="button" onClick={() => setStep("seatClass")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
-                    <button type="button" onClick={goToExtrasFromPassenger} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "#4f7cff", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.nextStep} →</button>
+                    <button type="button" onClick={() => setStep("seatClass")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
+                    <button type="button" onClick={goToExtrasFromPassenger} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "var(--primary)", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.nextStep} →</button>
                   </div>
                 </div>
 
              
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>Thông tin đặt chỗ</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.9 }}>
                     <div>&nbsp;&nbsp;&nbsp; <b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
-                    <div style={{ color: "#888" }}>{selectedTrip.departureTime}</div>
+                    <div style={{ color: "var(--text-muted)" }}>{selectedTrip.departureTime}</div>
                     <div style={{ marginTop: 6 }}>Ghế: <b>{selectedSeatIds.length === 0 ? "Chưa chọn" : seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ")}</b></div>
                     <div style={{ marginTop: 8, fontWeight: 700, color: "#ff6b00", fontSize: 15 }}>{Number(selectedTrip.price||0).toLocaleString("vi-VN")} đ / ghế</div>
                   </div>
@@ -1031,19 +1031,19 @@ const TrainTickets = () => {
          
             {selectedTrip && step === "extras" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step3}</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>{t.extrasInstruction}</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 20 }}>{t.extrasInstruction}</p>
 
-                  {servicesLoading && <p style={{ color: "#888" }}>Đang tải dịch vụ...</p>}
+                  {servicesLoading && <p style={{ color: "var(--text-muted)" }}>Đang tải dịch vụ...</p>}
 
                   {!servicesLoading && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
              
-                      <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, background: "#f9fafb" }}>
+                      <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, background: "var(--bg-input)" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                           <span style={{ fontSize: 24 }}>🧳</span>
-                          <div><div style={{ fontWeight: 700, fontSize: 15 }}>{t.baggage}</div><div style={{ fontSize: 12, color: "#888" }}>Chọn gói hành lý phù hợp</div></div>
+                          <div><div style={{ fontWeight: 700, fontSize: 15 }}>{t.baggage}</div><div style={{ fontSize: 12, color: "var(--text-muted)" }}>Chọn gói hành lý phù hợp</div></div>
                         </div>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
                           <label style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 8,
@@ -1061,20 +1061,20 @@ const TrainTickets = () => {
                               background: selectedServiceIds.includes(s.id) ? "#eff6ff" : "#fff", cursor: "pointer" }}>
                               <input type="radio" name="baggage" style={{ display: "none" }} checked={selectedServiceIds.includes(s.id)} onChange={() => setSingleServiceInCategory(s.id, categories.baggage)} />
                               <span style={{ fontWeight: 600 }}>{s.serviceName}</span>
-                              <span style={{ marginLeft: 6, color: "#4f7cff", fontWeight: 700 }}>{Number(s.price||0).toLocaleString("vi-VN")} đ</span>
+                              <span style={{ marginLeft: 6, color: "var(--primary)", fontWeight: 700 }}>{Number(s.price||0).toLocaleString("vi-VN")} đ</span>
                             </label>
                           ))}
                         </div>
                       </div>
 
                   
-                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: "20px", background: "#f9fafb" }}>
+                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: "20px", background: "var(--bg-input)" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <span style={{ fontSize: 28 }}>🍱</span>
                       <div>
                         <div style={{ fontWeight: 800, fontSize: 16, color: "#b45309" }}>{t.meal}</div>
-                        <div style={{ fontSize: 13, color: "#888" }}>Suất ăn nóng hổi, chuẩn vị nhà hàng</div>
+                        <div style={{ fontSize: 13, color: "var(--text-muted)" }}>Suất ăn nóng hổi, chuẩn vị nhà hàng</div>
                       </div>
                     </div>
                   </div>
@@ -1108,7 +1108,7 @@ const TrainTickets = () => {
                            boxShadow: isSelected ? "0 4px 12px rgba(245, 158, 11, 0.2)" : "0 2px 8px rgba(0,0,0,0.05)" }}>
                            <div style={{ height: 120, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }} />
                            <div style={{ padding: 12 }}>
-                             <div style={{ fontWeight: 700, fontSize: 13, color: "#333", lineHeight: 1.4, minHeight: 40 }}>{s.serviceName}</div>
+                             <div style={{ fontWeight: 700, fontSize: 13, color: "var(--text-main)", lineHeight: 1.4, minHeight: 40 }}>{s.serviceName}</div>
                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
                                <span style={{ color: "#d97706", fontWeight: 800, fontSize: 14 }}>{Number(s.price||0).toLocaleString("vi-VN")} VND</span>
                                <div style={{ width: 24, height: 24, borderRadius: "50%", background: isSelected ? "#f59e0b" : "#f3f4f6", 
@@ -1130,7 +1130,7 @@ const TrainTickets = () => {
                           <div key={title} style={{ border: highlighted ? `2px solid ${border}` : `1px solid ${border}`, borderRadius: 12, padding: 16, background: highlighted ? "#f0fdf4" : "#f9fafb", position: "relative", overflow: "hidden" }}>
                             {highlighted && <div style={{ position: "absolute", top: 12, right: -25, background: "#ef4444", color: "#fff", fontSize: 10, fontWeight: 800, padding: "4px 24px", transform: "rotate(45deg)", boxShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>NÊN MUA</div>}
                             <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 14 }}>
-                              <span style={{ fontSize: 32, background: "#fff", borderRadius: "50%", padding: 4, boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>{icon}</span>
+                              <span style={{ fontSize: 32, background: "var(--bg-card)", borderRadius: "50%", padding: 4, boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>{icon}</span>
                               <div><div style={{ fontWeight: 800, fontSize: 16, color: highlighted ? "#15803d" : "#333", marginBottom: 4 }}>{title}</div><div style={{ fontSize: 13, color: highlighted ? "#166534" : "#666", lineHeight: 1.5 }}>{sub}</div></div>
                             </div>
                             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -1146,7 +1146,7 @@ const TrainTickets = () => {
                                     {selectedServiceIds.includes(s.id) ? "✓" : ""}
                                   </div>
                                   <div>
-                                    <div style={{ fontWeight: 700, color: "#333", fontSize: 14 }}>{s.serviceName}</div>
+                                    <div style={{ fontWeight: 700, color: "var(--text-main)", fontSize: 14 }}>{s.serviceName}</div>
                                   </div>
                                 </div>
                                 <span style={{ fontWeight: 800, fontSize: 15, color: selectedServiceIds.includes(s.id) ? border : "#666" }}>
@@ -1163,20 +1163,20 @@ const TrainTickets = () => {
 
                   {error && <p style={{ color: "red", marginTop: 12 }}>{error}</p>}
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                    <button type="button" onClick={() => setStep("passenger")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
-                    <button type="button" onClick={goToReview} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "#4f7cff", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.reviewAndPay} →</button>
+                    <button type="button" onClick={() => setStep("passenger")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
+                    <button type="button" onClick={goToReview} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "var(--primary)", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.reviewAndPay} →</button>
                   </div>
                 </div>
 
         
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.totalCost}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{seats.filter(s => selectedSeatIds.includes(s.id)).reduce((sum, s) => sum + getSeatPrice(selectedTrip.price, s.seatType), 0).toLocaleString("vi-VN")} đ</b></div>
                     {services.filter(s => selectedServiceIds.includes(s.id)).map(s => (
-                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>+ {s.serviceName}</span><span>{Number(s.price||0).toLocaleString("vi-VN")} đ</span></div>
+                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--text-muted)" }}>+ {s.serviceName}</span><span>{Number(s.price||0).toLocaleString("vi-VN")} đ</span></div>
                     ))}
-                    <div style={{ borderTop: "1px solid #eee", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: 15, color: "#ff6b00" }}>
+                    <div style={{ borderTop: "1px solid var(--border-light)", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: 15, color: "#ff6b00" }}>
                       <span>Tổng cộng</span>
                       <span>{Number((selectedTrip.price||0)*selectedSeatIds.length + services.filter(s=>selectedServiceIds.includes(s.id)).reduce((sum,s)=>sum+(s.price||0),0)).toLocaleString("vi-VN")} đ</span>
                     </div>
@@ -1188,29 +1188,29 @@ const TrainTickets = () => {
        
             {selectedTrip && step === "review" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step4}</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>{t.reviewInstruction}</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 20 }}>{t.reviewInstruction}</p>
 
          
-                  <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
-                    <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>&nbsp;&nbsp;&nbsp; Chuyến bay</div>
+                  <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, marginBottom: 14, background: "var(--bg-input)" }}>
+                    <div style={{ fontWeight: 700, marginBottom: 8, color: "var(--primary)" }}>&nbsp;&nbsp;&nbsp; Chuyến bay</div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 16 }}>{selectedTrip.origin} → {selectedTrip.destination}</div>
-                        <div style={{ color: "#888", fontSize: 13, marginTop: 4 }}>{selectedTrip.departureTime} · {selectedTrip.providerName}</div>
+                        <div style={{ color: "var(--text-muted)", fontSize: 13, marginTop: 4 }}>{selectedTrip.departureTime} · {selectedTrip.providerName}</div>
                       </div>
                       <div style={{ fontWeight: 800, color: "#ff6b00", fontSize: 16 }}>{Number(selectedTrip.price||0).toLocaleString("vi-VN")} đ</div>
                     </div>
                   </div>
 
              
-                  <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
-                    <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>👤 Hành khách</div>
+                  <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, marginBottom: 14, background: "var(--bg-input)" }}>
+                    <div style={{ fontWeight: 700, marginBottom: 8, color: "var(--primary)" }}>👤 Hành khách</div>
                     {passengerInfoList.map((pi, idx) => (
                       <div key={idx} style={{ fontSize: 13, marginBottom: 8, paddingBottom: 8, borderBottom: idx < passengerInfoList.length - 1 ? "1px dashed #ccc" : "none" }}>
                         <b>{pi.data.fullName || `Hành khách ${idx+1}`}</b> ({pi.type === 'ADULT' ? 'Người lớn' : pi.type === 'CHILD' ? 'Trẻ em' : 'Em bé'})
-                        {pi.type === 'ADULT' && <div style={{ color: "#888", marginTop: 2 }}>{pi.data.email} · {pi.data.phone ? `+84 ${pi.data.phone}` : ''}</div>}
+                        {pi.type === 'ADULT' && <div style={{ color: "var(--text-muted)", marginTop: 2 }}>{pi.data.email} · {pi.data.phone ? `+84 ${pi.data.phone}` : ''}</div>}
                         <div style={{ marginTop: 2 }}>Ngày sinh: {pi.data.dateOfBirth} | Giới tính: {pi.data.gender === 'Male' ? 'Nam' : pi.data.gender === 'Female' ? 'Nữ' : 'Khác'}</div>
                       </div>
                     ))}
@@ -1219,8 +1219,8 @@ const TrainTickets = () => {
 
               
                   {selectedServiceIds.length > 0 && (
-                    <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
-                      <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>🛎 Dịch vụ bổ sung</div>
+                    <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, marginBottom: 14, background: "var(--bg-input)" }}>
+                      <div style={{ fontWeight: 700, marginBottom: 8, color: "var(--primary)" }}>🛎 Dịch vụ bổ sung</div>
                       {services.filter(s=>selectedServiceIds.includes(s.id)).map(s => (
                         <div key={s.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 14, marginBottom: 4 }}>
                           <span>{s.serviceName}</span><b>{Number(s.price||0).toLocaleString("vi-VN")} đ</b>
@@ -1231,8 +1231,8 @@ const TrainTickets = () => {
 
                  
                   <div style={{ position: "relative", border: "2px dashed #ff4500", borderRadius: 12, padding: "20px", marginBottom: 14, background: "linear-gradient(to right, #fff5f0, #fff)" }}>
-                      <div style={{ position: "absolute", left: -8, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, borderRadius: "50%", background: "#fff", borderRight: "2px dashed #ff4500" }}></div>
-                      <div style={{ position: "absolute", right: -8, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, borderRadius: "50%", background: "#fff", borderLeft: "2px dashed #ff4500" }}></div>
+                      <div style={{ position: "absolute", left: -8, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, borderRadius: "50%", background: "var(--bg-card)", borderRight: "2px dashed #ff4500" }}></div>
+                      <div style={{ position: "absolute", right: -8, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, borderRadius: "50%", background: "var(--bg-card)", borderLeft: "2px dashed #ff4500" }}></div>
                       <div style={{ fontWeight: 800, color: "#ff4500", fontSize: 16, marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
                           <span style={{ fontSize: 22 }}>🎟️</span> {t.promoCodeLabel}
                       </div>
@@ -1271,7 +1271,7 @@ const TrainTickets = () => {
                     </div>
                   ) : (
                     <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
-                      <button type="button" onClick={() => setStep("extras")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
+                      <button type="button" onClick={() => setStep("extras")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
                       <button type="button" onClick={submitBooking} disabled={submitLoading}
                         style={{ padding: "12px 32px", borderRadius: 8, border: "none", background: "#ff6b00", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer" }}>
                         {submitLoading ? "Đang xử lý..." : <><FaTicketAlt /> Đặt vé ngay</>}
@@ -1281,15 +1281,15 @@ const TrainTickets = () => {
                 </div>
 
               
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.paymentDetails}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{seats.filter(s => selectedSeatIds.includes(s.id)).reduce((sum, s) => sum + getSeatPrice(selectedTrip.price, s.seatType), 0).toLocaleString("vi-VN")} đ</b></div>
                     {services.filter(s=>selectedServiceIds.includes(s.id)).map(s => (
-                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>+ {s.serviceName}</span><span>{Number(s.price||0).toLocaleString("vi-VN")} đ</span></div>
+                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--text-muted)" }}>+ {s.serviceName}</span><span>{Number(s.price||0).toLocaleString("vi-VN")} đ</span></div>
                     ))}
                     {promoCode && <div style={{ display: "flex", justifyContent: "space-between", color: "#16a34a" }}><span>Mã: {promoCode}</span><span>-0 đ</span></div>}
-                    <div style={{ borderTop: "1px solid #eee", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 800, fontSize: 16, color: "#ff6b00" }}>
+                    <div style={{ borderTop: "1px solid var(--border-light)", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 800, fontSize: 16, color: "#ff6b00" }}>
                       <span>Tổng cộng</span>
                       <span>{Number((selectedTrip.price||0)*selectedSeatIds.length + services.filter(s=>selectedServiceIds.includes(s.id)).reduce((sum,s)=>sum+(s.price||0),0)).toLocaleString("vi-VN")} đ</span>
                     </div>

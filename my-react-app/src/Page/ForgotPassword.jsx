@@ -65,17 +65,17 @@ const ForgotPassword = () => {
             padding: "20px"
         }}>
             <div style={{ 
-                background: "#fff", 
+                background: "var(--bg-card)", 
                 padding: "40px", 
                 borderRadius: "24px", 
                 boxShadow: "0 20px 60px rgba(0,0,0,0.1)",
                 width: "100%",
                 maxWidth: "450px"
             }}>
-                <h2 style={{ fontSize: "28px", fontWeight: "800", marginBottom: "10px", color: "#111827", textAlign: "center" }}>
+                <h2 style={{ fontSize: "28px", fontWeight: "800", marginBottom: "10px", color: "var(--text-heading)", textAlign: "center" }}>
                     {step === 1 ? "Quên mật khẩu" : "Đặt lại mật khẩu"}
                 </h2>
-                <p style={{ color: "#666", textAlign: "center", marginBottom: "30px", fontSize: "14px" }}>
+                <p style={{ color: "var(--text-secondary)", textAlign: "center", marginBottom: "30px", fontSize: "14px" }}>
                     {step === 1 
                         ? "Nhập email của bạn để nhận mã xác thực OTP." 
                         : "Vui lòng nhập mã OTP đã gửi đến email và mật khẩu mới."}
@@ -110,7 +110,7 @@ const ForgotPassword = () => {
                                     width: "100%",
                                     padding: "14px",
                                     borderRadius: "12px",
-                                    border: "1px solid #ddd",
+                                    border: "1px solid var(--border-input)",
                                     outline: "none",
                                     fontSize: "15px"
                                 }}
@@ -124,7 +124,7 @@ const ForgotPassword = () => {
                                 padding: "14px",
                                 borderRadius: "12px",
                                 border: "none",
-                                background: "#4f7cff",
+                                background: "var(--primary)",
                                 color: "#fff",
                                 fontWeight: "700",
                                 cursor: loading ? "not-allowed" : "pointer",
@@ -150,7 +150,7 @@ const ForgotPassword = () => {
                                     width: "100%",
                                     padding: "14px",
                                     borderRadius: "12px",
-                                    border: "1px solid #ddd",
+                                    border: "1px solid var(--border-input)",
                                     outline: "none",
                                     fontSize: "18px",
                                     textAlign: "center",
@@ -171,7 +171,7 @@ const ForgotPassword = () => {
                                     width: "100%",
                                     padding: "14px",
                                     borderRadius: "12px",
-                                    border: "1px solid #ddd",
+                                    border: "1px solid var(--border-input)",
                                     outline: "none",
                                     fontSize: "15px"
                                 }}
@@ -188,7 +188,7 @@ const ForgotPassword = () => {
                                     width: "100%",
                                     padding: "14px",
                                     borderRadius: "12px",
-                                    border: "1px solid #ddd",
+                                    border: "1px solid var(--border-input)",
                                     outline: "none",
                                     fontSize: "15px"
                                 }}
@@ -220,9 +220,9 @@ const ForgotPassword = () => {
                                 padding: "12px",
                                 marginTop: "12px",
                                 borderRadius: "12px",
-                                border: "1px solid #ddd",
-                                background: "#fff",
-                                color: "#666",
+                                border: "1px solid var(--border-input)",
+                                background: "var(--bg-card)",
+                                color: "var(--text-secondary)",
                                 fontWeight: "600",
                                 cursor: "pointer",
                                 fontSize: "14px"

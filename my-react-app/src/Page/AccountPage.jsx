@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
+import { useTheme } from "../context/ThemeContext";
 
 const API = "http://localhost:8080";
 
@@ -30,6 +31,7 @@ const AccountPage = () => {
   const [pwdLoading, setPwdLoading] = useState(false);
 
   const token = localStorage.getItem("authToken");
+  const { isDark, toggleTheme } = useTheme();
 
   const fetchProfile = async () => {
     try {
@@ -94,21 +96,21 @@ const AccountPage = () => {
   const tabStyle = (tab) => ({
     padding: "10px 20px",
     border: "none",
-    borderBottom: activeTab === tab ? "3px solid #4f46e5" : "3px solid transparent",
+    borderBottom: activeTab === tab ? "3px solid var(--primary)" : "3px solid transparent",
     background: "none",
     fontWeight: activeTab === tab ? 700 : 500,
-    color: activeTab === tab ? "#4f46e5" : "#6b7280",
+    color: activeTab === tab ? "var(--primary)" : "var(--text-muted)",
     cursor: "pointer",
     fontSize: 15,
     transition: "0.2s",
   });
 
   const inputStyle = {
-    width: "100%", padding: "12px 14px", borderRadius: 8, border: "1.5px solid #d1d5db",
-    fontSize: 15, outline: "none", boxSizing: "border-box",
+    width: "100%", padding: "12px 14px", borderRadius: 8, border: "1.5px solid var(--border-input)",
+    fontSize: 15, outline: "none", boxSizing: "border-box", background: "var(--bg-input)", color: "var(--text-main)",
   };
 
-  const labelStyle = { display: "block", fontWeight: 600, fontSize: 14, color: "#374151", marginBottom: 6 };
+  const labelStyle = { display: "block", fontWeight: 600, fontSize: 14, color: "var(--text-secondary)", marginBottom: 6 };
 
   const msgBox = (msg) => msg && (
     <div style={{
@@ -143,7 +145,7 @@ const AccountPage = () => {
         <div style={{ background: cfg.bg, border: `2px solid ${cfg.color}30`, borderRadius: 16, padding: 24, marginBottom: 24, textAlign: "center" }}>
           <div style={{ fontSize: 56 }}>{cfg.icon}</div>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: cfg.color, margin: "8px 0 4px" }}>Hạng {level}</h2>
-          <p style={{ fontSize: 15, color: "#555", marginBottom: 16 }}>
+          <p style={{ fontSize: 15, color: "var(--text-secondary)", marginBottom: 16 }}>
             Bạn có <strong style={{ color: "#4f46e5", fontSize: 18 }}>{points.toLocaleString()}</strong> điểm
           </p>
           {cfg.next && (
@@ -160,7 +162,7 @@ const AccountPage = () => {
         </div>
 
         {/* Tier Table */}
-        <h3 style={{ fontWeight: 700, color: "#111827", marginBottom: 12 }}>Bảng hạng thành viên</h3>
+        <h3 style={{ fontWeight: 700, color: "var(--text-heading)", marginBottom: 12 }}>Bảng hạng thành viên</h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
           {tiers.map(tier => (
             <div key={tier.name} style={{
@@ -177,7 +179,7 @@ const AccountPage = () => {
           ))}
         </div>
 
-        <div style={{ marginTop: 20, padding: 16, background: "#eff6ff", borderRadius: 12, fontSize: 13, color: "#1e40af" }}>
+        <div style={{ marginTop: 20, padding: 16, background: "var(--bg-accent)", borderRadius: 12, fontSize: 13, color: "#1e40af" }}>
           💡 <strong>Cách tích điểm:</strong> Mỗi <strong>10,000đ</strong> bạn chi cho vé = <strong>1 điểm</strong>. Điểm được cộng tự động sau khi chuyến đi hoàn thành.
         </div>
       </div>
@@ -185,33 +187,34 @@ const AccountPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "#f3f4f6" }}>
+    <div style={{ display: "flex", minHeight: "100vh", backgroundColor: "var(--bg-main)", transition: "background-color 0.3s" }}>
       <Sidebar />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", paddingTop: 70 }}>
         <div style={{ maxWidth: 680, margin: "40px auto", width: "100%", padding: "0 20px" }}>
-          <h1 style={{ fontSize: 26, fontWeight: 800, color: "#111827", marginBottom: 24 }}>Quản lý tài khoản</h1>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: "var(--text-heading)", marginBottom: 24 }}>Quản lý tài khoản</h1>
 
           {/* Tabs */}
-          <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", marginBottom: 24, background: "#fff", borderRadius: "12px 12px 0 0", overflow: "hidden" }}>
-            <button style={tabStyle("profile")} onClick={() => setActiveTab("profile")}>👤 Thông tin cá nhân</button>
-            <button style={tabStyle("password")} onClick={() => setActiveTab("password")}>🔒 Đổi mật khẩu</button>
-            <button style={tabStyle("membership")} onClick={() => setActiveTab("membership")}>⭐ Hạng thành viên</button>
+          <div style={{ display: "flex", borderBottom: "1px solid var(--border-light)", marginBottom: 24, background: "var(--bg-card)", borderRadius: "12px 12px 0 0", overflow: "hidden", flexWrap: "wrap" }}>
+            <button style={tabStyle("profile")} onClick={() => setActiveTab("profile")}>👤 Thông tin</button>
+            <button style={tabStyle("password")} onClick={() => setActiveTab("password")}>🔒 Mật khẩu</button>
+            <button style={tabStyle("membership")} onClick={() => setActiveTab("membership")}>⭐ Hạng</button>
+            <button style={tabStyle("settings")} onClick={() => setActiveTab("settings")}>⚙️ Cài đặt</button>
           </div>
 
           {loading ? (
             <div style={{ textAlign: "center", padding: 60, color: "#6b7280" }}>Đang tải...</div>
           ) : (
-            <div style={{ background: "#fff", borderRadius: "0 0 12px 12px", padding: 28, boxShadow: "0 4px 12px rgba(0,0,0,0.06)" }}>
+            <div style={{ background: "var(--bg-card)", borderRadius: "0 0 12px 12px", padding: 28, boxShadow: "var(--shadow-md)", transition: "background-color 0.3s" }}>
 
               {/* TAB: PROFILE */}
               {activeTab === "profile" && (
                 <form onSubmit={handleUpdateProfile}>
-                  <h2 style={{ fontWeight: 800, fontSize: 17, marginBottom: 20, color: "#111827" }}>Thông tin cá nhân</h2>
+                  <h2 style={{ fontWeight: 800, fontSize: 17, marginBottom: 20, color: "var(--text-heading)" }}>Thông tin cá nhân</h2>
                   {msgBox(profileMsg)}
 
                   <div style={{ marginBottom: 18 }}>
                     <label style={labelStyle}>Email</label>
-                    <input style={{ ...inputStyle, background: "#f3f4f6", color: "#6b7280" }} value={profile?.email || ""} readOnly />
+                    <input style={{ ...inputStyle, background: "var(--bg-main)", color: "#6b7280" }} value={profile?.email || ""} readOnly />
                     <div style={{ fontSize: 12, color: "#9ca3af", marginTop: 4 }}>Email không thể thay đổi</div>
                   </div>
 
@@ -238,7 +241,7 @@ const AccountPage = () => {
               {/* TAB: PASSWORD */}
               {activeTab === "password" && (
                 <form onSubmit={handleChangePassword}>
-                  <h2 style={{ fontWeight: 800, fontSize: 17, marginBottom: 20, color: "#111827" }}>
+                  <h2 style={{ fontWeight: 800, fontSize: 17, marginBottom: 20, color: "var(--text-heading)" }}>
                     {profile?.hasPassword === false ? "Tạo mật khẩu mới" : "Đổi mật khẩu"}
                   </h2>
                   {msgBox(pwdMsg)}
@@ -270,6 +273,51 @@ const AccountPage = () => {
 
               {/* TAB: MEMBERSHIP */}
               {activeTab === "membership" && renderMembership()}
+
+              {/* TAB: SETTINGS */}
+              {activeTab === "settings" && (
+                <div>
+                  <h2 style={{ fontWeight: 800, fontSize: 17, marginBottom: 20, color: "var(--text-heading)" }}>Cài đặt giao diện</h2>
+                  
+                  <div style={{
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                    padding: "20px 24px", borderRadius: 12,
+                    background: "var(--bg-input)", border: "1.5px solid var(--border-main)",
+                    transition: "background-color 0.3s",
+                  }}>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 15, color: "var(--text-main)", marginBottom: 4 }}>
+                        {isDark ? "🌙 Giao diện tối" : "☀️ Giao diện sáng"}
+                      </div>
+                      <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
+                        {isDark ? "Giảm mỏi mắt khi sử dụng ban đêm" : "Giao diện mặc định, sáng và thoáng"}
+                      </div>
+                    </div>
+                    <button
+                      onClick={toggleTheme}
+                      style={{
+                        width: 56, height: 30, borderRadius: 15,
+                        border: "none", cursor: "pointer",
+                        background: isDark ? "var(--primary)" : "#ccc",
+                        position: "relative", transition: "background 0.3s",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <div style={{
+                        width: 24, height: 24, borderRadius: "50%",
+                        background: "var(--bg-card)", position: "absolute",
+                        top: 3, left: isDark ? 29 : 3,
+                        transition: "left 0.3s",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                      }} />
+                    </button>
+                  </div>
+
+                  <div style={{ marginTop: 16, padding: 16, background: "var(--bg-accent)", borderRadius: 12, fontSize: 13, color: "var(--text-secondary)" }}>
+                    💡 Cài đặt giao diện được lưu tự động trên trình duyệt của bạn.
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

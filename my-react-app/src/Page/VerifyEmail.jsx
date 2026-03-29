@@ -52,7 +52,7 @@ const VerifyEmail = () => {
             padding: "20px"
         }}>
             <div style={{ 
-                background: "#fff", 
+                background: "var(--bg-card)", 
                 padding: "40px", 
                 borderRadius: "24px", 
                 boxShadow: "0 20px 60px rgba(0,0,0,0.1)",
@@ -61,10 +61,10 @@ const VerifyEmail = () => {
                 textAlign: "center"
             }}>
                 <div style={{ fontSize: "50px", marginBottom: "20px" }}>📧</div>
-                <h2 style={{ fontSize: "28px", fontWeight: "800", marginBottom: "10px", color: "#111827" }}>
+                <h2 style={{ fontSize: "28px", fontWeight: "800", marginBottom: "10px", color: "var(--text-heading)" }}>
                     Xác thực Email
                 </h2>
-                <p style={{ color: "#666", marginBottom: "30px", fontSize: "14px" }}>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "30px", fontSize: "14px" }}>
                     Chúng tôi đã gửi mã xác thực 6 số đến email: <br/>
                     <strong style={{ color: "#20c997" }}>{email}</strong>
                 </p>
@@ -130,7 +130,7 @@ const VerifyEmail = () => {
                         {loading ? "Đang xác thực..." : "Xác nhận kích hoạt"}
                     </button>
                     
-                    <p style={{ marginTop: "25px", fontSize: "14px", color: "#888" }}>
+                    <p style={{ marginTop: "25px", fontSize: "14px", color: "var(--text-muted)" }}>
                         Không nhận được mã? <span style={{ color: "#20c997", cursor: "pointer", fontWeight: "600" }}>Gửi lại mã</span>
                     </p>
                 </form>

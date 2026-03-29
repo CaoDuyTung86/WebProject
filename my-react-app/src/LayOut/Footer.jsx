@@ -15,7 +15,7 @@ const Footer = ({ sidebarCollapsed }) => {
 
   return (
     <footer style={{
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "var(--bg-main)",
     borderTop: "1px solid #e9ecef",
     padding: "48px 0 24px 0",
     marginTop: "60px",
@@ -44,7 +44,7 @@ const Footer = ({ sidebarCollapsed }) => {
             <h4 style={{
               fontSize: "16px",
               fontWeight: "700",
-              color: "#333",
+              color: "var(--text-main)",
               marginBottom: "20px",
               textTransform: "uppercase",
               letterSpacing: "0.5px",
@@ -54,7 +54,7 @@ const Footer = ({ sidebarCollapsed }) => {
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -68,7 +68,7 @@ const Footer = ({ sidebarCollapsed }) => {
               </li>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -82,7 +82,7 @@ const Footer = ({ sidebarCollapsed }) => {
               </li>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -102,7 +102,7 @@ const Footer = ({ sidebarCollapsed }) => {
             <h4 style={{
               fontSize: "16px",
               fontWeight: "700",
-              color: "#333",
+              color: "var(--text-main)",
               marginBottom: "20px",
               textTransform: "uppercase",
               letterSpacing: "0.5px",
@@ -112,7 +112,7 @@ const Footer = ({ sidebarCollapsed }) => {
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -126,7 +126,7 @@ const Footer = ({ sidebarCollapsed }) => {
               </li>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -140,7 +140,7 @@ const Footer = ({ sidebarCollapsed }) => {
               </li>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -154,7 +154,7 @@ const Footer = ({ sidebarCollapsed }) => {
               </li>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -168,7 +168,7 @@ const Footer = ({ sidebarCollapsed }) => {
               </li>
               <li style={{ marginBottom: "12px" }}>
                 <a href="#" style={{ 
-                  color: "#666", 
+                  color: "var(--text-secondary)", 
                   textDecoration: "none", 
                   fontSize: "14px",
                   transition: "color 0.2s",
@@ -188,7 +188,7 @@ const Footer = ({ sidebarCollapsed }) => {
             <h4 style={{
               fontSize: "16px",
               fontWeight: "700",
-              color: "#333",
+              color: "var(--text-main)",
               marginBottom: "20px",
               textTransform: "uppercase",
               letterSpacing: "0.5px",
@@ -202,27 +202,27 @@ const Footer = ({ sidebarCollapsed }) => {
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <img src={Visa} alt="VISA" style={{ width: "40px", height: "auto" }} />
-              <span style={{ fontSize: "14px", color: "#666" }}></span>
+              <span style={{ fontSize: "14px", color: "var(--text-secondary)" }}></span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <img src={JCB} alt="JCB" style={{ width: "50px", height: "auto" }} />
-              <span style={{ fontSize: "14px", color: "#666" }}></span>
+              <span style={{ fontSize: "14px", color: "var(--text-secondary)" }}></span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <img src={Plus} alt="PLUS" style={{ width: "40px", height: "auto" }} />
-              <span style={{ fontSize: "14px", color: "#666" }}></span>
+              <span style={{ fontSize: "14px", color: "var(--text-secondary)" }}></span>
               </div>              
               
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <img src={ApplePay} alt="Apple Pay" style={{ width: "50px", height: "auto" }} />
-              <span style={{ fontSize: "14px", color: "#666" }}></span>
+              <span style={{ fontSize: "14px", color: "var(--text-secondary)" }}></span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <img src={GPay} alt="Google Pay" style={{ width: "50px", height: "auto" }} />
-              <span style={{ fontSize: "14px", color: "#666" }}></span>
+              <span style={{ fontSize: "14px", color: "var(--text-secondary)" }}></span>
               </div>
 
               
@@ -234,7 +234,7 @@ const Footer = ({ sidebarCollapsed }) => {
             <h4 style={{
               fontSize: "16px",
               fontWeight: "700",
-              color: "#333",
+              color: "var(--text-main)",
               marginBottom: "20px",
               textTransform: "uppercase",
               letterSpacing: "0.5px",
@@ -248,14 +248,14 @@ const Footer = ({ sidebarCollapsed }) => {
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <img src={Google} alt="Google " style={{ width: "90px", height: "auto" }} />
-              <span style={{ fontSize: "14px", color: "#666" }}></span>
+              <span style={{ fontSize: "14px", color: "var(--text-secondary)" }}></span>
               </div>
 
               <span style={{ 
                 fontSize: "14px", 
                 fontWeight: "600", 
                 color: "#00aa6c",
-                background: "#fff",
+                background: "var(--bg-card)",
                 padding: "6px 16px",
                 borderRadius: "30px",
                 border: "2px solid #00aa6c",
@@ -273,7 +273,7 @@ const Footer = ({ sidebarCollapsed }) => {
           borderTop: "1px solid #e0e0e0",
           paddingTop: "24px",
           textAlign: "center",
-          color: "#888",
+          color: "var(--text-muted)",
           fontSize: "13px",
           lineHeight: "1.6",
         }}>

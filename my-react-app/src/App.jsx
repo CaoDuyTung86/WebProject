@@ -11,6 +11,7 @@ import OrderByPackage from "./Page/OrderByPackage";
 import { LanguageProvider } from "./context/LanguageContext";
 import { AuthProvider } from "./context/AuthContext";
 import { SavedPassengersProvider } from "./context/SavedPassengersContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import Footer from "./LayOut/Footer";
 import MyBookings from "./Page/MyBookings";
 import ForgotPassword from "./Page/ForgotPassword";
@@ -55,13 +56,15 @@ function App() {
   return (
     <GoogleOAuthProvider clientId="326005367827-9hc363n1hv4sls4rcnb4caish7v8fhk2.apps.googleusercontent.com">
       <BrowserRouter>
-        <LanguageProvider>
-          <AuthProvider>
-            <SavedPassengersProvider>
-              <AppWrapper />
-            </SavedPassengersProvider>
-          </AuthProvider>
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <SavedPassengersProvider>
+                <AppWrapper />
+              </SavedPassengersProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </GoogleOAuthProvider>
   );

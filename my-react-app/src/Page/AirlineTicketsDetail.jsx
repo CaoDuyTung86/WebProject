@@ -165,7 +165,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
       <div style={{
         maxWidth: "900px",
         width: "100%",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "16px",
         padding: "30px",
         maxHeight: "90vh",
@@ -204,9 +204,9 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
             marginBottom: "15px",
           }}>
             <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
-              Chiều đi · <span style={{ color: "#4f7cff" }}>{data.departureDate}</span>
+              Chiều đi · <span style={{ color: "var(--primary)" }}>{data.departureDate}</span>
             </h3>
-            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "#666" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "var(--text-secondary)" }}>
               <FiClock /> {data.duration}
             </div>
           </div>
@@ -217,17 +217,17 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.outboundFlight.departureTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.outboundFlight.departureAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.outboundFlight.departureFull}
               </div>
             </div>
 
             {/* Arrow */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <GiCommercialAirplane style={{ color: "#4f7cff", fontSize: "24px", transform: "rotate(90deg)" }} />
+              <GiCommercialAirplane style={{ color: "var(--primary)", fontSize: "24px", transform: "rotate(90deg)" }} />
             </div>
 
             {/* Arrival */}
@@ -235,10 +235,10 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.outboundFlight.arrivalTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.outboundFlight.arrivalAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.outboundFlight.arrivalFull}
               </div>
             </div>
@@ -249,14 +249,14 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
             paddingTop: "15px",
             borderTop: "1px solid #e0e0e0",
             fontSize: "14px",
-            color: "#666",
+            color: "var(--text-secondary)",
             display: "flex",
             gap: "15px",
             flexWrap: "wrap",
           }}>
             <span><strong>{data.outboundFlight.airline}</strong> {data.outboundFlight.flightNumber}</span>
             <span>{data.outboundFlight.aircraft}</span>
-            <span style={{ color: "#4f7cff" }}>{data.outboundFlight.class}</span>
+            <span style={{ color: "var(--primary)" }}>{data.outboundFlight.class}</span>
           </div>
         </div>
 
@@ -274,9 +274,9 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
             marginBottom: "15px",
           }}>
             <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
-              Chiều về · <span style={{ color: "#4f7cff" }}>{data.returnDate}</span>
+              Chiều về · <span style={{ color: "var(--primary)" }}>{data.returnDate}</span>
             </h3>
-            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "#666" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px", color: "var(--text-secondary)" }}>
               <FiClock /> 2g 10p
             </div>
           </div>
@@ -287,19 +287,19 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.inboundFlight.departureTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.inboundFlight.departureAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.inboundFlight.departureFull}
               </div>
             </div>
 
             {/* Arrow */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <GiCommercialAirplane style={{ color: "#4f7cff", fontSize: "24px", transform: "rotate(90deg)" }} />
+              <GiCommercialAirplane style={{ color: "var(--primary)", fontSize: "24px", transform: "rotate(90deg)" }} />
               {data.inboundFlight.arrivalDate && (
-                <div style={{ fontSize: "12px", color: "#999", marginTop: "5px" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "5px" }}>
                   {data.inboundFlight.arrivalDate}
                 </div>
               )}
@@ -310,10 +310,10 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               <div style={{ fontSize: "24px", fontWeight: "600", marginBottom: "5px" }}>
                 {data.inboundFlight.arrivalTime}
               </div>
-              <div style={{ fontSize: "14px", color: "#666", marginBottom: "5px" }}>
+              <div style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "5px" }}>
                 {data.inboundFlight.arrivalAirport}
               </div>
-              <div style={{ fontSize: "13px", color: "#999", lineHeight: "1.4" }}>
+              <div style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: "1.4" }}>
                 {data.inboundFlight.arrivalFull}
               </div>
             </div>
@@ -324,14 +324,14 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
             paddingTop: "15px",
             borderTop: "1px solid #e0e0e0",
             fontSize: "14px",
-            color: "#666",
+            color: "var(--text-secondary)",
             display: "flex",
             gap: "15px",
             flexWrap: "wrap",
           }}>
             <span><strong>{data.inboundFlight.airline}</strong> {data.inboundFlight.flightNumber}</span>
             <span>{data.inboundFlight.aircraft}</span>
-            <span style={{ color: "#4f7cff" }}>{data.inboundFlight.class}</span>
+            <span style={{ color: "var(--primary)" }}>{data.inboundFlight.class}</span>
           </div>
         </div>
 
@@ -355,13 +355,13 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
                 onMouseEnter={(e) => {
                   if (selectedClass !== option.id) {
                     e.currentTarget.style.borderColor = "#4f7cff";
-                    e.currentTarget.style.backgroundColor = "#f5f5f5";
+                    e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (selectedClass !== option.id) {
                     e.currentTarget.style.borderColor = "#e0e0e0";
-                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.backgroundColor = "var(--bg-card)";
                   }
                 }}
               >
@@ -370,32 +370,32 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
                 </div>
                 
                 <div style={{ marginBottom: "10px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "#666", marginBottom: "5px" }}>
-                    <FaSuitcase style={{ color: "#4f7cff" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "var(--text-secondary)", marginBottom: "5px" }}>
+                    <FaSuitcase style={{ color: "var(--primary)" }} />
                     <span>Hành lý xách tay: {option.luggage.carryOn}</span>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "#666" }}>
-                    <FaSuitcase style={{ color: "#4f7cff" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "13px", color: "var(--text-secondary)" }}>
+                    <FaSuitcase style={{ color: "var(--primary)" }} />
                     <span>Hành lý ký gửi: {option.luggage.checked}</span>
                   </div>
                 </div>
 
-                <div style={{ fontSize: "13px", color: "#666", marginBottom: "10px" }}>
+                <div style={{ fontSize: "13px", color: "var(--text-secondary)", marginBottom: "10px" }}>
                   {option.flexibility}
                 </div>
 
                 {option.benefits && (
-                  <div style={{ fontSize: "12px", color: "#4f7cff", marginBottom: "10px" }}>
+                  <div style={{ fontSize: "12px", color: "var(--primary)", marginBottom: "10px" }}>
                     {option.benefits.join(" · ")}
                   </div>
                 )}
 
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: "18px", fontWeight: "600", color: "#4f7cff" }}>
+                  <div style={{ fontSize: "18px", fontWeight: "600", color: "var(--primary)" }}>
                     {option.price}
                   </div>
                   {option.originalPrice && option.originalPrice !== option.price && (
-                    <div style={{ fontSize: "12px", color: "#999", textDecoration: "line-through" }}>
+                    <div style={{ fontSize: "12px", color: "var(--text-muted)", textDecoration: "line-through" }}>
                       {option.originalPrice}
                     </div>
                   )}
@@ -421,11 +421,11 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               <span>Vé người lớn {priceBreakdown.adult.count} ×</span>
               <span>{priceBreakdown.adult.price}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "#666" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "var(--text-secondary)" }}>
               <span>Giá</span>
               <span>{priceBreakdown.adult.base}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "#666" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginLeft: "20px", color: "var(--text-secondary)" }}>
               <span>Thuế & phí</span>
               <span>{priceBreakdown.adult.tax}</span>
             </div>
@@ -443,7 +443,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               borderTop: "1px solid #e0e0e0",
             }}>
               <span>Tổng giá khởi hồi</span>
-              <span style={{ color: "#4f7cff" }}>{priceBreakdown.total}</span>
+              <span style={{ color: "var(--primary)" }}>{priceBreakdown.total}</span>
             </div>
           </div>
         </div>
@@ -457,17 +457,17 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
           border: "1px solid #d4e4ff",
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <FiGift style={{ color: "#4f7cff" }} />
+            <FiGift style={{ color: "var(--primary)" }} />
             <span style={{ fontSize: "14px", fontWeight: "600" }}>Quyền lợi khác</span>
           </div>
-          <div style={{ fontSize: "13px", color: "#666", lineHeight: "1.6" }}>
+          <div style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: "1.6" }}>
             <div>• Dặm của hãng hàng không: ít nhất 38</div>
             <div>• Combo chuyến bay: ✓ Giá tốt ✓ Cam kết bảo toàn hành trình</div>
           </div>
           <div style={{
             marginTop: "10px",
             fontSize: "12px",
-            color: "#999",
+            color: "var(--text-muted)",
             fontStyle: "italic",
           }}>
             * Có hiệu lực trước giờ khởi hành của chuyến bay đầu tiên. Không được chuyển sang chuyến bay đã đổi.
@@ -495,24 +495,24 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
                 onMouseEnter={(e) => {
                   if (selectedPayment !== method.id) {
                     e.currentTarget.style.borderColor = "#4f7cff";
-                    e.currentTarget.style.backgroundColor = "#f5f5f5";
+                    e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (selectedPayment !== method.id) {
                     e.currentTarget.style.borderColor = "#e0e0e0";
-                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.backgroundColor = "var(--bg-card)";
                   }
                 }}
               >
                 <div style={{ fontSize: "16px", fontWeight: "600", marginBottom: "10px" }}>
                   {method.name}
                 </div>
-                <div style={{ fontSize: "18px", fontWeight: "600", color: "#4f7cff" }}>
+                <div style={{ fontSize: "18px", fontWeight: "600", color: "var(--primary)" }}>
                   {method.price}
                 </div>
                 {method.originalPrice !== method.price && (
-                  <div style={{ fontSize: "12px", color: "#999", textDecoration: "line-through" }}>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)", textDecoration: "line-through" }}>
                     {method.originalPrice}
                   </div>
                 )}
@@ -542,25 +542,25 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
           justifyContent: "flex-end",
           marginTop: "20px",
           paddingTop: "20px",
-          borderTop: "2px solid #f0f0f0",
+          borderTop: "2px solid var(--border-light)",
         }}>
           <button
             onClick={onClose}
             style={{
               padding: "12px 24px",
-              border: "1px solid #ddd",
+              border: "1px solid var(--border-input)",
               borderRadius: "8px",
-              background: "#fff",
+              background: "var(--bg-card)",
               fontSize: "16px",
               fontWeight: "500",
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f5f5f5";
+              e.currentTarget.style.backgroundColor = "var(--bg-hover)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
             }}
           >
             Đóng
@@ -580,7 +580,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               padding: "12px 32px",
               border: "none",
               borderRadius: "8px",
-              background: "#4f7cff",
+              background: "var(--primary)",
               color: "#fff",
               fontSize: "16px",
               fontWeight: "600",
@@ -588,11 +588,11 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#3a5fd0";
+              e.target.style.backgroundColor = "var(--primary-hover)";
               e.target.style.transform = "scale(1.02)";
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "#4f7cff";
+              e.target.style.backgroundColor = "var(--primary)";
               e.target.style.transform = "scale(1)";
             }}
           >
@@ -604,7 +604,7 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts 
         <div style={{
           marginTop: "15px",
           fontSize: "12px",
-          color: "#999",
+          color: "var(--text-muted)",
           textAlign: "center",
         }}>
           Đăng ký tại đây · Khởi tốt
@@ -707,7 +707,7 @@ const CitySelector = ({ type, onSelect, onClose }) => {
     }} onClick={onClose}>
       <div style={{
         width: "600px",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "16px",
         padding: "20px",
         maxHeight: "80vh",
@@ -733,11 +733,11 @@ const CitySelector = ({ type, onSelect, onClose }) => {
           alignItems: "center",
           gap: "10px",
           padding: "10px",
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "var(--bg-hover)",
           borderRadius: "8px",
           marginBottom: "20px",
         }}>
-          <FiSearch style={{ color: "#999" }} />
+          <FiSearch style={{ color: "var(--text-muted)" }} />
           <input
             type="text"
             placeholder="Tìm thành phố hoặc sân bay..."
@@ -779,12 +779,12 @@ const CitySelector = ({ type, onSelect, onClose }) => {
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== country.id) {
-                  e.currentTarget.style.backgroundColor = "#f5f5f5";
+                  e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTab !== country.id) {
-                  e.currentTarget.style.backgroundColor = "#fff";
+                  e.currentTarget.style.backgroundColor = "var(--bg-card)";
                 }
               }}
             >
@@ -807,12 +807,12 @@ const CitySelector = ({ type, onSelect, onClose }) => {
               onClick={() => onSelect(city)}
               style={{
                 padding: "12px",
-                borderBottom: "1px solid #f0f0f0",
+                borderBottom: "1px solid var(--border-light)",
                 cursor: "pointer",
                 transition: "all 0.2s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#f5f5f5";
+                e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                 e.currentTarget.style.transform = "translateX(5px)";
               }}
               onMouseLeave={(e) => {
@@ -822,14 +822,14 @@ const CitySelector = ({ type, onSelect, onClose }) => {
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <div style={{ fontSize: "16px", fontWeight: "500", color: "#333" }}>{city.name}</div>
-                  <div style={{ fontSize: "13px", color: "#666" }}>
+                  <div style={{ fontSize: "16px", fontWeight: "500", color: "var(--text-main)" }}>{city.name}</div>
+                  <div style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
                     {city.airport} ({city.code}) · {city.district}
                   </div>
                 </div>
                 <div style={{ 
                   fontSize: "14px", 
-                  color: "#4f7cff", 
+                  color: "var(--primary)", 
                   fontWeight: "500",
                   opacity: 0,
                   transition: "opacity 0.2s",
@@ -892,7 +892,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
     }} onClick={onClose}>
       <div style={{
         width: "400px",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "16px",
         padding: "20px",
         boxShadow: "0 10px 40px rgba(0,0,0,0.2)",
@@ -911,7 +911,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
 
         {/* Passengers */}
         <div style={{ marginBottom: "20px" }}>
-          <h4 style={{ fontSize: "14px", color: "#666", marginBottom: "15px" }}>Số hành khách</h4>
+          <h4 style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "15px" }}>Số hành khách</h4>
           
           {/* Adult */}
           <div style={{
@@ -925,7 +925,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
           }}>
             <div>
               <div style={{ fontWeight: "500" }}>Người lớn</div>
-              <div style={{ fontSize: "12px", color: "#999" }}>≥ 12 tuổi</div>
+              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>≥ 12 tuổi</div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
               <button
@@ -934,7 +934,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                   width: "30px",
                   height: "30px",
                   borderRadius: "50%",
-                  border: "1px solid #ddd",
+                  border: "1px solid var(--border-input)",
                   background: passengers.adult > 1 ? "#fff" : "#f5f5f5",
                   cursor: passengers.adult > 1 ? "pointer" : "not-allowed",
                   fontSize: "18px",
@@ -949,8 +949,8 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                   width: "30px",
                   height: "30px",
                   borderRadius: "50%",
-                  border: "1px solid #ddd",
-                  background: "#fff",
+                  border: "1px solid var(--border-input)",
+                  background: "var(--bg-card)",
                   cursor: "pointer",
                   fontSize: "18px",
                 }}
@@ -970,7 +970,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
           }}>
             <div>
               <div style={{ fontWeight: "500" }}>Trẻ em</div>
-              <div style={{ fontSize: "12px", color: "#999" }}>2-11 tuổi</div>
+              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>2-11 tuổi</div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
               <button
@@ -979,7 +979,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                   width: "30px",
                   height: "30px",
                   borderRadius: "50%",
-                  border: "1px solid #ddd",
+                  border: "1px solid var(--border-input)",
                   background: passengers.child > 0 ? "#fff" : "#f5f5f5",
                   cursor: passengers.child > 0 ? "pointer" : "not-allowed",
                   fontSize: "18px",
@@ -994,8 +994,8 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                   width: "30px",
                   height: "30px",
                   borderRadius: "50%",
-                  border: "1px solid #ddd",
-                  background: "#fff",
+                  border: "1px solid var(--border-input)",
+                  background: "var(--bg-card)",
                   cursor: "pointer",
                   fontSize: "18px",
                 }}
@@ -1015,7 +1015,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
           }}>
             <div>
               <div style={{ fontWeight: "500" }}>Em bé</div>
-              <div style={{ fontSize: "12px", color: "#999" }}>&lt; 2 tuổi</div>
+              <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>&lt; 2 tuổi</div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
               <button
@@ -1024,7 +1024,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                   width: "30px",
                   height: "30px",
                   borderRadius: "50%",
-                  border: "1px solid #ddd",
+                  border: "1px solid var(--border-input)",
                   background: passengers.infant > 0 ? "#fff" : "#f5f5f5",
                   cursor: passengers.infant > 0 ? "pointer" : "not-allowed",
                   fontSize: "18px",
@@ -1039,8 +1039,8 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                   width: "30px",
                   height: "30px",
                   borderRadius: "50%",
-                  border: "1px solid #ddd",
-                  background: "#fff",
+                  border: "1px solid var(--border-input)",
+                  background: "var(--bg-card)",
                   cursor: "pointer",
                   fontSize: "18px",
                 }}
@@ -1051,7 +1051,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
 
         {/* Class */}
         <div style={{ marginBottom: "20px" }}>
-          <h4 style={{ fontSize: "14px", color: "#666", marginBottom: "15px" }}>Hạng vé</h4>
+          <h4 style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "15px" }}>Hạng vé</h4>
           <div style={{ display: "grid", gap: "10px" }}>
             {classOptions.map(option => (
               <div
@@ -1071,13 +1071,13 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                 onMouseEnter={(e) => {
                   if (selectedClass !== option.id) {
                     e.currentTarget.style.borderColor = "#4f7cff";
-                    e.currentTarget.style.backgroundColor = "#f5f5f5";
+                    e.currentTarget.style.backgroundColor = "var(--bg-hover)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (selectedClass !== option.id) {
                     e.currentTarget.style.borderColor = "#ddd";
-                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.backgroundColor = "var(--bg-card)";
                   }
                 }}
               >
@@ -1098,7 +1098,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
                   </div>
                   <span style={{ fontWeight: "500" }}>{option.label}</span>
                 </div>
-                <span style={{ color: "#4f7cff", fontWeight: "600" }}>{option.price}</span>
+                <span style={{ color: "var(--primary)", fontWeight: "600" }}>{option.price}</span>
               </div>
             ))}
           </div>
@@ -1110,7 +1110,7 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
           style={{
             width: "100%",
             padding: "14px",
-            backgroundColor: "#4f7cff",
+            backgroundColor: "var(--primary)",
             color: "#fff",
             border: "none",
             borderRadius: "8px",
@@ -1120,11 +1120,11 @@ const PassengerClassSelector = ({ onClose, onSelect, initialPassengers, initialC
             transition: "all 0.2s",
           }}
           onMouseEnter={(e) => {
-            e.target.style.backgroundColor = "#3a5fd0";
+            e.target.style.backgroundColor = "var(--primary-hover)";
             e.target.style.transform = "scale(1.02)";
           }}
           onMouseLeave={(e) => {
-            e.target.style.backgroundColor = "#4f7cff";
+            e.target.style.backgroundColor = "var(--primary)";
             e.target.style.transform = "scale(1)";
           }}
         >
@@ -1213,7 +1213,7 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
     }} onClick={onClose}>
       <div style={{
         width: "700px",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "16px",
         padding: "20px",
         boxShadow: "0 10px 40px rgba(0,0,0,0.2)",
@@ -1236,17 +1236,17 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
           gap: "20px",
           marginBottom: "20px",
           padding: "15px",
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "var(--bg-hover)",
           borderRadius: "8px",
         }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: "12px", color: "#666" }}>Chiều đi</div>
+            <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Chiều đi</div>
             <div style={{ fontSize: "16px", fontWeight: "600", color: selectedDeparture ? "#333" : "#999" }}>
               {selectedDeparture ? formatDate(selectedDeparture) : "Chọn ngày đi"}
             </div>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: "12px", color: "#666" }}>Chiều về</div>
+            <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>Chiều về</div>
             <div style={{ fontSize: "16px", fontWeight: "600", color: selectedReturn ? "#333" : "#999" }}>
               {selectedReturn ? formatDate(selectedReturn) : "Chọn ngày về (nếu có)"}
             </div>
@@ -1264,17 +1264,17 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
             onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)))}
             style={{
               padding: "8px",
-              border: "1px solid #ddd",
+              border: "1px solid var(--border-input)",
               borderRadius: "8px",
-              background: "#fff",
+              background: "var(--bg-card)",
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.backgroundColor = "var(--bg-tag)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
             }}
           >
             <IoIosArrowBack />
@@ -1286,17 +1286,17 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
             onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)))}
             style={{
               padding: "8px",
-              border: "1px solid #ddd",
+              border: "1px solid var(--border-input)",
               borderRadius: "8px",
-              background: "#fff",
+              background: "var(--bg-card)",
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.backgroundColor = "var(--bg-tag)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
             }}
           >
             <IoIosArrowForward />
@@ -1311,7 +1311,7 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
           marginBottom: "20px",
         }}>
           {["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map(day => (
-            <div key={day} style={{ textAlign: "center", fontSize: "13px", color: "#999", padding: "8px" }}>
+            <div key={day} style={{ textAlign: "center", fontSize: "13px", color: "var(--text-muted)", padding: "8px" }}>
               {day}
             </div>
           ))}
@@ -1342,7 +1342,7 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
                   (selectedDeparture && date.toDateString() === selectedDeparture.toDateString()) ||
                   (selectedReturn && date.toDateString() === selectedReturn.toDateString())
                 )) {
-                  e.currentTarget.style.backgroundColor = "#f0f0f0";
+                  e.currentTarget.style.backgroundColor = "var(--bg-tag)";
                 }
               }}
               onMouseLeave={(e) => {
@@ -1353,7 +1353,7 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
                   if (selectedDeparture && selectedReturn && date > selectedDeparture && date < selectedReturn) {
                     e.currentTarget.style.backgroundColor = "#e8f4ff";
                   } else {
-                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.backgroundColor = "var(--bg-card)";
                   }
                 }
               }}
@@ -1381,13 +1381,13 @@ const DateSelector = ({ onClose, onSelect, initialDates }) => {
           }}
           onMouseEnter={(e) => {
             if (selectedDeparture) {
-              e.target.style.backgroundColor = "#3a5fd0";
+              e.target.style.backgroundColor = "var(--primary-hover)";
               e.target.style.transform = "scale(1.02)";
             }
           }}
           onMouseLeave={(e) => {
             if (selectedDeparture) {
-              e.target.style.backgroundColor = "#4f7cff";
+              e.target.style.backgroundColor = "var(--primary)";
               e.target.style.transform = "scale(1)";
             }
           }}
@@ -1671,7 +1671,7 @@ const AirlineTicketsDetail = () => {
     <div style={{
       marginTop: "70px",
       padding: "20px 30px",
-      backgroundColor: "#f5f5f5",
+      backgroundColor: "var(--bg-hover)",
       minHeight: "calc(100vh - 70px)",
     }}>
       {/* Header Tabs */}
@@ -1715,18 +1715,18 @@ const AirlineTicketsDetail = () => {
           <button 
             style={{ 
               padding: "8px 16px", 
-              border: "1px solid #ddd", 
+              border: "1px solid var(--border-input)", 
               borderRadius: "20px", 
-              background: "#fff", 
+              background: "var(--bg-card)", 
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.backgroundColor = "var(--bg-tag)";
               e.currentTarget.style.borderColor = "#999";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
               e.currentTarget.style.borderColor = "#ddd";
             }}
           >
@@ -1742,7 +1742,7 @@ const AirlineTicketsDetail = () => {
         gap: "30px",
         marginBottom: "20px",
         padding: "15px 20px",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "12px",
         boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
       }}>
@@ -1763,7 +1763,7 @@ const AirlineTicketsDetail = () => {
             setShowCitySelector(true);
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#f5f5f5";
+            e.currentTarget.style.backgroundColor = "var(--bg-hover)";
             e.currentTarget.style.transform = "translateY(-2px)";
           }}
           onMouseLeave={(e) => {
@@ -1771,10 +1771,10 @@ const AirlineTicketsDetail = () => {
             e.currentTarget.style.transform = "translateY(0)";
           }}
         >
-          <MdFlightTakeoff style={{ color: "#4f7cff", fontSize: "20px" }} />
+          <MdFlightTakeoff style={{ color: "var(--primary)", fontSize: "20px" }} />
           <div>
-            <div style={{ fontSize: "14px", color: "#666", fontWeight: "500" }}>{fromCity.name}</div>
-            <div style={{ fontSize: "12px", color: "#999" }}>{fromCity.airport} ({fromCity.code})</div>
+            <div style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500" }}>{fromCity.name}</div>
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>{fromCity.airport} ({fromCity.code})</div>
           </div>
         </div>
         
@@ -1797,7 +1797,7 @@ const AirlineTicketsDetail = () => {
             setShowCitySelector(true);
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#f5f5f5";
+            e.currentTarget.style.backgroundColor = "var(--bg-hover)";
             e.currentTarget.style.transform = "translateY(-2px)";
           }}
           onMouseLeave={(e) => {
@@ -1805,10 +1805,10 @@ const AirlineTicketsDetail = () => {
             e.currentTarget.style.transform = "translateY(0)";
           }}
         >
-          <MdFlightLand style={{ color: "#4f7cff", fontSize: "20px" }} />
+          <MdFlightLand style={{ color: "var(--primary)", fontSize: "20px" }} />
           <div>
-            <div style={{ fontSize: "14px", color: "#666", fontWeight: "500" }}>{toCity.name}</div>
-            <div style={{ fontSize: "12px", color: "#999" }}>{toCity.airport} ({toCity.code})</div>
+            <div style={{ fontSize: "14px", color: "var(--text-secondary)", fontWeight: "500" }}>{toCity.name}</div>
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>{toCity.airport} ({toCity.code})</div>
           </div>
         </div>
 
@@ -1825,7 +1825,7 @@ const AirlineTicketsDetail = () => {
           }}
           onClick={() => setShowDateSelector(true)}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#f5f5f5";
+            e.currentTarget.style.backgroundColor = "var(--bg-hover)";
             e.currentTarget.style.transform = "translateY(-2px)";
           }}
           onMouseLeave={(e) => {
@@ -1833,10 +1833,10 @@ const AirlineTicketsDetail = () => {
             e.currentTarget.style.transform = "translateY(0)";
           }}
         >
-          <FiCalendar style={{ color: "#4f7cff" }} />
+          <FiCalendar style={{ color: "var(--primary)" }} />
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: "13px", color: "#666", fontWeight: "500" }}>{formatDate(flightDates.departure)}</div>
-            <div style={{ fontSize: "13px", color: "#666" }}>{formatDate(flightDates.return)}</div>
+            <div style={{ fontSize: "13px", color: "var(--text-secondary)", fontWeight: "500" }}>{formatDate(flightDates.departure)}</div>
+            <div style={{ fontSize: "13px", color: "var(--text-secondary)" }}>{formatDate(flightDates.return)}</div>
           </div>
         </div>
 
@@ -1855,7 +1855,7 @@ const AirlineTicketsDetail = () => {
           }}
           onClick={() => setShowPassengerSelector(true)}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#f5f5f5";
+            e.currentTarget.style.backgroundColor = "var(--bg-hover)";
             e.currentTarget.style.transform = "translateY(-2px)";
           }}
           onMouseLeave={(e) => {
@@ -1863,12 +1863,12 @@ const AirlineTicketsDetail = () => {
             e.currentTarget.style.transform = "translateY(0)";
           }}
         >
-          <FaUserFriends style={{ color: "#4f7cff" }} />
+          <FaUserFriends style={{ color: "var(--primary)" }} />
           <div>
-            <div style={{ fontSize: "13px", color: "#666", fontWeight: "500" }}>
+            <div style={{ fontSize: "13px", color: "var(--text-secondary)", fontWeight: "500" }}>
               {getTotalPassengers()} {getTotalPassengers() > 1 ? 'người' : 'người'}
             </div>
-            <div style={{ fontSize: "12px", color: "#999" }}>
+            <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
               {classLabels[passengerInfo.selectedClass]}
             </div>
           </div>
@@ -1913,7 +1913,7 @@ const AirlineTicketsDetail = () => {
       <div style={{
         marginBottom: "20px",
         padding: "20px",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "12px",
         boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
       }}>
@@ -1925,7 +1925,7 @@ const AirlineTicketsDetail = () => {
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "600" }}>Bảng giá</h3>
-            <span style={{ fontSize: "14px", color: "#4f7cff", background: "#e8f4ff", padding: "4px 8px", borderRadius: "4px" }}>
+            <span style={{ fontSize: "14px", color: "var(--primary)", background: "#e8f4ff", padding: "4px 8px", borderRadius: "4px" }}>
               {getWeekRange()}
             </span>
           </div>
@@ -1934,9 +1934,9 @@ const AirlineTicketsDetail = () => {
               onClick={handlePrevWeek}
               style={{ 
                 padding: "5px 10px", 
-                border: "1px solid #ddd", 
+                border: "1px solid var(--border-input)", 
                 borderRadius: "5px", 
-                background: "#fff", 
+                background: "var(--bg-card)", 
                 cursor: "pointer",
                 opacity: priceWeekOffset > 0 ? 1 : 0.5,
                 transition: "all 0.2s",
@@ -1944,11 +1944,11 @@ const AirlineTicketsDetail = () => {
               disabled={priceWeekOffset <= 0}
               onMouseEnter={(e) => {
                 if (priceWeekOffset > 0) {
-                  e.currentTarget.style.backgroundColor = "#f0f0f0";
+                  e.currentTarget.style.backgroundColor = "var(--bg-tag)";
                 }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#fff";
+                e.currentTarget.style.backgroundColor = "var(--bg-card)";
               }}
             >
               <IoIosArrowBack />
@@ -1957,17 +1957,17 @@ const AirlineTicketsDetail = () => {
               onClick={handleNextWeek}
               style={{ 
                 padding: "5px 10px", 
-                border: "1px solid #ddd", 
+                border: "1px solid var(--border-input)", 
                 borderRadius: "5px", 
-                background: "#fff", 
+                background: "var(--bg-card)", 
                 cursor: "pointer",
                 transition: "all 0.2s",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#f0f0f0";
+                e.currentTarget.style.backgroundColor = "var(--bg-tag)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#fff";
+                e.currentTarget.style.backgroundColor = "var(--bg-card)";
               }}
             >
               <IoIosArrowForward />
@@ -1981,7 +1981,7 @@ const AirlineTicketsDetail = () => {
           marginBottom: "10px",
         }}>
           {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map(day => (
-            <div key={day} style={{ fontSize: "12px", color: "#999", textAlign: "center" }}>
+            <div key={day} style={{ fontSize: "12px", color: "var(--text-muted)", textAlign: "center" }}>
               {day}
             </div>
           ))}
@@ -2006,7 +2006,7 @@ const AirlineTicketsDetail = () => {
               onClick={() => setSelectedDate(index)}
               onMouseEnter={(e) => {
                 if (selectedDate !== index) {
-                  e.currentTarget.style.backgroundColor = "#f0f0f0";
+                  e.currentTarget.style.backgroundColor = "var(--bg-tag)";
                   e.currentTarget.style.transform = "scale(1.02)";
                 }
               }}
@@ -2017,10 +2017,10 @@ const AirlineTicketsDetail = () => {
                 }
               }}
             >
-              <div style={{ fontSize: "13px", fontWeight: "500", color: "#333" }}>
+              <div style={{ fontSize: "13px", fontWeight: "500", color: "var(--text-main)" }}>
                 {item.date.split('–')[0]}
               </div>
-              <div style={{ fontSize: "12px", color: "#4f7cff", fontWeight: "600" }}>{item.price}</div>
+              <div style={{ fontSize: "12px", color: "var(--primary)", fontWeight: "600" }}>{item.price}</div>
             </div>
           ))}
         </div>
@@ -2030,7 +2030,7 @@ const AirlineTicketsDetail = () => {
           backgroundColor: "#f9f9f9",
           borderRadius: "8px",
           fontSize: "13px",
-          color: "#666",
+          color: "var(--text-secondary)",
           textAlign: "center",
         }}>
           <FiInfo style={{ marginRight: "5px", verticalAlign: "middle" }} />
@@ -2044,7 +2044,7 @@ const AirlineTicketsDetail = () => {
         <div style={{ width: "280px" }}>
           {/* Recommended Section */}
           <div style={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--bg-card)",
             borderRadius: "12px",
             padding: "15px",
             marginBottom: "15px",
@@ -2062,12 +2062,12 @@ const AirlineTicketsDetail = () => {
                   borderRadius: "4px",
                   transition: "background 0.2s",
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#f5f5f5"}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--bg-hover)"}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
                 >
                   <input type="checkbox" style={{ width: "16px", height: "16px", cursor: "pointer" }} />
-                  <span style={{ fontSize: "14px", color: "#333" }}>{option.label}</span>
-                  <span style={{ marginLeft: "auto", fontSize: "12px", color: "#999" }}>({option.count})</span>
+                  <span style={{ fontSize: "14px", color: "var(--text-main)" }}>{option.label}</span>
+                  <span style={{ marginLeft: "auto", fontSize: "12px", color: "var(--text-muted)" }}>({option.count})</span>
                 </label>
               </div>
             ))}
@@ -2075,7 +2075,7 @@ const AirlineTicketsDetail = () => {
 
           {/* Airlines */}
           <div style={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--bg-card)",
             borderRadius: "12px",
             padding: "15px",
             marginBottom: "15px",
@@ -2093,7 +2093,7 @@ const AirlineTicketsDetail = () => {
                   borderRadius: "4px",
                   transition: "background 0.2s",
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#f5f5f5"}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--bg-hover)"}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
                 >
                   <input type="checkbox" style={{ width: "16px", height: "16px", cursor: "pointer" }} />
@@ -2101,7 +2101,7 @@ const AirlineTicketsDetail = () => {
                     <div style={{
                       width: "30px",
                       height: "30px",
-                      backgroundColor: "#4f7cff",
+                      backgroundColor: "var(--primary)",
                       borderRadius: "6px",
                       display: "flex",
                       alignItems: "center",
@@ -2112,18 +2112,18 @@ const AirlineTicketsDetail = () => {
                     }}>
                       {airline.logo}
                     </div>
-                    <span style={{ fontSize: "14px", color: "#333" }}>{airline.name}</span>
+                    <span style={{ fontSize: "14px", color: "var(--text-main)" }}>{airline.name}</span>
                   </div>
-                  <span style={{ fontSize: "13px", fontWeight: "500", color: "#4f7cff" }}>{airline.price}</span>
+                  <span style={{ fontSize: "13px", fontWeight: "500", color: "var(--primary)" }}>{airline.price}</span>
                 </label>
-                <div style={{ fontSize: "12px", color: "#999", marginLeft: "46px" }}>{airline.count} chuyến</div>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)", marginLeft: "46px" }}>{airline.count} chuyến</div>
               </div>
             ))}
           </div>
 
           {/* Alliances */}
           <div style={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--bg-card)",
             borderRadius: "12px",
             padding: "15px",
             marginBottom: "15px",
@@ -2141,12 +2141,12 @@ const AirlineTicketsDetail = () => {
                   borderRadius: "4px",
                   transition: "background 0.2s",
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#f5f5f5"}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--bg-hover)"}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
                 >
                   <input type="checkbox" style={{ width: "16px", height: "16px", cursor: "pointer" }} />
-                  <span style={{ fontSize: "14px", color: "#333" }}>{alliance.name}</span>
-                  <span style={{ marginLeft: "auto", fontSize: "13px", fontWeight: "500", color: "#4f7cff" }}>{alliance.price}</span>
+                  <span style={{ fontSize: "14px", color: "var(--text-main)" }}>{alliance.name}</span>
+                  <span style={{ marginLeft: "auto", fontSize: "13px", fontWeight: "500", color: "var(--primary)" }}>{alliance.price}</span>
                 </label>
               </div>
             ))}
@@ -2161,7 +2161,7 @@ const AirlineTicketsDetail = () => {
             alignItems: "center",
             gap: "20px",
             padding: "15px",
-            backgroundColor: "#fff",
+            backgroundColor: "var(--bg-card)",
             borderRadius: "12px",
             marginBottom: "15px",
             boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
@@ -2171,13 +2171,13 @@ const AirlineTicketsDetail = () => {
               border: "1px solid #4f7cff", 
               borderRadius: "20px", 
               background: "#e8f4ff", 
-              color: "#4f7cff", 
+              color: "var(--primary)", 
               fontSize: "13px", 
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#4f7cff";
+              e.currentTarget.style.backgroundColor = "var(--primary)";
               e.currentTarget.style.color = "#fff";
             }}
             onMouseLeave={(e) => {
@@ -2189,19 +2189,19 @@ const AirlineTicketsDetail = () => {
             </button>
             <button style={{ 
               padding: "6px 12px", 
-              border: "1px solid #ddd", 
+              border: "1px solid var(--border-input)", 
               borderRadius: "20px", 
-              background: "#fff", 
+              background: "var(--bg-card)", 
               fontSize: "13px", 
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.backgroundColor = "var(--bg-tag)";
               e.currentTarget.style.borderColor = "#999";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
               e.currentTarget.style.borderColor = "#ddd";
             }}
             >
@@ -2209,19 +2209,19 @@ const AirlineTicketsDetail = () => {
             </button>
             <button style={{ 
               padding: "6px 12px", 
-              border: "1px solid #ddd", 
+              border: "1px solid var(--border-input)", 
               borderRadius: "20px", 
-              background: "#fff", 
+              background: "var(--bg-card)", 
               fontSize: "13px", 
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.backgroundColor = "var(--bg-tag)";
               e.currentTarget.style.borderColor = "#999";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
               e.currentTarget.style.borderColor = "#ddd";
             }}
             >
@@ -2238,30 +2238,30 @@ const AirlineTicketsDetail = () => {
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.backgroundColor = "var(--bg-tag)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = "transparent";
             }}
             >
-              <span style={{ fontSize: "13px", color: "#666" }}>Sắp xếp theo</span>
+              <span style={{ fontSize: "13px", color: "var(--text-secondary)" }}>Sắp xếp theo</span>
               <FiChevronDown />
             </div>
             <button style={{ 
               padding: "6px 12px", 
-              border: "1px solid #ddd", 
+              border: "1px solid var(--border-input)", 
               borderRadius: "20px", 
-              background: "#fff", 
+              background: "var(--bg-card)", 
               fontSize: "13px", 
               cursor: "pointer",
               transition: "all 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0f0f0";
+              e.currentTarget.style.backgroundColor = "var(--bg-tag)";
               e.currentTarget.style.borderColor = "#999";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.backgroundColor = "var(--bg-card)";
               e.currentTarget.style.borderColor = "#ddd";
             }}
             >
@@ -2274,7 +2274,7 @@ const AirlineTicketsDetail = () => {
             <div
               key={index}
               style={{
-                backgroundColor: "#fff",
+                backgroundColor: "var(--bg-card)",
                 borderRadius: "12px",
                 padding: "20px",
                 marginBottom: "15px",
@@ -2297,13 +2297,13 @@ const AirlineTicketsDetail = () => {
               <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: "18px", fontWeight: "600" }}>{flight.departure}</div>
-                  <div style={{ fontSize: "12px", color: "#666" }}>{flight.departureAirport}</div>
+                  <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>{flight.departureAirport}</div>
                 </div>
 
                 <div style={{ textAlign: "center", minWidth: "100px" }}>
                   <div style={{ 
                     fontSize: "12px", 
-                    color: "#4f7cff", 
+                    color: "var(--primary)", 
                     background: "#e8f4ff", 
                     padding: "4px 8px", 
                     borderRadius: "4px", 
@@ -2311,7 +2311,7 @@ const AirlineTicketsDetail = () => {
                     transition: "all 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#4f7cff";
+                    e.currentTarget.style.backgroundColor = "var(--primary)";
                     e.currentTarget.style.color = "#fff";
                   }}
                   onMouseLeave={(e) => {
@@ -2321,20 +2321,20 @@ const AirlineTicketsDetail = () => {
                   >
                     {flight.type}
                   </div>
-                  <div style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
+                  <div style={{ fontSize: "12px", color: "var(--text-secondary)", marginTop: "5px" }}>
                     {flight.duration}
                   </div>
                 </div>
 
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: "18px", fontWeight: "600" }}>{flight.arrival}</div>
-                  <div style={{ fontSize: "12px", color: "#666" }}>{flight.arrivalAirport}</div>
+                  <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>{flight.arrivalAirport}</div>
                 </div>
 
                 <div style={{ display: "flex", gap: "10px", marginLeft: "20px" }}>
                   <FaSuitcase 
                     style={{ 
-                      color: "#666", 
+                      color: "var(--text-secondary)", 
                       fontSize: "16px", 
                       cursor: "pointer", 
                       opacity: 0.6,
@@ -2384,14 +2384,14 @@ const AirlineTicketsDetail = () => {
               </div>
 
               <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: "20px", fontWeight: "600", color: "#4f7cff" }}>{flight.price}</div>
-                <div style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>{flight.airline}</div>
+                <div style={{ fontSize: "20px", fontWeight: "600", color: "var(--primary)" }}>{flight.price}</div>
+                <div style={{ fontSize: "12px", color: "var(--text-secondary)", marginTop: "5px" }}>{flight.airline}</div>
                 <button
                   onClick={() => handleFlightSelect(flight)}
                   style={{
                     marginTop: "10px",
                     padding: "8px 20px",
-                    backgroundColor: "#4f7cff",
+                    backgroundColor: "var(--primary)",
                     color: "#fff",
                     border: "none",
                     borderRadius: "6px",
@@ -2401,11 +2401,11 @@ const AirlineTicketsDetail = () => {
                     transition: "all 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = "#3a5fd0";
+                    e.target.style.backgroundColor = "var(--primary-hover)";
                     e.target.style.transform = "scale(1.05)";
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = "#4f7cff";
+                    e.target.style.backgroundColor = "var(--primary)";
                     e.target.style.transform = "scale(1)";
                   }}
                 >

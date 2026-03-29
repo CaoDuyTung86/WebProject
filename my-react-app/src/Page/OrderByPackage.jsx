@@ -750,7 +750,7 @@ const OrderByPackage = () => {
                     >
                       {favoriteTours.includes(pkg.id)
                         ? <MdFavorite style={{ color: "#ef4444" }} />
-                        : <MdFavoriteBorder style={{ color: "#999" }} />}
+                        : <MdFavoriteBorder style={{ color: "var(--text-muted)" }} />}
                     </button>
 
                     {/* Image */}
@@ -1341,7 +1341,7 @@ const OrderByPackage = () => {
                   <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#1e293b", marginBottom: "24px" }}>
                     Thông tin khách hàng
                   </h2>
-                  <p style={{ color: "#666", fontSize: "13px", marginBottom: "20px" }}>Nhập thông tin cá nhân. Các ô có dấu * là bắt buộc.</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "13px", marginBottom: "20px" }}>Nhập thông tin cá nhân. Các ô có dấu * là bắt buộc.</p>
 
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                     {[{ label: "Họ *", key: "lastName" }, { label: "Tên & tên đệm *", key: "firstName" }].map(f => (
@@ -1370,7 +1370,7 @@ const OrderByPackage = () => {
                     <div>
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Số điện thoại *</label>
                       <div style={{ display: "flex", gap: "8px" }}>
-                        <input readOnly value="+84" style={{ width: "64px", padding: "12px 8px", borderRadius: "8px", border: "1px solid #e2e8f0", background: "#f5f5f5", textAlign: "center" }} />
+                        <input readOnly value="+84" style={{ width: "64px", padding: "12px 8px", borderRadius: "8px", border: "1px solid #e2e8f0", background: "var(--bg-hover)", textAlign: "center" }} />
                         <input value={customerInfo.phoneDigits}
                           onChange={e => setCustomerInfo(p => ({ ...p, phoneDigits: e.target.value.replace(/\D/g, "") }))}
                           placeholder="912345678"
@@ -1410,17 +1410,17 @@ const OrderByPackage = () => {
                   </h2>
 
                   {/* Booking Summary */}
-                  <div style={{ border: "1px solid #e0e7ff", borderRadius: "12px", padding: "16px", marginBottom: "16px", background: "#f9fafb" }}>
+                  <div style={{ border: "1px solid var(--border-main)", borderRadius: "12px", padding: "16px", marginBottom: "16px", background: "var(--bg-input)" }}>
                     <div style={{ fontWeight: "700", marginBottom: "8px", color: "#2563eb" }}>📦 Gói du lịch</div>
                     <div style={{ fontWeight: "700", fontSize: "16px" }}>{selectedPackage.title}</div>
-                    <div style={{ color: "#888", fontSize: "13px", marginTop: "4px" }}>{selectedPackage.duration} · {selectedPackage.departureCity} → {selectedPackage.destinationCity}</div>
+                    <div style={{ color: "var(--text-muted)", fontSize: "13px", marginTop: "4px" }}>{selectedPackage.duration} · {selectedPackage.departureCity} → {selectedPackage.destinationCity}</div>
                   </div>
 
-                  <div style={{ border: "1px solid #e0e7ff", borderRadius: "12px", padding: "16px", marginBottom: "16px", background: "#f9fafb" }}>
+                  <div style={{ border: "1px solid var(--border-main)", borderRadius: "12px", padding: "16px", marginBottom: "16px", background: "var(--bg-input)" }}>
                     <div style={{ fontWeight: "700", marginBottom: "8px", color: "#2563eb" }}>👤 Khách hàng</div>
                     <div style={{ fontSize: "14px" }}>
                       <b>{customerInfo.lastName} {customerInfo.firstName}</b>
-                      <div style={{ color: "#888", fontSize: "13px", marginTop: "4px" }}>{customerInfo.email} · +84 {customerInfo.phoneDigits}</div>
+                      <div style={{ color: "var(--text-muted)", fontSize: "13px", marginTop: "4px" }}>{customerInfo.email} · +84 {customerInfo.phoneDigits}</div>
                     </div>
                   </div>
 

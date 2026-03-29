@@ -269,7 +269,7 @@ const Auth = ({ isOpen, onClose }) => {
           width: "500px",
           maxWidth: "95vw",
           display: "flex",
-          backgroundColor: "#fff",
+          backgroundColor: "var(--bg-card)",
           borderRadius: "12px",
           overflow: "hidden",
           boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
@@ -284,8 +284,8 @@ const Auth = ({ isOpen, onClose }) => {
             position: "absolute",
             top: "15px",
             right: "15px",
-            background: "#fff",
-            border: "1px solid #ddd",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-input)",
             borderRadius: "50%",
             width: "35px",
             height: "35px",
@@ -314,7 +314,7 @@ const Auth = ({ isOpen, onClose }) => {
                   style={{
                     border: "none",
                     background: "none",
-                    color: "#4f7cff",
+                    color: "var(--primary)",
                     cursor: "pointer",
                     fontSize: "14px",
                     fontWeight: "500",
@@ -338,8 +338,8 @@ const Auth = ({ isOpen, onClose }) => {
                   marginBottom: "8px",
                   border: emailError ? "1px solid #ff4444" : "1px solid #ccc",
                   borderRadius: "4px",
-                  backgroundColor: "#fff",
-                  color: "#333",
+                  backgroundColor: "var(--bg-card)",
+                  color: "var(--text-main)",
                   fontSize: "15px",
                   outline: "none",
                 }}
@@ -365,7 +365,7 @@ const Auth = ({ isOpen, onClose }) => {
                   padding: "14px",
                   border: "none",
                   borderRadius: "4px",
-                  backgroundColor: "#4f7cff",
+                  backgroundColor: "var(--primary)",
                   fontWeight: "600",
                   cursor: "pointer",
                   marginBottom: "25px",
@@ -384,7 +384,7 @@ const Auth = ({ isOpen, onClose }) => {
                   margin: "10px 0 30px",
                 }}
               >
-                <span style={{ background: "#fff", padding: "0 15px", color: "#999", fontSize: "14px" }}>hoặc</span>
+                <span style={{ background: "var(--bg-card)", padding: "0 15px", color: "var(--text-muted)", fontSize: "14px" }}>hoặc</span>
               </div>
 
               <div style={{ marginBottom: "12px", width: "100%", display: "flex", justifyContent: "center" }}>
@@ -449,7 +449,7 @@ const Auth = ({ isOpen, onClose }) => {
             <h2 style={{ 
               marginBottom: "16px", 
               fontSize: "28px", 
-              color: "#333", 
+              color: "var(--text-main)", 
               textAlign: "center",
               fontWeight: "600"
             }}>
@@ -458,7 +458,7 @@ const Auth = ({ isOpen, onClose }) => {
             
             <p style={{ 
               marginBottom: "24px", 
-              color: "#666", 
+              color: "var(--text-secondary)", 
               textAlign: "center",
               fontSize: "16px"
             }}>
@@ -490,7 +490,7 @@ const Auth = ({ isOpen, onClose }) => {
                 style={{
                   background: "none",
                   border: "none",
-                  color: "#4f7cff",
+                  color: "var(--primary)",
                   cursor: "pointer",
                   fontWeight: "500",
                   fontSize: "14px",
@@ -521,7 +521,7 @@ const Auth = ({ isOpen, onClose }) => {
                     marginBottom: "8px",
                     fontSize: "14px",
                     fontWeight: "500",
-                    color: "#555",
+                    color: "var(--text-secondary)",
                   }}
                 >
                   Họ và tên
@@ -556,7 +556,7 @@ const Auth = ({ isOpen, onClose }) => {
                     marginBottom: "8px",
                     fontSize: "14px",
                     fontWeight: "500",
-                    color: "#555",
+                    color: "var(--text-secondary)",
                   }}
                 >
                   Số điện thoại
@@ -592,7 +592,7 @@ const Auth = ({ isOpen, onClose }) => {
                   marginBottom: "8px", 
                   fontSize: "14px", 
                   fontWeight: "500",
-                  color: "#555"
+                  color: "var(--text-secondary)"
                 }}>
                   {t.password}
                 </label>
@@ -660,7 +660,7 @@ const Auth = ({ isOpen, onClose }) => {
               {mode === "register" && (
                 <p style={{
                   fontSize: "13px",
-                  color: "#666",
+                  color: "var(--text-secondary)",
                   marginBottom: "28px",
                   fontStyle: "italic",
                   background: "#f9f9f9",
@@ -680,7 +680,7 @@ const Auth = ({ isOpen, onClose }) => {
                       onClose();
                       navigate("/forgot-password");
                     }} 
-                    style={{ color: "#4f7cff", cursor: "pointer", fontSize: "14px", fontWeight: "500", textDecoration: "underline" }}
+                    style={{ color: "var(--primary)", cursor: "pointer", fontSize: "14px", fontWeight: "500", textDecoration: "underline" }}
                   >
                     Quên mật khẩu?
                   </span>
@@ -692,7 +692,7 @@ const Auth = ({ isOpen, onClose }) => {
                 style={{
                   width: "100%",
                   padding: "16px",
-                  backgroundColor: "#4f7cff",
+                  backgroundColor: "var(--primary)",
                   color: "#fff",
                   border: "none",
                   borderRadius: "10px",
@@ -704,8 +704,8 @@ const Auth = ({ isOpen, onClose }) => {
                   boxShadow: "0 4px 10px rgba(79,124,255,0.3)",
                 }}
                 disabled={isSubmitting}
-                onMouseOver={(e) => e.target.style.backgroundColor = "#3a5fd0"}
-                onMouseOut={(e) => e.target.style.backgroundColor = "#4f7cff"}
+                onMouseOver={(e) => e.target.style.backgroundColor = "var(--primary-hover)"}
+                onMouseOut={(e) => e.target.style.backgroundColor = "var(--primary)"}
               >
                 {isSubmitting
                   ? "Đang xử lý..."
@@ -717,14 +717,14 @@ const Auth = ({ isOpen, onClose }) => {
             
             <p style={{
               fontSize: "12px",
-              color: "#888",
+              color: "var(--text-muted)",
               textAlign: "center",
               lineHeight: "1.6",
-              borderTop: "1px solid #eee",
+              borderTop: "1px solid var(--border-light)",
               paddingTop: "20px",
               marginTop: "10px",
             }}>
-              {t.termsPrefix} <a href="#" style={{ color: "#4f7cff", textDecoration: "none", fontWeight: "500", textDecoration: "underline", }}>{t.termsAndConditions}</a> {t.termsPrefix === "Bằng việc đăng nhập hoặc đăng ký, bạn được xem như đã đồng ý với" ? "và" : "and"} <a href="#" style={{ color: "#4f7cff", textDecoration: "none", fontWeight: "500", textDecoration: "underline", }}>{t.privacyPolicy}</a> {t.of} Datxe.com.
+              {t.termsPrefix} <a href="#" style={{ color: "var(--primary)", textDecoration: "none", fontWeight: "500", textDecoration: "underline", }}>{t.termsAndConditions}</a> {t.termsPrefix === "Bằng việc đăng nhập hoặc đăng ký, bạn được xem như đã đồng ý với" ? "và" : "and"} <a href="#" style={{ color: "var(--primary)", textDecoration: "none", fontWeight: "500", textDecoration: "underline", }}>{t.privacyPolicy}</a> {t.of} Datxe.com.
             </p>
           </div>
         )}

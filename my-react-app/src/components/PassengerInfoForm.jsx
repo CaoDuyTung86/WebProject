@@ -54,10 +54,10 @@ const PassengerInfoForm = ({
 
   return (
     <div style={{
-      border: "1px solid #e0e7ff",
+      border: "1px solid var(--border-main)",
       borderRadius: "12px",
       marginBottom: "16px",
-      background: "#fff",
+      background: "var(--bg-card)",
       overflow: "hidden"
     }}>
       {/* Header */}
@@ -65,7 +65,7 @@ const PassengerInfoForm = ({
         onClick={() => setIsExpanded(!isExpanded)}
         style={{
           padding: "16px",
-          background: "#f9fafb",
+          background: "var(--bg-input)",
           borderBottom: isExpanded ? "1px solid #e0e7ff" : "none",
           display: "flex",
           justifyContent: "space-between",
@@ -91,7 +91,7 @@ const PassengerInfoForm = ({
                 borderRadius: "6px",
                 border: "1px solid #d1d5db",
                 fontSize: "13px",
-                background: "#fff",
+                background: "var(--bg-card)",
                 color: "#4f46e5",
                 fontWeight: "600",
                 cursor: "pointer",
@@ -181,7 +181,7 @@ const PassengerInfoForm = ({
                 <div>
                   <label style={labelStyle}>{t.phoneNumber || "Số điện thoại"} *</label>
                   <div style={{ display: "flex", gap: "8px" }}>
-                    <input readOnly value="+84" style={{ width: "64px", padding: "10px 8px", borderRadius: "8px", border: "1px solid #ddd", background: "#f5f5f5", textAlign: "center", color: "#666" }} />
+                    <input readOnly value="+84" style={{ width: "64px", padding: "10px 8px", borderRadius: "8px", border: "1px solid var(--border-input)", background: "var(--bg-hover)", textAlign: "center", color: "var(--text-secondary)" }} />
                     <input 
                       type="text" 
                       name="phone" 
@@ -229,6 +229,6 @@ const PassengerInfoForm = ({
 };
 
 const labelStyle = { display: "block", fontSize: "13px", fontWeight: "600", marginBottom: "6px", color: "#374151" };
-const inputStyle = { width: "100%", boxSizing: "border-box", padding: "10px 12px", borderRadius: "8px", border: "1px solid #d1d5db", fontSize: "14px", color: "#111827", transition: "border-color 0.2s" };
+const inputStyle = { width: "100%", boxSizing: "border-box", padding: "10px 12px", borderRadius: "8px", border: "1px solid #d1d5db", fontSize: "14px", color: "var(--text-heading)", transition: "border-color 0.2s" };
 
 export default PassengerInfoForm;

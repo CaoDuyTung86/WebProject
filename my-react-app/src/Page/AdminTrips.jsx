@@ -306,7 +306,7 @@ const AdminTrips = () => {
           marginBottom: 24,
           padding: 16,
           borderRadius: 8,
-          border: "1px solid #eee",
+          border: "1px solid var(--border-light)",
           background: "#fafafa",
         }}
       >
@@ -325,7 +325,7 @@ const AdminTrips = () => {
                 width: "100%",
                 padding: "6px 8px",
                 borderRadius: 4,
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-input)",
               }}
             >
               <option value="">Chọn tuyến</option>
@@ -347,7 +347,7 @@ const AdminTrips = () => {
                 width: "100%",
                 padding: "6px 8px",
                 borderRadius: 4,
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-input)",
               }}
             >
               <option value="">Chọn phương tiện</option>
@@ -370,7 +370,7 @@ const AdminTrips = () => {
                 width: "100%",
                 padding: "6px 8px",
                 borderRadius: 4,
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-input)",
               }}
             />
           </div>
@@ -385,7 +385,7 @@ const AdminTrips = () => {
                 width: "100%",
                 padding: "6px 8px",
                 borderRadius: 4,
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-input)",
               }}
             >
               <option value="ACTIVE">ACTIVE</option>
@@ -408,7 +408,7 @@ const AdminTrips = () => {
                 width: "100%",
                 padding: "6px 8px",
                 borderRadius: 4,
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-input)",
               }}
             />
           </div>
@@ -424,7 +424,7 @@ const AdminTrips = () => {
                 width: "100%",
                 padding: "6px 8px",
                 borderRadius: 4,
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-input)",
               }}
             />
           </div>
@@ -440,7 +440,7 @@ const AdminTrips = () => {
                 width: "100%",
                 padding: "6px 8px",
                 borderRadius: 4,
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-input)",
               }}
             />
           </div>
@@ -454,7 +454,7 @@ const AdminTrips = () => {
             padding: "8px 16px",
             borderRadius: 6,
             border: "none",
-            background: "#4f7cff",
+            background: "var(--primary)",
             color: "#fff",
             cursor: "pointer",
             fontWeight: 600,
@@ -470,8 +470,8 @@ const AdminTrips = () => {
         style={{
           padding: "8px 14px",
           borderRadius: 6,
-          border: "1px solid #ddd",
-          background: "#fff",
+          border: "1px solid var(--border-input)",
+          background: "var(--bg-card)",
           cursor: "pointer",
           marginBottom: 16,
         }}
@@ -480,7 +480,7 @@ const AdminTrips = () => {
         {loading ? "Đang tải..." : "Tải lại danh sách"}
       </button>
 
-      <div className="table-wrap" style={{ border: "1px solid #eee", borderRadius: 8 }}>
+      <div className="table-wrap" style={{ border: "1px solid var(--border-light)", borderRadius: 8 }}>
         <table
           style={{
             borderCollapse: "collapse",
@@ -490,7 +490,7 @@ const AdminTrips = () => {
           <thead>
             <tr
               style={{
-                background: "#f8f9fa",
+                background: "var(--bg-main)",
                 textAlign: "left",
               }}
             >
@@ -536,10 +536,10 @@ const AdminTrips = () => {
                       type="number" placeholder="Giá mới"
                       value={editingPrice[trip.id] ?? ""}
                       onChange={(e) => handlePriceChange(trip.id, e.target.value)}
-                      style={{ width: 100, padding: "4px 6px", borderRadius: 4, border: "1px solid #ddd" }}
+                      style={{ width: 100, padding: "4px 6px", borderRadius: 4, border: "1px solid var(--border-input)" }}
                     />
                     <button type="button" onClick={() => savePrice(trip.id)}
-                      style={{ padding: "4px 10px", borderRadius: 4, border: "none", background: "#4f7cff", color: "#fff", cursor: "pointer" }}
+                      style={{ padding: "4px 10px", borderRadius: 4, border: "none", background: "var(--primary)", color: "#fff", cursor: "pointer" }}
                     >Lưu</button>
                   </div>
                 </td>
@@ -569,7 +569,7 @@ const AdminTrips = () => {
                   style={{
                     padding: 12,
                     textAlign: "center",
-                    color: "#666",
+                    color: "var(--text-secondary)",
                   }}
                 >
                   Chưa có chuyến đi nào.
@@ -582,24 +582,24 @@ const AdminTrips = () => {
 
       {delayModal.show && delayModal.trip && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 }}>
-          <div style={{ background: "#fff", padding: 28, borderRadius: 16, width: 440, maxWidth: "95vw" }}>
+          <div style={{ background: "var(--bg-card)", padding: 28, borderRadius: 16, width: 440, maxWidth: "95vw" }}>
             <h3 style={{ fontWeight: 800, color: "#92400e", marginBottom: 4 }}>⏰ Hoãn chuyến đi</h3>
             <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 14 }}>{delayModal.trip.route?.origin} → {delayModal.trip.route?.destination}</p>
             <div style={{ marginBottom: 12 }}>
               <label style={{ fontWeight: 600, fontSize: 12, display: "block", marginBottom: 5 }}>Giờ khởi hành mới</label>
               <input type="datetime-local" value={delayModal.newDeparture}
                 onChange={e => setDelayModal(p => ({ ...p, newDeparture: e.target.value }))}
-                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #ddd", boxSizing: "border-box" }} />
+                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid var(--border-input)", boxSizing: "border-box" }} />
             </div>
             <div style={{ marginBottom: 12 }}>
               <label style={{ fontWeight: 600, fontSize: 12, display: "block", marginBottom: 5 }}>Lý do <span style={{ color: "red" }}>*</span></label>
               <textarea rows={3} value={delayModal.reason} onChange={e => setDelayModal(p => ({ ...p, reason: e.target.value }))}
                 placeholder="Ví dụ: Thời tiết xấu..." maxLength={300}
-                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #ddd", boxSizing: "border-box", resize: "vertical" }} />
+                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid var(--border-input)", boxSizing: "border-box", resize: "vertical" }} />
             </div>
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
               <button onClick={() => setDelayModal({ show: false, trip: null, newDeparture: "", newArrival: "", reason: "", loading: false })}
-                style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer" }}>Hủy</button>
+                style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid var(--border-input)", background: "var(--bg-card)", cursor: "pointer" }}>Hủy</button>
               <button onClick={handleDelay} disabled={delayModal.loading}
                 style={{ padding: "8px 16px", borderRadius: 6, border: "none", background: "#f59e0b", color: "#fff", cursor: "pointer", fontWeight: 700 }}>
                 {delayModal.loading ? "Đang xử lý..." : "Xác nhận Hoãn"}
@@ -611,7 +611,7 @@ const AdminTrips = () => {
 
       {cancelAdminModal.show && cancelAdminModal.trip && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 }}>
-          <div style={{ background: "#fff", padding: 28, borderRadius: 16, width: 420, maxWidth: "95vw" }}>
+          <div style={{ background: "var(--bg-card)", padding: 28, borderRadius: 16, width: 420, maxWidth: "95vw" }}>
             <h3 style={{ fontWeight: 800, color: "#dc2626", marginBottom: 4 }}>❌ Hủy chuyến đi</h3>
             <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>{cancelAdminModal.trip.route?.origin} → {cancelAdminModal.trip.route?.destination}</p>
             <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "10px 14px", marginBottom: 14, fontSize: 12 }}>
@@ -621,11 +621,11 @@ const AdminTrips = () => {
               <label style={{ fontWeight: 600, fontSize: 12, display: "block", marginBottom: 5 }}>Lý do <span style={{ color: "red" }}>*</span></label>
               <textarea rows={3} value={cancelAdminModal.reason} onChange={e => setCancelAdminModal(p => ({ ...p, reason: e.target.value }))}
                 placeholder="Ví dụ: Sự cố kỹ thuật..." maxLength={300}
-                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #ddd", boxSizing: "border-box", resize: "vertical" }} />
+                style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid var(--border-input)", boxSizing: "border-box", resize: "vertical" }} />
             </div>
             <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
               <button onClick={() => setCancelAdminModal({ show: false, trip: null, reason: "", loading: false })}
-                style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #ddd", background: "#fff", cursor: "pointer" }}>Đóng</button>
+                style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid var(--border-input)", background: "var(--bg-card)", cursor: "pointer" }}>Đóng</button>
               <button onClick={handleCancelTrip} disabled={cancelAdminModal.loading}
                 style={{ padding: "8px 16px", borderRadius: 6, border: "none", background: "#ef4444", color: "#fff", cursor: "pointer", fontWeight: 700 }}>
                 {cancelAdminModal.loading ? "Đang xử lý..." : "Xác nhận Hủy"}

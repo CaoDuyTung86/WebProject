@@ -497,7 +497,7 @@ const BusTickets = () => {
   }, [seats, selectedSeatIds]);
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--bg-main)" }}>
 
       <Header setIsSidebarOpen={setIsSidebarOpen} />
 
@@ -505,14 +505,14 @@ const BusTickets = () => {
         <Sidebar isOpen={isSidebarOpen} />
         <div
           className={`page-main ${isSidebarOpen ? "with-sidebar" : ""}`}
-          style={{ backgroundColor: "#f8f9fa" }}
+          style={{ backgroundColor: "var(--bg-main)" }}
         >
           <div className="page-content-wrap" style={{ maxWidth: "1200px" }}>
             <h1
               style={{
                 fontSize: "32px",
                 fontWeight: "700",
-                color: "#333",
+                color: "var(--text-main)",
                 marginBottom: "30px",
               }}
             >
@@ -521,10 +521,10 @@ const BusTickets = () => {
 
             <div
               style={{
-                background: "#fff",
+                background: "var(--bg-card)",
                 borderRadius: "12px",
                 padding: "24px",
-                boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+                boxShadow: "var(--shadow-md)",
                 marginBottom: "24px",
               }}
             >
@@ -532,36 +532,36 @@ const BusTickets = () => {
 
              
                 <div style={{ position: "relative" }}>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><TbBus /> {t.from}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><TbBus /> {t.from}</label>
                   <div
                     onClick={() => { setShowFromDropdown(!showFromDropdown); setShowToDropdown(false); }}
                     style={{
                       padding: "10px 14px", borderRadius: 10, border: formErrors.from ? "2px solid #e53935" : "2px solid #e0e7ff",
-                      background: "#f8f9ff", cursor: "pointer", userSelect: "none"
+                      background: "var(--bg-input)", cursor: "pointer", userSelect: "none"
                     }}
                   >
-                    <div style={{ fontWeight: 700, fontSize: 16, color: "#1a1a2e" }}>{from}</div>
-                    <div style={{ fontSize: 12, color: "#666", marginTop: 2 }}>
+                    <div style={{ fontWeight: 700, fontSize: 16, color: "var(--text-main)" }}>{from}</div>
+                    <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 2 }}>
                       {stations.find(a => a.code === from)?.name || t.selectBusStation}
                     </div>
                   </div>
                   {formErrors.from && <div style={{ color: "#e53935", fontSize: 12, marginTop: 4 }}>{formErrors.from}</div>}
                   {showFromDropdown && (
                     <div style={{
-                      position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12,
-                      boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto"
+                      position: "absolute", top: "100%", left: 0, right: 0, background: "var(--bg-card)", borderRadius: 12,
+                      boxShadow: "var(--shadow-lg)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto"
                     }}>
                       {stations.filter(a => a.code !== to).map(a => (
                         <div key={a.code} onClick={() => { setFrom(a.code); setShowFromDropdown(false); setFormErrors(p => ({ ...p, from: undefined })); }}
                           style={{
-                            padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #f0f0f0",
+                            padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid var(--border-light)",
                             background: from === a.code ? "#eff6ff" : "#fff"
                           }}
                           onMouseEnter={e => e.currentTarget.style.background = "#f5f5ff"}
                           onMouseLeave={e => e.currentTarget.style.background = from === a.code ? "#eff6ff" : "#fff"}
                         >
-                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "#888", fontSize: 13 }}>– {a.name}</span></div>
-                          <div style={{ fontSize: 11, color: "#aaa", marginTop: 2 }}>{a.fullName}</div>
+                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: 13 }}>– {a.name}</span></div>
+                          <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{a.fullName}</div>
                         </div>
                       ))}
                     </div>
@@ -572,47 +572,47 @@ const BusTickets = () => {
                 <button type="button"
                   onClick={() => { const t2 = from; setFrom(to); setTo(t2); }}
                   style={{
-                    marginTop: 28, width: 38, height: 38, borderRadius: "50%", border: "2px solid #e0e7ff",
-                    background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 18, color: "#4f7cff", flexShrink: 0, transition: "all 0.2s"
+                    marginTop: 28, width: 38, height: 38, borderRadius: "50%", border: "2px solid var(--border-main)",
+                    background: "var(--bg-card)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 18, color: "var(--primary)", flexShrink: 0, transition: "all 0.2s"
                   }}
                   onMouseEnter={e => { e.currentTarget.style.background = "#eff6ff"; e.currentTarget.style.borderColor = "#4f7cff"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "#fff"; e.currentTarget.style.borderColor = "#e0e7ff"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "var(--bg-card)"; e.currentTarget.style.borderColor = "#e0e7ff"; }}
                   title={t.swapDestinations}
                 >⇄</button>
 
              
                 <div style={{ position: "relative" }}>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><TbBus /> {t.to}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><TbBus /> {t.to}</label>
                   <div
                     onClick={() => { setShowToDropdown(!showToDropdown); setShowFromDropdown(false); }}
                     style={{
                       padding: "10px 14px", borderRadius: 10, border: formErrors.to ? "2px solid #e53935" : "2px solid #e0e7ff",
-                      background: "#f8f9ff", cursor: "pointer", userSelect: "none"
+                      background: "var(--bg-input)", cursor: "pointer", userSelect: "none"
                     }}
                   >
-                    <div style={{ fontWeight: 700, fontSize: 16, color: "#1a1a2e" }}>{to}</div>
-                    <div style={{ fontSize: 12, color: "#666", marginTop: 2 }}>
+                    <div style={{ fontWeight: 700, fontSize: 16, color: "var(--text-main)" }}>{to}</div>
+                    <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 2 }}>
                       {stations.find(a => a.code === to)?.name || t.selectBusStation}
                     </div>
                   </div>
                   {formErrors.to && <div style={{ color: "#e53935", fontSize: 12, marginTop: 4 }}>{formErrors.to}</div>}
                   {showToDropdown && (
                     <div style={{
-                      position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12,
-                      boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto"
+                      position: "absolute", top: "100%", left: 0, right: 0, background: "var(--bg-card)", borderRadius: 12,
+                      boxShadow: "var(--shadow-lg)", zIndex: 100, marginTop: 4, overflow: "hidden", maxHeight: 260, overflowY: "auto"
                     }}>
                       {stations.filter(a => a.code !== from).map(a => (
                         <div key={a.code} onClick={() => { setTo(a.code); setShowToDropdown(false); setFormErrors(p => ({ ...p, to: undefined })); }}
                           style={{
-                            padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #f0f0f0",
+                            padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid var(--border-light)",
                             background: to === a.code ? "#eff6ff" : "#fff"
                           }}
                           onMouseEnter={e => e.currentTarget.style.background = "#f5f5ff"}
                           onMouseLeave={e => e.currentTarget.style.background = to === a.code ? "#eff6ff" : "#fff"}
                         >
-                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "#888", fontSize: 13 }}>– {a.name}</span></div>
-                          <div style={{ fontSize: 11, color: "#aaa", marginTop: 2 }}>{a.fullName}</div>
+                          <div style={{ fontWeight: 700, fontSize: 14 }}>{a.code} <span style={{ fontWeight: 400, color: "var(--text-muted)", fontSize: 13 }}>– {a.name}</span></div>
+                          <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>{a.fullName}</div>
                         </div>
                       ))}
                     </div>
@@ -621,41 +621,41 @@ const BusTickets = () => {
 
           
                 <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaRegCalendarAlt /> {t.departureDate}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><FaRegCalendarAlt /> {t.departureDate}</label>
                   <input type="date" value={date}
                     onChange={(e) => { setDate(e.target.value); setFormErrors(p => ({ ...p, date: undefined })); }}
                     min={todayISO}
                     style={{
                       width: "100%", padding: "10px 14px", borderRadius: 10, fontSize: 14, boxSizing: "border-box",
-                      border: formErrors.date ? "2px solid #e53935" : "2px solid #e0e7ff", background: "#f8f9ff"
+                      border: formErrors.date ? "2px solid #e53935" : "2px solid #e0e7ff", background: "var(--bg-input)"
                     }}
                   />
                   {formErrors.date && <div style={{ color: "#e53935", fontSize: 12, marginTop: 4 }}>{formErrors.date}</div>}
                 </div>
 
                 <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaUser /> {t.passengers}</label>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "var(--text-secondary)" }}><FaUser /> {t.passengers}</label>
                   <div style={{ position: "relative", marginBottom: 10 }}>
                     <div
                       onClick={() => setShowPassengersDropdown(!showPassengersDropdown)}
-                      style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid #e0e7ff",
-                        background: "#fff", fontSize: 15, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", boxSizing: "border-box" }}
+                      style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid var(--border-main)",
+                        background: "var(--bg-card)", fontSize: 15, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", boxSizing: "border-box" }}
                     >
                       <span>{passengerCounts.adult} {t.adult || 'Người lớn'}, {passengerCounts.child} {t.child || 'Trẻ em'}, {passengerCounts.infant} {t.infant || 'Em bé'}</span>
                       <FiChevronDown />
                     </div>
                     {showPassengersDropdown && (
-                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12, boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, padding: 16, marginTop: 4 }}>
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "var(--bg-card)", borderRadius: 12, boxShadow: "var(--shadow-lg)", zIndex: 100, padding: 16, marginTop: 4 }}>
                          {['adult', 'child', 'infant'].map(type => (
                            <div key={type} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                              <div>
                                <div style={{ fontWeight: 600 }}>{type === 'adult' ? t.adult || 'Người lớn' : type === 'child' ? t.child || 'Trẻ em' : t.infant || 'Em bé'}</div>
-                               <div style={{ fontSize: 12, color: "#666" }}>{type === 'adult' ? '>12 tuổi' : type === 'child' ? '2-11 tuổi' : '<2 tuổi'}</div>
+                               <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>{type === 'adult' ? '>12 tuổi' : type === 'child' ? '2-11 tuổi' : '<2 tuổi'}</div>
                              </div>
                              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                               <button type="button" disabled={passengerCounts[type] <= (type === 'adult' ? 1 : 0)} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] - 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>-</button>
+                               <button type="button" disabled={passengerCounts[type] <= (type === 'adult' ? 1 : 0)} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] - 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid var(--border-input)", background: "var(--bg-card)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>-</button>
                                <span style={{ fontWeight: 600, width: 16, textAlign: "center" }}>{passengerCounts[type]}</span>
-                               <button type="button" disabled={passengerCounts.adult + passengerCounts.child + passengerCounts.infant >= 5} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] + 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
+                               <button type="button" disabled={passengerCounts.adult + passengerCounts.child + passengerCounts.infant >= 5} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] + 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid var(--border-input)", background: "var(--bg-card)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
                              </div>
                            </div>
                          ))}
@@ -673,8 +673,8 @@ const BusTickets = () => {
                   </button>
                   <button type="button" onClick={loadCalendar} disabled={calendarLoading}
                     style={{
-                      width: "100%", padding: "10px", borderRadius: 10, border: "2px solid #e0e7ff",
-                      background: "#fff", color: "#333", fontWeight: 600, cursor: calendarLoading ? "not-allowed" : "pointer", fontSize: 13
+                      width: "100%", padding: "10px", borderRadius: 10, border: "2px solid var(--border-main)",
+                      background: "var(--bg-card)", color: "var(--text-main)", fontWeight: 600, cursor: calendarLoading ? "not-allowed" : "pointer", fontSize: 13
                     }}
                   >
                     {calendarLoading ? <><CgSandClock /> {t.loadingCalendar}</> : <><FaRegCalendarAlt /> {t.viewCheapCalendar}</>}
@@ -683,7 +683,7 @@ const BusTickets = () => {
               </div>
 
               {calendarOpen && (
-                <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid #eee" }}>
+                <div style={{ marginTop: 16, paddingTop: 16, borderTop: "1px solid var(--border-light)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                     <div style={{ fontWeight: 700 }}>{t.calendar30Days}</div>
                     <button
@@ -694,7 +694,7 @@ const BusTickets = () => {
                         background: "none",
                         cursor: "pointer",
                         fontSize: 18,
-                        color: "#666",
+                        color: "var(--text-secondary)",
                       }}
                     >
                       ×
@@ -715,13 +715,13 @@ const BusTickets = () => {
                           width: 150,
                           padding: "10px 12px",
                           borderRadius: 10,
-                          border: "1px solid #eee",
+                          border: "1px solid var(--border-light)",
                           background: d.available ? "#fff" : "#f5f5f5",
                           cursor: d.available ? "pointer" : "not-allowed",
                           textAlign: "left",
                         }}
                       >
-                        <div style={{ fontWeight: 700, color: "#333" }}>{d.date}</div>
+                        <div style={{ fontWeight: 700, color: "var(--text-main)" }}>{d.date}</div>
                         <div style={{ marginTop: 6, color: d.available ? "#ff6b00" : "#999", fontWeight: 700 }}>
                           {d.minPrice != null ? `${Number(d.minPrice).toLocaleString("vi-VN")} đ` : "—"}
                         </div>
@@ -730,7 +730,7 @@ const BusTickets = () => {
                   </div>
 
                   {!calendarLoading && calendarData.every((d) => !d.available) && (
-                    <p style={{ marginTop: 12, color: "#666", fontSize: 13 }}>
+                    <p style={{ marginTop: 12, color: "var(--text-secondary)", fontSize: 13 }}>
                       Hiện chưa có chuyến bay phù hợp trong khoảng ngày này. Bạn có thể bỏ chọn "tìm vé rẻ nhất"
                       và dùng tìm kiếm thường, hoặc đổi điểm đi/điểm đến/ngày khác.
                     </p>
@@ -748,10 +748,10 @@ const BusTickets = () => {
             {step === "chooseTrip" && trips.length > 0 && (
               <div
                 style={{
-                  background: "#fff",
+                  background: "var(--bg-card)",
                   borderRadius: 12,
                   padding: 24,
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+                  boxShadow: "var(--shadow-md)",
                   marginBottom: 24,
                 }}
               >
@@ -773,7 +773,7 @@ const BusTickets = () => {
                         textAlign: "left",
                         padding: 16,
                         borderRadius: 10,
-                        border: "1px solid #eee",
+                        border: "1px solid var(--border-light)",
                         backgroundColor:
                           selectedTrip && selectedTrip.id === trip.id ? "#fff7ec" : "#fff",
                         cursor: "pointer",
@@ -790,7 +790,7 @@ const BusTickets = () => {
                           <div style={{ fontWeight: 600 }}>
                             {trip.origin} → {trip.destination}
                           </div>
-                          <div style={{ fontSize: 13, color: "#666" }}>
+                          <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                             Khởi hành: {trip.departureTime}
                           </div>
                         </div>
@@ -798,12 +798,12 @@ const BusTickets = () => {
                           <div style={{ fontWeight: 700, color: "#ff6b00" }}>
                             {trip.price?.toLocaleString("vi-VN")} đ
                           </div>
-                          <div style={{ fontSize: 13, color: "#666" }}>
+                          <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                             Còn {trip.availableSeats}/{trip.totalSeats} chỗ
                           </div>
                         </div>
                       </div>
-                      <div style={{ fontSize: 13, color: "#666" }}>
+                      <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                         {trip.providerName} · {trip.vehicleType}
                       </div>
                     </button>
@@ -814,7 +814,7 @@ const BusTickets = () => {
 
           
             {["seatClass", "passenger", "extras", "review"].includes(step) && (
-              <div style={{ marginBottom: 20, background: "#fff", borderRadius: 12, padding: "16px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
+              <div style={{ marginBottom: 20, background: "var(--bg-card)", borderRadius: 12, padding: "16px 24px", boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }}>
               
                   <div style={{ position: "absolute", top: 20, left: "10%", right: "10%", height: 3, background: "#e0e7ff", zIndex: 0 }} />
@@ -846,11 +846,11 @@ const BusTickets = () => {
 
             {selectedTrip && step === "seatClass" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Bước 1: Chọn hạng vé & ghế ngồi</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 16 }}>Chọn hạng sau đó bấm vào ghế muốn ngồi.</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 16 }}>Chọn hạng sau đó bấm vào ghế muốn ngồi.</p>
 
-                  {loading && <p style={{ color: "#888" }}>{t.loadingSeatmap}</p>}
+                  {loading && <p style={{ color: "var(--text-muted)" }}>{t.loadingSeatmap}</p>}
 
                   {!loading && (() => {
                     const classTypes = [...new Set(seats.map(s => s.seatType || "ECONOMY"))];
@@ -900,15 +900,15 @@ const BusTickets = () => {
                         minWidth: "fit-content",
                         margin: "0 auto"
                       }}>
-                        <div style={{ textAlign: "center", marginBottom: 20, color: "#aaa", fontSize: 24 }}>Đầu xe</div>
+                        <div style={{ textAlign: "center", marginBottom: 20, color: "var(--text-muted)", fontSize: 24 }}>Đầu xe</div>
                         <div style={{ display: "flex", gap: 16, marginBottom: 8, paddingLeft: 48, justifyContent: "center" }}>
-                          {leftCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "#888", fontSize: 12 }}>{c}</div>)}
+                          {leftCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "var(--text-muted)", fontSize: 12 }}>{c}</div>)}
                           <div style={{ width: 40 }} /> 
-                          {rightCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "#888", fontSize: 12 }}>{c}</div>)}
+                          {rightCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "var(--text-muted)", fontSize: 12 }}>{c}</div>)}
                         </div>
                         {rows.map(row => (
                           <div key={row} style={{ display: "flex", gap: 16, marginBottom: 12, alignItems: "center", justifyContent: "center" }}>
-                            <div style={{ width: 32, textAlign: "center", fontWeight: 700, color: "#aaa", fontSize: 12 }}>{row}</div>
+                            <div style={{ width: 32, textAlign: "center", fontWeight: 700, color: "var(--text-muted)", fontSize: 12 }}>{row}</div>
                             {leftCols.map(col => {
                               const s = smap.get(`${row}${col}`);
                               if (!s) return <div key={col} style={{ width: 44, height: 60 }} />;
@@ -952,7 +952,7 @@ const BusTickets = () => {
                             })}
                           </div>
                         ))}
-                        <div style={{ display: "flex", gap: 16, marginTop: 24, fontSize: 12, color: "#666", justifyContent: "center", flexWrap: "wrap" }}>
+                        <div style={{ display: "flex", gap: 16, marginTop: 24, fontSize: 12, color: "var(--text-secondary)", justifyContent: "center", flexWrap: "wrap" }}>
                           <span style={{display: "flex", alignItems: "center", gap: 4}}><span style={{ display: "inline-block", width: 14, height: 14, background: "#dcfce7", borderRadius: 3 }} />Ghế thường</span>
                           <span style={{display: "flex", alignItems: "center", gap: 4}}><span style={{ display: "inline-block", width: 14, height: 14, background: "#fef08a", borderRadius: 3 }} />Giường nằm</span>
                           <span style={{display: "flex", alignItems: "center", gap: 4}}><span style={{ display: "inline-block", width: 14, height: 14, background: "#f59e0b", borderRadius: 3 }} />Đang chọn</span>
@@ -962,22 +962,22 @@ const BusTickets = () => {
                     );
                   })()}
 
-                  {!loading && seats.length === 0 && <p style={{ color: "#888" }}>{t.noSeatData}</p>}
+                  {!loading && seats.length === 0 && <p style={{ color: "var(--text-muted)" }}>{t.noSeatData}</p>}
 
                   {error && <p style={{ color: "red", marginTop: 12 }}>{error}</p>}
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                    <button type="button" onClick={() => setStep("chooseTrip")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← Quay lại</button>
-                    <button type="button" onClick={goToExtras} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "#4f7cff", color: "#fff", fontWeight: 700, cursor: "pointer" }}>Tiếp theo →</button>
+                    <button type="button" onClick={() => setStep("chooseTrip")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← Quay lại</button>
+                    <button type="button" onClick={goToExtras} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "var(--primary)", color: "#fff", fontWeight: 700, cursor: "pointer" }}>Tiếp theo →</button>
                   </div>
                 </div>
 
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>Thông tin đặt chỗ</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.9 }}>
                     <div><b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
-                    <div style={{ color: "#888", marginBottom: 6 }}>{selectedTrip.departureTime}</div>
-                    <div style={{ background: "#f8f9fa", padding: 10, borderRadius: 8 }}>
-                      <div style={{ marginBottom: 4 }}>Ghế: <b style={{color: "#4f7cff"}}>{selectedSeatIds.length === 0 ? "Chưa chọn" : seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ")}</b></div>
+                    <div style={{ color: "var(--text-muted)", marginBottom: 6 }}>{selectedTrip.departureTime}</div>
+                    <div style={{ background: "var(--bg-main)", padding: 10, borderRadius: 8 }}>
+                      <div style={{ marginBottom: 4 }}>Ghế: <b style={{color: "var(--primary)"}}>{selectedSeatIds.length === 0 ? "Chưa chọn" : seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ")}</b></div>
                       <div style={{ fontWeight: 700, color: "#ff6b00", fontSize: 15 }}>{Number(selectedTrip.price || 0).toLocaleString("vi-VN")} đ / ghế</div>
                     </div>
                   </div>
@@ -987,9 +987,9 @@ const BusTickets = () => {
 
             {selectedTrip && step === "passenger" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Bước 2: Thông tin hành khách</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>Nhập thông tin cá nhân của hành khách. Các ô có dấu * là bắt buộc.</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 20 }}>Nhập thông tin cá nhân của hành khách. Các ô có dấu * là bắt buộc.</p>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                     {passengerInfoList.map((pi, idx) => (
@@ -1027,18 +1027,18 @@ const BusTickets = () => {
 
                   {error && <p style={{ color: "red", marginTop: 12 }}>{error}</p>}
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                    <button type="button" onClick={() => setStep("seatClass")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← Quay lại</button>
-                    <button type="button" onClick={goToExtrasFromPassenger} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "#4f7cff", color: "#fff", fontWeight: 700, cursor: "pointer" }}>Tiếp theo →</button>
+                    <button type="button" onClick={() => setStep("seatClass")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← Quay lại</button>
+                    <button type="button" onClick={goToExtrasFromPassenger} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "var(--primary)", color: "#fff", fontWeight: 700, cursor: "pointer" }}>Tiếp theo →</button>
                   </div>
                 </div>
 
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>Thông tin đặt chỗ</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.9 }}>
                     <div><b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
-                    <div style={{ color: "#888", marginBottom: 6 }}>{selectedTrip.departureTime}</div>
-                    <div style={{ background: "#f8f9fa", padding: 10, borderRadius: 8 }}>
-                      <div style={{ marginBottom: 4 }}>Ghế: <b style={{color: "#4f7cff"}}>{selectedSeatIds.length === 0 ? "Chưa chọn" : seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ")}</b></div>
+                    <div style={{ color: "var(--text-muted)", marginBottom: 6 }}>{selectedTrip.departureTime}</div>
+                    <div style={{ background: "var(--bg-main)", padding: 10, borderRadius: 8 }}>
+                      <div style={{ marginBottom: 4 }}>Ghế: <b style={{color: "var(--primary)"}}>{selectedSeatIds.length === 0 ? "Chưa chọn" : seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ")}</b></div>
                       <div style={{ fontWeight: 700, color: "#ff6b00", fontSize: 15 }}>{Number(selectedTrip.price || 0).toLocaleString("vi-VN")} đ / ghế</div>
                     </div>
                   </div>
@@ -1047,19 +1047,19 @@ const BusTickets = () => {
             )}
 {selectedTrip && step === "extras" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step3}</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>{t.extrasInstruction}</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 20 }}>{t.extrasInstruction}</p>
 
-                  {servicesLoading && <p style={{ color: "#888" }}>Đang tải dịch vụ...</p>}
+                  {servicesLoading && <p style={{ color: "var(--text-muted)" }}>Đang tải dịch vụ...</p>}
 
                   {!servicesLoading && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         
-                      <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, background: "#f9fafb" }}>
+                      <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, background: "var(--bg-input)" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                           <span style={{ fontSize: 24 }}>🧳</span>
-                          <div><div style={{ fontWeight: 700, fontSize: 15 }}>{t.baggage}</div><div style={{ fontSize: 12, color: "#888" }}>Chọn gói hành lý phù hợp</div></div>
+                          <div><div style={{ fontWeight: 700, fontSize: 15 }}>{t.baggage}</div><div style={{ fontSize: 12, color: "var(--text-muted)" }}>Chọn gói hành lý phù hợp</div></div>
                         </div>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
                           <label style={{
@@ -1081,17 +1081,17 @@ const BusTickets = () => {
                             }}>
                               <input type="radio" name="baggage" style={{ display: "none" }} checked={selectedServiceIds.includes(s.id)} onChange={() => setSingleServiceInCategory(s.id, categories.baggage)} />
                               <span style={{ fontWeight: 600 }}>{s.serviceName}</span>
-                              <span style={{ marginLeft: 6, color: "#4f7cff", fontWeight: 700 }}>{Number(s.price || 0).toLocaleString("vi-VN")} đ</span>
+                              <span style={{ marginLeft: 6, color: "var(--primary)", fontWeight: 700 }}>{Number(s.price || 0).toLocaleString("vi-VN")} đ</span>
                             </label>
                           ))}
                         </div>
                       </div>
 
                 
-                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: 16, background: "#f9fafb" }}>
+                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: 16, background: "var(--bg-input)" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                           <span style={{ fontSize: 24 }}>🍱</span>
-                          <div><div style={{ fontWeight: 700, fontSize: 15 }}>{t.meal}</div><div style={{ fontSize: 12, color: "#888" }}>Chọn món ăn trên chuyến bay</div></div>
+                          <div><div style={{ fontWeight: 700, fontSize: 15 }}>{t.meal}</div><div style={{ fontSize: 12, color: "var(--text-muted)" }}>Chọn món ăn trên chuyến bay</div></div>
                         </div>
                         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
                           <label style={{
@@ -1123,10 +1123,10 @@ const BusTickets = () => {
                       { cat: categories.taxi, icon: "🚕", title: "Xe đón sân bay", sub: "Tiện lợi với dịch vụ xe riêng", color: "#fef9c3", border: "#fde68a" }]
                         .map(({ cat, icon, title, sub, color, border }) => (
                           cat.length > 0 && (
-                            <div key={title} style={{ border: `1px solid ${border}`, borderRadius: 12, padding: 16, background: "#f9fafb" }}>
+                            <div key={title} style={{ border: `1px solid ${border}`, borderRadius: 12, padding: 16, background: "var(--bg-input)" }}>
                               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
                                 <span style={{ fontSize: 24 }}>{icon}</span>
-                                <div><div style={{ fontWeight: 700, fontSize: 15 }}>{title}</div><div style={{ fontSize: 12, color: "#888" }}>{sub}</div></div>
+                                <div><div style={{ fontWeight: 700, fontSize: 15 }}>{title}</div><div style={{ fontSize: 12, color: "var(--text-muted)" }}>{sub}</div></div>
                               </div>
                               {cat.map(s => (
                                 <label key={s.id} onClick={() => toggleService(s.id)} style={{
@@ -1158,20 +1158,20 @@ const BusTickets = () => {
 
                   {error && <p style={{ color: "red", marginTop: 12 }}>{error}</p>}
                   <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
-                    <button type="button" onClick={() => setStep("passenger")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
-                    <button type="button" onClick={goToReview} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "#4f7cff", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.reviewAndPay} →</button>
+                    <button type="button" onClick={() => setStep("passenger")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
+                    <button type="button" onClick={goToReview} style={{ padding: "10px 28px", borderRadius: 8, border: "none", background: "var(--primary)", color: "#fff", fontWeight: 700, cursor: "pointer" }}>{t.reviewAndPay} →</button>
                   </div>
                 </div>
 
       
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.totalCost}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{seats.filter(s => selectedSeatIds.includes(s.id)).reduce((sum, s) => sum + getSeatPrice(selectedTrip.price, s.seatType), 0).toLocaleString("vi-VN")} đ</b></div>
                     {services.filter(s => selectedServiceIds.includes(s.id)).map(s => (
-                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>+ {s.serviceName}</span><span>{Number(s.price || 0).toLocaleString("vi-VN")} đ</span></div>
+                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--text-muted)" }}>+ {s.serviceName}</span><span>{Number(s.price || 0).toLocaleString("vi-VN")} đ</span></div>
                     ))}
-                    <div style={{ borderTop: "1px solid #eee", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: 15, color: "#ff6b00" }}>
+                    <div style={{ borderTop: "1px solid var(--border-light)", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 700, fontSize: 15, color: "#ff6b00" }}>
                       <span>Tổng cộng</span>
                       <span>{Number((selectedTrip.price || 0) * selectedSeatIds.length + services.filter(s => selectedServiceIds.includes(s.id)).reduce((sum, s) => sum + (s.price || 0), 0)).toLocaleString("vi-VN")} đ</span>
                     </div>
@@ -1182,35 +1182,35 @@ const BusTickets = () => {
 
             {selectedTrip && step === "review" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 12, padding: 24, boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 24, boxShadow: "var(--shadow-md)" }}>
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step4}</h2>
-                  <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>{t.reviewInstruction}</p>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 13, marginBottom: 20 }}>{t.reviewInstruction}</p>
 
       
-                  <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
-                    <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>Chuyến bay</div>
+                  <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, marginBottom: 14, background: "var(--bg-input)" }}>
+                    <div style={{ fontWeight: 700, marginBottom: 8, color: "var(--primary)" }}>Chuyến bay</div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 16 }}>{selectedTrip.origin} → {selectedTrip.destination}</div>
-                        <div style={{ color: "#888", fontSize: 13, marginTop: 4 }}>{selectedTrip.departureTime} · {selectedTrip.providerName}</div>
+                        <div style={{ color: "var(--text-muted)", fontSize: 13, marginTop: 4 }}>{selectedTrip.departureTime} · {selectedTrip.providerName}</div>
                       </div>
                       <div style={{ fontWeight: 800, color: "#ff6b00", fontSize: 16 }}>{Number(selectedTrip.price || 0).toLocaleString("vi-VN")} đ</div>
                     </div>
                   </div>
 
-                  <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
-                    <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}><FaUser /> Hành khách</div>
+                  <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, marginBottom: 14, background: "var(--bg-input)" }}>
+                    <div style={{ fontWeight: 700, marginBottom: 8, color: "var(--primary)" }}><FaUser /> Hành khách</div>
                     <div style={{ fontSize: 14 }}>
                       <b>{passengerInfo.lastName} {passengerInfo.firstName}</b>
-                      <div style={{ color: "#888", fontSize: 13, marginTop: 4 }}>{passengerInfo.email} · +84 {passengerInfo.phoneDigits}</div>
+                      <div style={{ color: "var(--text-muted)", fontSize: 13, marginTop: 4 }}>{passengerInfo.email} · +84 {passengerInfo.phoneDigits}</div>
                       <div style={{ marginTop: 4 }}>Ghế: <b>{seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ") || "Chưa chọn"}</b></div>
                     </div>
                   </div>
 
          
                   {selectedServiceIds.length > 0 && (
-                    <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
-                      <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>🛎 Dịch vụ bổ sung</div>
+                    <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, marginBottom: 14, background: "var(--bg-input)" }}>
+                      <div style={{ fontWeight: 700, marginBottom: 8, color: "var(--primary)" }}>🛎 Dịch vụ bổ sung</div>
                       {services.filter(s => selectedServiceIds.includes(s.id)).map(s => (
                         <div key={s.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 14, marginBottom: 4 }}>
                           <span>{s.serviceName}</span><b>{Number(s.price || 0).toLocaleString("vi-VN")} đ</b>
@@ -1223,10 +1223,10 @@ const BusTickets = () => {
                     <div style={{ fontWeight: 700, marginBottom: 10 }}><FaTicketAlt />{t.promoCodeLabel}</div>
                     <div style={{ display: "flex", gap: 8 }}>
                       <input value={promoCode} onChange={e => setPromoCode(e.target.value.toUpperCase())} placeholder="..."
-                        style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                      <button type="button" style={{ padding: "10px 16px", borderRadius: 8, border: "1px solid #4f7cff", background: "#eff6ff", color: "#4f7cff", fontWeight: 700, cursor: "pointer" }}>{t.applyPromo}</button>
+                        style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid var(--border-input)", fontSize: 14 }} />
+                      <button type="button" style={{ padding: "10px 16px", borderRadius: 8, border: "1px solid #4f7cff", background: "var(--bg-accent)", color: "var(--primary)", fontWeight: 700, cursor: "pointer" }}>{t.applyPromo}</button>
                     </div>
-                    <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>{t.promoInstruction}</div>
+                    <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 6 }}>{t.promoInstruction}</div>
                   </div>
 
                   {error && <p style={{ color: "red", marginTop: 4 }}>{error}</p>}
@@ -1252,7 +1252,7 @@ const BusTickets = () => {
                     </div>
                   ) : (
                     <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
-                      <button type="button" onClick={() => setStep("extras")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid #ddd", background: "#fff", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
+                      <button type="button" onClick={() => setStep("extras")} style={{ padding: "10px 24px", borderRadius: 8, border: "1px solid var(--border-input)", background: "var(--bg-card)", fontWeight: 700, cursor: "pointer" }}>← {t.goBack}</button>
                       <button type="button" onClick={submitBooking} disabled={submitLoading}
                         style={{ padding: "12px 32px", borderRadius: 8, border: "none", background: "#ff6b00", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer" }}>
                         {submitLoading ? "Đang xử lý..." : "🎫 Đặt vé ngay"}
@@ -1261,15 +1261,15 @@ const BusTickets = () => {
                   )}
                 </div>
 
-                <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: 12, padding: 20, boxShadow: "var(--shadow-md)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.paymentDetails}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>
                     <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{seats.filter(s => selectedSeatIds.includes(s.id)).reduce((sum, s) => sum + getSeatPrice(selectedTrip.price, s.seatType), 0).toLocaleString("vi-VN")} đ</b></div>
                     {services.filter(s => selectedServiceIds.includes(s.id)).map(s => (
-                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>+ {s.serviceName}</span><span>{Number(s.price || 0).toLocaleString("vi-VN")} đ</span></div>
+                      <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--text-muted)" }}>+ {s.serviceName}</span><span>{Number(s.price || 0).toLocaleString("vi-VN")} đ</span></div>
                     ))}
                     {promoCode && <div style={{ display: "flex", justifyContent: "space-between", color: "#16a34a" }}><span>Mã: {promoCode}</span><span>-0 đ</span></div>}
-                    <div style={{ borderTop: "1px solid #eee", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 800, fontSize: 16, color: "#ff6b00" }}>
+                    <div style={{ borderTop: "1px solid var(--border-light)", marginTop: 8, paddingTop: 8, display: "flex", justifyContent: "space-between", fontWeight: 800, fontSize: 16, color: "#ff6b00" }}>
                       <span>Tổng cộng</span>
                       <span>{Number((selectedTrip.price || 0) * selectedSeatIds.length + services.filter(s => selectedServiceIds.includes(s.id)).reduce((sum, s) => sum + (s.price || 0), 0)).toLocaleString("vi-VN")} đ</span>
                     </div>

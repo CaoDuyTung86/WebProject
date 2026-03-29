@@ -6,6 +6,7 @@ import Auth from "../Page/Auth";
 
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import { AiOutlineGlobal } from "react-icons/ai";
 import { useNavigate } from "react-router-dom"; 
 import VNFlag from "../Picture/flags/vn.png";
@@ -20,6 +21,7 @@ const Header = ({ setIsSidebarOpen }) => {
 
   const { currentLanguage, t, changeLanguage } = useLanguage();
   const { user, isAuthenticated, logout } = useAuth();
+  const { isDark } = useTheme();
   const navigate = useNavigate(); 
 
   const languages = [
@@ -75,10 +77,11 @@ const Header = ({ setIsSidebarOpen }) => {
           width: "100%",
           height: "var(--header-height)",
           minHeight: "70px",
-          background: "#fff",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
+          background: "var(--bg-header)",
+          boxShadow: "var(--shadow-sm)",
           zIndex: 1000,
-          color: "black",
+          color: "var(--text-main)",
+          transition: "background-color 0.3s, box-shadow 0.3s",
         }}
       >
         <div className="app-header-left">
@@ -89,7 +92,7 @@ const Header = ({ setIsSidebarOpen }) => {
               background: "none",
               border: "none",
               cursor: "pointer",
-              color: "black",
+              color: "var(--text-main)",
             }}
           >
             ☰
@@ -107,10 +110,6 @@ const Header = ({ setIsSidebarOpen }) => {
           >
             Datxe.com
           </h2>
-        </div>
-
-        <div className="app-header-search">
-          <input placeholder={t.search} />
         </div>
 
         <div className="app-header-actions">
@@ -145,7 +144,7 @@ const Header = ({ setIsSidebarOpen }) => {
               <span style={{ fontSize: "14px", fontWeight: "500" }}>{currentLanguage.code.toUpperCase()}</span>
               <IoChevronDown style={{ 
                 fontSize: "14px", 
-                color: "#666",
+                color: "var(--text-secondary)",
                 transform: isLanguageOpen ? "rotate(180deg)" : "rotate(0)",
                 transition: "transform 0.3s"
               }} />
@@ -158,9 +157,9 @@ const Header = ({ setIsSidebarOpen }) => {
                   top: "45px",
                   right: 0,
                   width: "250px",
-                  backgroundColor: "#fff",
+                  backgroundColor: "var(--bg-dropdown)",
                   borderRadius: "12px",
-                  boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+                  boxShadow: "var(--shadow-lg)",
                   zIndex: 1001,
                   padding: "12px",
                 }}
@@ -169,7 +168,7 @@ const Header = ({ setIsSidebarOpen }) => {
                   margin: "0 0 12px 8px", 
                   fontSize: "16px", 
                   fontWeight: "600",
-                  color: "#333",
+                  color: "var(--text-main)",
                   display: "flex",
                   alignItems: "center",
                   gap: "8px"
@@ -192,7 +191,7 @@ const Header = ({ setIsSidebarOpen }) => {
                         background: currentLanguage.code === lang.code ? "#e8f4ff" : "transparent",
                         cursor: "pointer",
                         fontSize: "14px",
-                        color: "#333",
+                        color: "var(--text-main)",
                         textAlign: "left",
                         transition: "all 0.2s",
                         display: "flex",
@@ -203,7 +202,7 @@ const Header = ({ setIsSidebarOpen }) => {
                       onClick={() => handleLanguageSelect(lang)}
                       onMouseEnter={(e) => {
                         if (currentLanguage.code !== lang.code) {
-                          e.target.style.backgroundColor = "#f5f5f5";
+                          e.target.style.backgroundColor = "var(--bg-hover)";
                         }
                       }}
                       onMouseLeave={(e) => {
@@ -262,7 +261,7 @@ const Header = ({ setIsSidebarOpen }) => {
                   top: "40px",
                   right: 0,
                   width: "200px",
-                  backgroundColor: "#fff",
+                  backgroundColor: "var(--bg-dropdown)",
                   borderRadius: "8px",
                   boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
                   zIndex: 1001,
@@ -273,7 +272,7 @@ const Header = ({ setIsSidebarOpen }) => {
                 <div style={{
                   fontSize: "20px",
                   fontWeight: "700",
-                  color: "#4f7cff",
+                  color: "var(--primary)",
                   marginBottom: "8px",
                   display: "flex",
                   alignItems: "center",
@@ -285,8 +284,8 @@ const Header = ({ setIsSidebarOpen }) => {
                 </div>
                 <div style={{
                   fontSize: "12px",
-                  color: "#666",
-                  borderTop: "1px solid #eee",
+                  color: "var(--text-secondary)",
+                  borderTop: "1px solid var(--border-light)",
                   paddingTop: "8px",
                   marginTop: "8px"
                 }}>
@@ -300,9 +299,9 @@ const Header = ({ setIsSidebarOpen }) => {
                   right: "20px",
                   width: "12px",
                   height: "12px",
-                  backgroundColor: "#fff",
+                  backgroundColor: "var(--bg-card)",
                   transform: "rotate(45deg)",
-                  borderTop: "1px solid #eee",
+                  borderTop: "1px solid var(--border-light)",
                   borderLeft: "1px solid #eee",
                 }} />
               </div>
@@ -354,7 +353,7 @@ const Header = ({ setIsSidebarOpen }) => {
                       borderRadius: "6px",
                       border: "1px solid #4f7cff",
                       background: "#e6edff",
-                      color: "#4f7cff",
+                      color: "var(--primary)",
                       cursor: "pointer",
                       fontSize: "13px",
                       fontWeight: "600",
@@ -384,7 +383,7 @@ const Header = ({ setIsSidebarOpen }) => {
 
           {isAuthenticated ? (
             <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <span style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>
+              <span style={{ fontSize: "14px", color: "var(--text-main)", fontWeight: "500" }}>
                 {user?.fullName || user?.email}
               </span>
               <button
@@ -408,7 +407,7 @@ const Header = ({ setIsSidebarOpen }) => {
                   borderRadius: "6px",
                   border: "1px solid #4f7cff",
                   background: "#eef2ff",
-                  color: "#4f7cff",
+                  color: "var(--primary)",
                   cursor: "pointer",
                   fontWeight: "600",
                 }}
@@ -420,9 +419,9 @@ const Header = ({ setIsSidebarOpen }) => {
                 style={{
                   padding: "6px 14px",
                   borderRadius: "6px",
-                  border: "1px solid #ddd",
-                  background: "#fff",
-                  color: "#333",
+                  border: "1px solid var(--border-input)",
+                  background: "var(--bg-card)",
+                  color: "var(--text-main)",
                   cursor: "pointer",
                   fontWeight: "500",
                 }}
@@ -437,7 +436,7 @@ const Header = ({ setIsSidebarOpen }) => {
                 padding: "8px 14px",
                 borderRadius: "8px",
                 border: "none",
-                background: "#4f7cff",
+                background: "var(--primary)",
                 color: "#fff",
                 cursor: "pointer",
                 fontWeight: "600"

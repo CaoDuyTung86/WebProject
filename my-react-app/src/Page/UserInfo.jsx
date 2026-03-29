@@ -44,19 +44,19 @@ const UserInfo = ({ userData }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "var(--bg-hover)",
         padding: "20px",
       }}>
         <div style={{
           maxWidth: "600px",
           width: "100%",
-          backgroundColor: "#fff",
+          backgroundColor: "var(--bg-card)",
           borderRadius: "16px",
           boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
           padding: "30px",
           textAlign: "center",
         }}>
-          <p style={{ color: "#666", fontSize: "16px" }}>
+          <p style={{ color: "var(--text-secondary)", fontSize: "16px" }}>
             Vui lòng đăng nhập để xem thông tin
           </p>
         </div>
@@ -79,13 +79,13 @@ const UserInfo = ({ userData }) => {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#f5f5f5",
+      backgroundColor: "var(--bg-hover)",
       padding: "20px",
     }}>
       <div style={{
         maxWidth: "600px",
         width: "100%",
-        backgroundColor: "#fff",
+        backgroundColor: "var(--bg-card)",
         borderRadius: "16px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
         padding: "30px",
@@ -101,7 +101,7 @@ const UserInfo = ({ userData }) => {
             width: "80px",
             height: "80px",
             borderRadius: "50%",
-            backgroundColor: "#4f7cff",
+            backgroundColor: "var(--primary)",
             margin: "0 auto 15px",
             display: "flex",
             alignItems: "center",
@@ -116,32 +116,32 @@ const UserInfo = ({ userData }) => {
             margin: "0 0 8px",
             fontSize: "24px",
             fontWeight: "600",
-            color: "#333",
+            color: "var(--text-main)",
           }}>
             {userInfo.fullName || "Người dùng"}
           </h2>
           <p style={{
             margin: 0,
             fontSize: "14px",
-            color: "#666",
+            color: "var(--text-secondary)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "8px",
           }}>
-            <FiMail style={{ color: "#4f7cff" }} /> {userInfo.email}
+            <FiMail style={{ color: "var(--primary)" }} /> {userInfo.email}
           </p>
           {userInfo.phone && (
             <p style={{
               margin: "5px 0 0",
               fontSize: "14px",
-              color: "#666",
+              color: "var(--text-secondary)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: "8px",
             }}>
-              <FiPhone style={{ color: "#4f7cff" }} /> {userInfo.phone}
+              <FiPhone style={{ color: "var(--primary)" }} /> {userInfo.phone}
             </p>
           )}
         </div>
@@ -179,13 +179,13 @@ const UserInfo = ({ userData }) => {
               }}>
                 <span style={{
                   fontSize: "18px",
-                  color: "#4f7cff",
+                  color: "var(--primary)",
                 }}>
                   {item.icon}
                 </span>
                 <span style={{
                   fontSize: "12px",
-                  color: "#888",
+                  color: "var(--text-muted)",
                   fontWeight: "600",
                   letterSpacing: "0.5px",
                 }}>
@@ -195,7 +195,7 @@ const UserInfo = ({ userData }) => {
               <div style={{
                 fontSize: "15px",
                 fontWeight: "500",
-                color: "#333",
+                color: "var(--text-main)",
                 wordBreak: "break-word",
                 paddingLeft: "26px",
               }}>
@@ -212,7 +212,7 @@ const UserInfo = ({ userData }) => {
           <button
             style={{
               padding: "12px 40px",
-              backgroundColor: "#4f7cff",
+              backgroundColor: "var(--primary)",
               color: "#fff",
               border: "none",
               borderRadius: "8px",
@@ -222,11 +222,11 @@ const UserInfo = ({ userData }) => {
               transition: "background-color 0.2s, transform 0.2s",
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#3a5fd0";
+              e.target.style.backgroundColor = "var(--primary-hover)";
               e.target.style.transform = "scale(1.02)";
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "#4f7cff";
+              e.target.style.backgroundColor = "var(--primary)";
               e.target.style.transform = "scale(1)";
             }}
           >
