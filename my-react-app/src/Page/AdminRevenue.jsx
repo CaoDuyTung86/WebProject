@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import Sidebar from "../components/Sidebar";
 import Header from "../LayOut/Header";
+import { useLanguage } from "../context/LanguageContext";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const AdminRevenue = () => {
@@ -10,6 +11,7 @@ const AdminRevenue = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchRevenue();
@@ -37,23 +39,23 @@ const AdminRevenue = () => {
 
   // Helper function to map providerType string to standard UI type
   const getMappedType = (type) => {
-    const t = (type || "").toLowerCase();
-    if (t.includes("flight") || t.includes("air") || t.includes("máy bay")) return "Máy bay";
-    if (t.includes("bus") || t.includes("coach") || t.includes("xe khách")) return "Xe khách";
-    return "Tàu hỏa";
+    const t_local = (type || "").toLowerCase();
+    if (t_local.includes("flight") || t_local.includes("air") || t_local.includes("máy bay")) return t.flight;
+    if (t_local.includes("bus") || t_local.includes("coach") || t_local.includes("xe khách")) return t.bus;
+    return t.train;
   };
 
   // Process data for charts
-  const revenueByTypeMap = { "Máy bay": 0, "Xe khách": 0, "Tàu hỏa": 0 };
+  const revenueByTypeMap = { [t.flight]: 0, [t.bus]: 0, [t.train]: 0 };
   revenues.forEach(item => {
-    const t = getMappedType(item.providerType);
-    revenueByTypeMap[t] += (item.totalRevenue || 0);
+    const t_type = getMappedType(item.providerType);
+    revenueByTypeMap[t_type] += (item.totalRevenue || 0);
   });
   
   const pieData = [
-    { name: "Máy bay", value: revenueByTypeMap["Máy bay"] },
-    { name: "Xe khách", value: revenueByTypeMap["Xe khách"] },
-    { name: "Tàu hỏa", value: revenueByTypeMap["Tàu hỏa"] }
+    { name: t.flight, value: revenueByTypeMap[t.flight] },
+    { name: t.bus, value: revenueByTypeMap[t.bus] },
+    { name: t.train, value: revenueByTypeMap[t.train] }
   ].filter(d => d.value > 0);
   
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b']; // Blue, Green, Yellow
@@ -76,7 +78,7 @@ const AdminRevenue = () => {
         <Sidebar isOpen={isSidebarOpen} />
         <div className={`page-main ${isSidebarOpen ? "with-sidebar" : ""}`} style={{ padding: "30px", flex: 1, overflowY: "auto" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24, color: "#1e293b" }}>Thống kê doanh thu</h1>
+            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24, color: "#1e293b" }}>{t.revenueTitle}</h1>
             
             {error && <div style={{ padding: 16, background: "#fee2e2", color: "#dc2626", borderRadius: 8, marginBottom: 20 }}>{error}</div>}
             
@@ -84,7 +86,7 @@ const AdminRevenue = () => {
             <div style={{ background: "linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)", padding: 30, borderRadius: 16, boxShadow: "0 10px 25px rgba(59, 130, 246, 0.2)", marginBottom: 30, display: "flex", alignItems: "center", gap: 24, color: "white" }}>
               <div style={{ width: 70, height: 70, borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32 }}>💰</div>
               <div>
-                <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 8, opacity: 0.9 }}>TỔNG DOANH THU HỆ THỐNG</div>
+                <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 8, opacity: 0.9 }}>{t.totalRevenue.toUpperCase()}</div>
                 <div style={{ fontSize: 40, fontWeight: 800 }}>{totalRevenue.toLocaleString("vi-VN")} đ</div>
               </div>
             </div>
@@ -95,7 +97,7 @@ const AdminRevenue = () => {
                 
                 {/* Pie Chart: Revenue by Service Type */}
                 <div style={{ background: "#fff", padding: "24px", borderRadius: "16px", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
-                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155", textAlign: "center" }}>Doanh thu theo dịch vụ</h3>
+                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155", textAlign: "center" }}>{t.revenueByService}</h3>
                   <div style={{ height: "300px", width: "100%" }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -144,15 +146,15 @@ const AdminRevenue = () => {
             {/* Data Table */}
             <div style={{ background: "#fff", borderRadius: 16, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", overflow: "hidden" }}>
               <div style={{ padding: "20px 24px", borderBottom: "1px solid #f1f5f9" }}>
-                <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#334155", margin: 0 }}>Chi tiết doanh thu Nhà cung cấp</h3>
+                <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#334155", margin: 0 }}>{t.revenueByService}</h3>
               </div>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr style={{ background: "#f8fafc", textAlign: "left" }}>
                     <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Mã NCC</th>
-                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Tên nhà cung cấp</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>{t.providerCol}</th>
                     <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Loại dịch vụ</th>
-                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0", textAlign: "right" }}>Tổng doanh thu</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0", textAlign: "right" }}>{t.totalRevenue}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -179,8 +181,8 @@ const AdminRevenue = () => {
                             borderRadius: "20px", 
                             fontSize: "12px", 
                             fontWeight: "500",
-                            backgroundColor: getMappedType(item.providerType) === "Máy bay" ? "#dbeafe" : getMappedType(item.providerType) === "Xe khách" ? "#dcfce7" : "#fef3c7",
-                            color: getMappedType(item.providerType) === "Máy bay" ? "#1e40af" : getMappedType(item.providerType) === "Xe khách" ? "#166534" : "#b45309"
+                            backgroundColor: getMappedType(item.providerType) === t.flight ? "#dbeafe" : getMappedType(item.providerType) === t.bus ? "#dcfce7" : "#fef3c7",
+                            color: getMappedType(item.providerType) === t.flight ? "#1e40af" : getMappedType(item.providerType) === t.bus ? "#166534" : "#b45309"
                           }}>
                             {getMappedType(item.providerType)}
                           </span>

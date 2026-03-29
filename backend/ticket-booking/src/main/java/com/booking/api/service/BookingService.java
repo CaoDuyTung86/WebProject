@@ -41,7 +41,8 @@ public class BookingService {
         List<Ticket> tickets = new ArrayList<>();
         double totalPrice = 0;
 
-        for (Long seatId : request.getSeatIds()) {
+        for (int i = 0; i < request.getSeatIds().size(); i++) {
+            Long seatId = request.getSeatIds().get(i);
             Seat seat = seatRepository.findById(seatId)
                     .orElseThrow(() -> new ResourceNotFoundException("Ghế", seatId));
 
@@ -52,12 +53,25 @@ public class BookingService {
             double seatPrice = trip.getPrice();
             if ("VIP".equalsIgnoreCase(seat.getSeatType())) {
                 seatPrice *= 2; // Ghế VIP giá gấp đôi
+            } else if ("BUSINESS".equalsIgnoreCase(seat.getSeatType())) {
+                seatPrice += 100000;
+            } else if ("SLEEPER".equalsIgnoreCase(seat.getSeatType())) {
+                seatPrice += 50000;
             }
 
             Ticket ticket = new Ticket();
             ticket.setTrip(trip);
             ticket.setSeat(seat);
             ticket.setPrice(seatPrice);
+            ticket.setStatus("ACTIVE");
+
+            // Set tên hành khách
+            if (request.getPassengerNames() != null && i < request.getPassengerNames().size()) {
+                ticket.setPassengerName(request.getPassengerNames().get(i));
+            } else {
+                ticket.setPassengerName(user.getFullName());
+            }
+            
             tickets.add(ticket);
 
             totalPrice += seatPrice;
@@ -219,6 +233,55 @@ public class BookingService {
         try {
             emailService.sendSurveyEmail(user.getEmail(), booking.getId());
         } catch (Exception e) {}
+
+        Trip trip = null;
+        if (booking.getTickets() != null && !booking.getTickets().isEmpty()) {
+            trip = booking.getTickets().get(0).getTrip();
+        }
+
+        return bookingMapper.toBookingResponse(booking, trip);
+    }
+
+    /** Hủy 1 vé riêng lẻ trong booking */
+    @Transactional
+    public BookingResponse cancelTicket(String email, Long bookingId, Long ticketId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user"));
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking", bookingId));
+
+        if (!booking.getUser().getId().equals(user.getId())) {
+            throw new BookingException("Bạn không có quyền hủy vé trong booking này");
+        }
+
+        Ticket ticketToCancel = booking.getTickets().stream()
+                .filter(t -> t.getId().equals(ticketId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy vé trong booking này"));
+
+        if ("CANCELLED".equals(ticketToCancel.getStatus())) {
+            throw new BookingException("Vé này đã được hủy trước đó");
+        }
+
+        // Hủy vé
+        ticketToCancel.setStatus("CANCELLED");
+        ticketRepository.save(ticketToCancel);
+
+        // Trừ giá vé khỏi tổng
+        if (ticketToCancel.getPrice() != null) {
+            double newTotal = (booking.getTotalPrice() != null ? booking.getTotalPrice() : 0) - ticketToCancel.getPrice();
+            booking.setTotalPrice(Math.max(0, newTotal));
+        }
+
+        // Nếu tất cả vé đều CANCELLED thì hủy cả booking
+        boolean allCancelled = booking.getTickets().stream()
+                .allMatch(t -> "CANCELLED".equals(t.getStatus()));
+        if (allCancelled) {
+            booking.setStatus("CANCELLED");
+        }
+
+        bookingRepository.save(booking);
 
         Trip trip = null;
         if (booking.getTickets() != null && !booking.getTickets().isEmpty()) {

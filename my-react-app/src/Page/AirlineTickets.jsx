@@ -1,12 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useLanguage } from "../context/LanguageContext";
+import { useSavedPassengers } from "../context/SavedPassengersContext";
+import PassengerInfoForm from "../components/PassengerInfoForm";
 import Header from "../LayOut/Header";
 import Sidebar from "../components/Sidebar"; 
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
 import { CgSandClock } from "react-icons/cg";
 import { IoMdSearch } from "react-icons/io";
+import { FiChevronDown } from "react-icons/fi";
 import { FaPlaneDeparture } from "react-icons/fa";
 import { FaPlaneArrival } from "react-icons/fa";
 import { MdOutlineDone } from "react-icons/md";
@@ -44,6 +47,14 @@ const formatDob = (raw) => {
 
 
 
+const getSeatPrice = (base, type) => {
+  let price = Number(base || 0);
+  if (type === "VIP") price *= 2;
+  else if (type === "BUSINESS") price += 100000;
+  else if (type === "SLEEPER") price += 50000;
+  return price;
+};
+
 const AirlineTickets = () => {
   const { t } = useLanguage();
   const { token, isAuthenticated } = useAuth();
@@ -65,7 +76,9 @@ const AirlineTickets = () => {
   const [from, setFrom] = useState("HAN");
   const [to, setTo] = useState("SGN");
   const [date, setDate] = useState("");
-  const [passengers, setPassengers] = useState(1);
+  const [passengerCounts, setPassengerCounts] = useState({ adult: 1, child: 0, infant: 0 });
+  const [showPassengersDropdown, setShowPassengersDropdown] = useState(false);
+  const passengers = passengerCounts.adult + passengerCounts.child;
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [trips, setTrips] = useState([]);
@@ -82,17 +95,25 @@ const AirlineTickets = () => {
   const [services, setServices] = useState([]);
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
 
-  const [passengerInfo, setPassengerInfo] = useState({
-    firstName: "",
-    lastName: "",
-    dob: "",
-    nationality: "Việt Nam",
-    phoneDigits: "",
-    email: "",
-    memberCode: "",
-    promoOptIn: true,
-    remember: false,
-  });
+  const [passengerInfoList, setPassengerInfoList] = useState([]);
+  const [globalContact, setGlobalContact] = useState({ promoOptIn: true, remember: false });
+  const { savedPassengers, addPassenger } = useSavedPassengers();
+
+  useEffect(() => {
+    const newList = [];
+    for (let i = 0; i < passengerCounts.adult; i++) newList.push({ type: "ADULT", data: {} });
+    for (let i = 0; i < passengerCounts.child; i++) newList.push({ type: "CHILD", data: {} });
+    for (let i = 0; i < passengerCounts.infant; i++) newList.push({ type: "INFANT", data: {} });
+    setPassengerInfoList(prev => newList.map((item, idx) => prev[idx] ? { ...item, data: prev[idx].data } : item));
+  }, [passengerCounts]);
+
+  const handlePassengerChange = (index, type, data) => {
+    setPassengerInfoList(prev => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], data };
+      return copy;
+    });
+  };
 
   const [submitLoading, setSubmitLoading] = useState(false);
   const [bookingResult, setBookingResult] = useState(null);
@@ -130,23 +151,9 @@ const AirlineTickets = () => {
  
   }, []);
 
-  useEffect(() => {
-    if (passengerInfo.remember) {
-      localStorage.setItem("guestPassengerDraft", JSON.stringify(passengerInfo));
-    }
-  }, [passengerInfo]);
+  
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("guestPassengerDraft");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setPassengerInfo((prev) => ({ ...prev, ...parsed }));
-      }
-    } catch {
-     
-    }
-  }, []);
+  
 
   const handleSearch = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -177,7 +184,7 @@ const AirlineTickets = () => {
         to,
         date,
         type: "PLANE",
-        passengers: String(passengers || 1),
+        passengers: String((passengerCounts.adult + passengerCounts.child + passengerCounts.infant) || 1),
       });
 
       const res = await fetch(`${API_BASE}/trips/search?${params.toString()}`);
@@ -214,7 +221,7 @@ const AirlineTickets = () => {
         to,
         date: selectedDate,
         type: "PLANE",
-        passengers: String(passengers || 1),
+        passengers: String((passengerCounts.adult + passengerCounts.child + passengerCounts.infant) || 1),
       });
 
       const res = await fetch(`${API_BASE}/trips/search?${params.toString()}`);
@@ -256,7 +263,7 @@ const AirlineTickets = () => {
         start,
         end,
         type: "PLANE",
-        passengers: String(passengers || 1),
+        passengers: String((passengerCounts.adult + passengerCounts.child + passengerCounts.infant) || 1),
       });
 
       const res = await fetch(`${API_BASE}/trips/calendar?${params.toString()}`);
@@ -326,7 +333,7 @@ const AirlineTickets = () => {
         return prev.filter((id) => id !== seat.id);
       }
 
-      if (prev.length >= (passengers || 1)) {
+      if (prev.length >= ((passengerCounts.adult + passengerCounts.child + passengerCounts.infant) || 1)) {
         return prev;
       }
       return [...prev, seat.id];
@@ -361,28 +368,19 @@ const AirlineTickets = () => {
   };
 
   const validatePassenger = () => {
-    const firstName = passengerInfo.firstName.trim();
-    const lastName = passengerInfo.lastName.trim();
-    const dob = passengerInfo.dob.trim();
-    const email = passengerInfo.email.trim();
-    const digits = passengerInfo.phoneDigits.trim();
-
-    if (!firstName || !lastName || !dob || !email || !digits) {
-      return "Vui lòng nhập đầy đủ thông tin hành khách bắt buộc.";
+    for (const [idx, pi] of passengerInfoList.entries()) {
+        const d = pi.data || {};
+        const isAdult = pi.type === 'ADULT';
+        if (!d.fullName || d.fullName.trim() === '') return `Vui lòng nhập họ tên cho ${isAdult ? 'người lớn' : pi.type === 'CHILD' ? 'trẻ em' : 'em bé'} ${idx + 1}.`;
+        if (!d.dateOfBirth || !/^\d{2}\/\d{2}\/\d{4}$/.test(d.dateOfBirth)) return `Ngày sinh hành khách ${idx + 1} không hợp lệ. Vui lòng nhập định dạng DD/MM/YYYY.`;
+        if (!d.gender) return `Vui lòng chọn giới tính cho hành khách ${idx + 1}.`;
+        
+        if (isAdult) {
+            if (!d.email || !/^\S+@\S+\.\S+$/.test(d.email)) return `Email của người lớn không hợp lệ.`;
+            if (!d.phone || !/^\d{9,10}$/.test(d.phone.replace(/\D/g, ''))) return `SĐT người lớn không hợp lệ.`;
+            if (!d.idNumber) return `Vui lòng nhập CCCD/Hộ chiếu cho người lớn.`;
+        }
     }
-
-    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dob)) {
-      return "Ngày sinh phải theo định dạng DD/MM/YYYY.";
-    }
-
-    if (!/^\d{10}$/.test(digits)) {
-      return "Số điện thoại phải gồm 10 chữ số.";
-    }
-
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      return "Email không đúng định dạng.";
-    }
-
     return null;
   };
 
@@ -453,6 +451,13 @@ const AirlineTickets = () => {
       }
 
       setBookingResult(data);
+      if (globalContact.remember) {
+        passengerInfoList.forEach(pi => {
+           if (pi.type === 'ADULT' && pi.data.fullName) {
+               addPassenger({ ...pi.data, passengerType: 'ADULT' }).catch(() => {});
+           }
+        });
+      }
     } catch (err) {
       console.error(err);
       setError("Không thể kết nối đến máy chủ để đặt vé.");
@@ -617,11 +622,33 @@ const AirlineTickets = () => {
                 
                 <div>
                   <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaUser /> Hành khách</label>
-                  <input type="number" min={1} max={9} value={passengers}
-                    onChange={(e) => setPassengers(Math.max(1, Number(e.target.value) || 1))}
-                    style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid #e0e7ff",
-                      background: "#f8f9ff", fontSize: 15, marginBottom: 10, boxSizing: "border-box" }}
-                  />
+                  <div style={{ position: "relative", marginBottom: 10 }}>
+                    <div
+                      onClick={() => setShowPassengersDropdown(!showPassengersDropdown)}
+                      style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid #e0e7ff",
+                        background: "#fff", fontSize: 15, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", boxSizing: "border-box" }}
+                    >
+                      <span>{passengerCounts.adult} {t.adult || 'Người lớn'}, {passengerCounts.child} {t.child || 'Trẻ em'}, {passengerCounts.infant} {t.infant || 'Em bé'}</span>
+                      <FiChevronDown />
+                    </div>
+                    {showPassengersDropdown && (
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12, boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, padding: 16, marginTop: 4 }}>
+                         {['adult', 'child', 'infant'].map(type => (
+                           <div key={type} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                             <div>
+                               <div style={{ fontWeight: 600 }}>{type === 'adult' ? t.adult || 'Người lớn' : type === 'child' ? t.child || 'Trẻ em' : t.infant || 'Em bé'}</div>
+                               <div style={{ fontSize: 12, color: "#666" }}>{type === 'adult' ? '>12 tuổi' : type === 'child' ? '2-11 tuổi' : '<2 tuổi'}</div>
+                             </div>
+                             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                               <button type="button" disabled={passengerCounts[type] <= (type === 'adult' ? 1 : 0)} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] - 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>-</button>
+                               <span style={{ fontWeight: 600, width: 16, textAlign: "center" }}>{passengerCounts[type]}</span>
+                               <button type="button" disabled={passengerCounts.adult + passengerCounts.child + passengerCounts.infant >= 5} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] + 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
+                             </div>
+                           </div>
+                         ))}
+                      </div>
+                    )}
+                  </div>
                   <button
   type="button"
   onClick={handleSearch}
@@ -893,7 +920,13 @@ const AirlineTickets = () => {
                     const rightCols = cols.slice(half);
 
                     return (
-                      <div style={{ overflowX: "auto" }}>
+                      <div style={{ 
+                        overflowX: "auto", background: "#f0f2f5", padding: "50px 30px 30px", 
+                        borderRadius: "150px 150px 30px 30px", border: "5px solid #cbd5e1",
+                        boxShadow: "inset 0 10px 20px rgba(0,0,0,0.05)", position: "relative",
+                        minWidth: "fit-content", margin: "0 auto"
+                      }}>
+                        <div style={{ textAlign: "center", marginBottom: 30, color: "#94a3b8", fontSize: "20px", fontWeight: "bold" }}>✈ Mũi Máy Bay</div>
                   
                         <div style={{ display: "flex", gap: 6, marginBottom: 8, paddingLeft: 48 }}>
                           {leftCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "#888", fontSize: 12 }}>{c}</div>)}
@@ -910,9 +943,15 @@ const AirlineTickets = () => {
                               return (
                                 <button key={s.id} type="button" onClick={() => toggleSeat(s)} disabled={s.booked}
                                   title={`${s.seatNumber} ${s.seatType || "ECONOMY"} ${s.booked ? "(Đã đặt)" : ""}`}
-                                  style={{ width: 44, height: 38, borderRadius: 6, border: "none", cursor: s.booked ? "not-allowed" : "pointer",
-                                    background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (s.seatType === "BUSINESS" ? "#dbeafe" : "#dcfce7"),
-                                    color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 600, fontSize: 11 }}>
+                                  style={{ 
+        width: 44, height: s.seatType === "BUSINESS" ? 48 : 40, 
+        borderRadius: "8px 8px 4px 4px", border: "1px solid rgba(0,0,0,0.1)", 
+        cursor: s.booked ? "not-allowed" : "pointer",
+        background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "#bfdbfe" : false ? "#fef08a" : "#bbf7d0"),
+        color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 700, fontSize: 12,
+        borderBottom: s.booked ? "6px solid #ccc" : sel ? "6px solid #d97706" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "6px solid #60a5fa" : false ? "6px solid #eab308" : "6px solid #4ade80"),
+        transition: "all 0.2s"
+    }}>
                                   {s.booked ? "✗" : s.seatNumber}
                                 </button>
                               );
@@ -925,9 +964,15 @@ const AirlineTickets = () => {
                               return (
                                 <button key={s.id} type="button" onClick={() => toggleSeat(s)} disabled={s.booked}
                                   title={`${s.seatNumber} ${s.seatType || "ECONOMY"} ${s.booked ? "(Đã đặt)" : ""}`}
-                                  style={{ width: 44, height: 38, borderRadius: 6, border: "none", cursor: s.booked ? "not-allowed" : "pointer",
-                                    background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (s.seatType === "BUSINESS" ? "#dbeafe" : "#dcfce7"),
-                                    color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 600, fontSize: 11 }}>
+                                  style={{ 
+        width: 44, height: s.seatType === "BUSINESS" ? 48 : 40, 
+        borderRadius: "8px 8px 4px 4px", border: "1px solid rgba(0,0,0,0.1)", 
+        cursor: s.booked ? "not-allowed" : "pointer",
+        background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "#bfdbfe" : false ? "#fef08a" : "#bbf7d0"),
+        color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 700, fontSize: 12,
+        borderBottom: s.booked ? "6px solid #ccc" : sel ? "6px solid #d97706" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "6px solid #60a5fa" : false ? "6px solid #eab308" : "6px solid #4ade80"),
+        transition: "all 0.2s"
+    }}>
                                   {s.booked ? "✗" : s.seatNumber}
                                 </button>
                               );
@@ -982,61 +1027,36 @@ const AirlineTickets = () => {
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Bước 2: Thông tin hành khách</h2>
                   <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>Nhập thông tin cá nhân của hành khách. Các ô có dấu * là bắt buộc.</p>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-                    {[{label:"Họ *",key:"lastName"},{label:"Tên & tên đệm *",key:"firstName"}].map(f => (
-                      <div key={f.key}>
-                        <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>{f.label}</label>
-                        <input
-                          value={passengerInfo[f.key]}
-                          onChange={e => setPassengerInfo(p => ({...p, [f.key]: toLatinUpper(e.target.value)}))}
-                          style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, letterSpacing: 1 }} />
-                      </div>
-                    ))}
-                    <div>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Ngày sinh *</label>
-                      <input
-                        value={passengerInfo.dob}
-                        onChange={e => setPassengerInfo(p => ({...p, dob: formatDob(e.target.value)}))}
-                        placeholder="__/__/____"
-                        inputMode="numeric"
-                        maxLength={10}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, letterSpacing: 2 }}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    {passengerInfoList.map((pi, idx) => (
+                      <PassengerInfoForm
+                         key={idx}
+                         type={pi.type}
+                         index={idx}
+                         data={pi.data}
+                         onChange={handlePassengerChange}
+                         savedPassengers={savedPassengers}
+                         onSelectSaved={(i, t, p) => handlePassengerChange(i, t, {
+                            ...p, 
+                            fullName: p.fullName || "", 
+                            phone: p.phone || "",
+                            email: p.email || "",
+                            idNumber: p.idNumber || "",
+                            dateOfBirth: p.dateOfBirth || "",
+                            gender: p.gender || "",
+                            nationality: p.nationality || "Việt Nam"
+                         })}
                       />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Quốc tịch</label>
-                      <select value={passengerInfo.nationality} onChange={e => setPassengerInfo(p => ({...p, nationality: e.target.value}))}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }}>
-                        {["Việt Nam","Nhật Bản","Hàn Quốc","Anh","Mỹ","Úc","Khác"].map(c => <option key={c}>{c}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Số điện thoại *</label>
-                      <div style={{ display: "flex", gap: 8 }}>
-                        <input readOnly value="+84" style={{ width: 64, padding: "10px 8px", borderRadius: 8, border: "1px solid #ddd", background: "#f5f5f5", textAlign: "center" }} />
-                        <input value={passengerInfo.phoneDigits} onChange={e => setPassengerInfo(p => ({...p, phoneDigits: e.target.value.replace(/\D/g,"")}))} placeholder="912345678"
-                          style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                      </div>
-                    </div>
-                    <div style={{ gridColumn: "1 / -1" }}>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Email *</label>
-                      <input value={passengerInfo.email} onChange={e => setPassengerInfo(p => ({...p, email: e.target.value}))} type="email"
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                    </div>
-                    <div style={{ gridColumn: "1 / -1" }}>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Mã hội viên (nếu có)</label>
-                      <input value={passengerInfo.memberCode} onChange={e => setPassengerInfo(p => ({...p, memberCode: e.target.value}))}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                    </div>
+                    ))}
                   </div>
 
                   <div style={{ display: "flex", gap: 16, marginTop: 14 }}>
                     <label style={{ fontSize: 13, display: "flex", gap: 8, alignItems: "center", cursor: "pointer" }}>
-                      <input type="checkbox" checked={passengerInfo.promoOptIn} onChange={e => setPassengerInfo(p => ({...p, promoOptIn: e.target.checked}))} />
+                      <input type="checkbox" checked={globalContact.promoOptIn} onChange={e => setGlobalContact(p => ({...p, promoOptIn: e.target.checked}))} />
                       Nhận thông tin khuyến mãi
                     </label>
                     <label style={{ fontSize: 13, display: "flex", gap: 8, alignItems: "center", cursor: "pointer" }}>
-                      <input type="checkbox" checked={passengerInfo.remember} onChange={e => setPassengerInfo(p => ({...p, remember: e.target.checked}))} />
+                      <input type="checkbox" checked={globalContact.remember} onChange={e => setGlobalContact(p => ({...p, remember: e.target.checked}))} />
                       Lưu thông tin cho lần sau
                     </label>
                   </div>
@@ -1109,35 +1129,61 @@ const AirlineTickets = () => {
                       </div>
 
                     
-                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: 16, background: "#f9fafb" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                          <span style={{ fontSize: 26 }}>🍱</span>
-                          <div>
-                            <div style={{ fontWeight: 800, fontSize: 15, fontFamily: "'Segoe UI', sans-serif" }}>Suất ăn</div>
-                            <div style={{ fontSize: 12, color: "#888" }}>Chọn món ăn trên chuyến đi (Có thể chọn nhiều)</div>
-                          </div>
-                        </div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px,1fr))", gap: 10 }}>
-                          {categories.meal.map(s => {
-                            const shortName = s.serviceName.replace(/^Suất ăn\s*/i, '');
-                            return (
-                              <label key={s.id} onClick={(e) => { e.preventDefault(); toggleService(s.id); }} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10,
-                                border: `2px solid ${selectedServiceIds.includes(s.id) ? "#f59e0b" : "#e5e7eb"}`,
-                                background: selectedServiceIds.includes(s.id) ? "#fffbeb" : "#fff", cursor: "pointer" }}>
-                                <div style={{ flex: 1 }}>
-                                  <div style={{ fontWeight: 700, fontSize: 13, display: "flex", justifyContent: "space-between" }}>
-                                    {shortName}
-                                    {selectedServiceIds.includes(s.id) && <span style={{ color: "#f59e0b" }}>✓</span>}
-                                  </div>
-                                  <div style={{ color: "#f59e0b", fontWeight: 700, fontSize: 12 }}>{Number(s.price||0).toLocaleString("vi-VN")} đ</div>
-                                </div>
-                              </label>
-                            );
-                          })}
-                        </div>
+                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: "20px", background: "#f9fafb" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ fontSize: 28 }}>🍱</span>
+                      <div>
+                        <div style={{ fontWeight: 800, fontSize: 16, color: "#b45309" }}>{t.meal}</div>
+                        <div style={{ fontSize: 13, color: "#888" }}>Suất ăn nóng hổi, chuẩn vị nhà hàng</div>
                       </div>
+                    </div>
+                  </div>
+                  
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 30,
+                      border: `2px solid ${!selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#f59e0b" : "#ddd"}`,
+                      background: !selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#fffbeb" : "#fff",
+                      cursor: "pointer", fontWeight: 700, color: !selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#d97706" : "#555" }}>
+                      <input type="radio" name="meal" style={{ display: "none" }}
+                        checked={!selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id))}
+                        onChange={() => setSingleServiceInCategory(null, categories.meal)} />
+                      ✖ Không chọn suất ăn
+                    </label>
+                  </div>
 
-                    
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                    {categories.meal.map((s, index) => {
+                       const images = [
+                         "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=400&auto=format&fit=crop", 
+                         "https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=400&auto=format&fit=crop", 
+                         "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=400&auto=format&fit=crop", 
+                         "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=400&auto=format&fit=crop"  
+                       ];
+                       const img = images[index % images.length];
+                       const isSelected = selectedServiceIds.includes(s.id);
+                       return (
+                         <div key={s.id} onClick={() => setSingleServiceInCategory(s.id, categories.meal)} 
+                           style={{ borderRadius: 12, overflow: "hidden", border: `2px solid ${isSelected ? "#f59e0b" : "#eee"}`, 
+                           background: isSelected ? "#fffbeb" : "#fff", cursor: "pointer", position: "relative", transition: "all 0.2s",
+                           boxShadow: isSelected ? "0 4px 12px rgba(245, 158, 11, 0.2)" : "0 2px 8px rgba(0,0,0,0.05)" }}>
+                           <div style={{ height: 120, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                           <div style={{ padding: 12 }}>
+                             <div style={{ fontWeight: 700, fontSize: 13, color: "#333", lineHeight: 1.4, minHeight: 40 }}>{s.serviceName}</div>
+                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+                               <span style={{ color: "#d97706", fontWeight: 800, fontSize: 14 }}>{Number(s.price||0).toLocaleString("vi-VN")} VND</span>
+                               <div style={{ width: 24, height: 24, borderRadius: "50%", background: isSelected ? "#f59e0b" : "#f3f4f6", 
+                                 display: "flex", alignItems: "center", justifyContent: "center", color: isSelected ? "#fff" : "#9ca3af", fontWeight: "bold" }}>
+                                 {isSelected ? "✓" : "+"}
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       );
+                    })}
+                  </div>
+                </div>
+
                       {[{cat: categories.insurance, icon: <FaShieldAlt />, title: "Bảo hiểm du lịch", sub: "An tâm hơn với bảo hiểm chuyến đi", color: "#f0fdf4", border: "#86efac", accent: "#16a34a"},
                         {cat: categories.taxi, icon: <FaTaxi />, title: "Xe đưa đón sân bay", sub: "Tiện lợi với dịch vụ xe riêng", color: "#fef9c3", border: "#fde68a", accent: "#b45309"}]
                       .map(({cat, icon, title, sub, color, border, accent}) => (

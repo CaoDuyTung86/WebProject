@@ -26,8 +26,10 @@ public interface BookingMapper {
     @Mapping(target = "vehicleType", source = "trip.vehicle.vehicleType")
     @Mapping(target = "providerName", source = "trip.vehicle.provider.providerName")
     @Mapping(target = "seatNumbers", source = "booking.tickets", qualifiedByName = "ticketsToSeatNumbers")
+    @Mapping(target = "ticketDetails", source = "booking.tickets", qualifiedByName = "ticketsToDetails")
     @Mapping(target = "additionalServices", source = "booking.additionalServices", qualifiedByName = "servicesToNames")
     @Mapping(target = "refundAmount", source = "booking.refunds", qualifiedByName = "calculateRefundAmount")
+    @Mapping(target = "refundStatus", source = "booking.refunds", qualifiedByName = "getRefundStatus")
     BookingResponse toBookingResponse(Booking booking, Trip trip);
 
     @Named("ticketsToSeatNumbers")
@@ -36,6 +38,22 @@ public interface BookingMapper {
             return null;
         return tickets.stream()
                 .map(t -> t.getSeat().getSeatNumber())
+                .collect(Collectors.toList());
+    }
+
+    @Named("ticketsToDetails")
+    default List<BookingResponse.TicketDetail> ticketsToDetails(List<Ticket> tickets) {
+        if (tickets == null)
+            return null;
+        return tickets.stream()
+                .map(t -> new BookingResponse.TicketDetail(
+                        t.getId(),
+                        t.getPassengerName(),
+                        t.getSeat().getSeatNumber(),
+                        t.getSeat().getSeatType(),
+                        t.getPrice(),
+                        t.getStatus() != null ? t.getStatus() : "ACTIVE"
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -52,6 +70,24 @@ public interface BookingMapper {
     @Named("calculateRefundAmount")
     default Double calculateRefundAmount(List<com.booking.api.entity.Refund> refunds) {
         if (refunds == null || refunds.isEmpty()) return null;
-        return refunds.stream().mapToDouble(r -> r.getRefundAmount() != null ? r.getRefundAmount() : 0.0).sum();
+        return refunds.stream()
+                .filter(r -> "APPROVED".equals(r.getStatus()) || "COMPLETED".equals(r.getStatus()))
+                .mapToDouble(r -> r.getRefundAmount() != null ? r.getRefundAmount() : 0.0).sum();
+    }
+
+    @Named("getRefundStatus")
+    default String getRefundStatus(List<com.booking.api.entity.Refund> refunds) {
+        if (refunds == null || refunds.isEmpty()) return null;
+        // Return the most recent refund status
+        return refunds.stream()
+                .sorted((a, b) -> {
+                    if (a.getRequestedAt() == null && b.getRequestedAt() == null) return 0;
+                    if (a.getRequestedAt() == null) return 1;
+                    if (b.getRequestedAt() == null) return -1;
+                    return b.getRequestedAt().compareTo(a.getRequestedAt());
+                })
+                .findFirst()
+                .map(com.booking.api.entity.Refund::getStatus)
+                .orElse(null);
     }
 }

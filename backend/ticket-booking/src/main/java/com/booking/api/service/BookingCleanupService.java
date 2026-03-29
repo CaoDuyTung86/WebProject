@@ -22,8 +22,8 @@ public class BookingCleanupService {
     @Scheduled(fixedRate = 60000)
     @Transactional
     public void cancelUnpaidBookings() {
-        // Tìm các booking trạng thái PENDING tạo cách đây hơn 15 phút
-        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(15);
+        // Tìm các booking trạng thái PENDING tạo cách đây hơn 5 phút
+        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(5);
         List<Booking> expiredBookings = bookingRepository.findByStatusAndBookingDateBefore("PENDING", cutoffTime);
 
         if (!expiredBookings.isEmpty()) {

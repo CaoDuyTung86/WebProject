@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useLanguage } from "../context/LanguageContext";
+import { useSavedPassengers } from "../context/SavedPassengersContext";
+import PassengerInfoForm from "../components/PassengerInfoForm";
 import Header from "../LayOut/Header";
 import Sidebar from "../components/Sidebar"; 
 import { useAuth } from "../context/AuthContext";
@@ -9,6 +11,7 @@ import { MdOutlineCreditCard } from "react-icons/md";
 import { TbTrain } from "react-icons/tb";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
+import { FiChevronDown } from "react-icons/fi";
 import { CgSandClock } from "react-icons/cg";
 import { CiCreditCard1 } from "react-icons/ci";
 import { FaChair } from "react-icons/fa";
@@ -42,6 +45,14 @@ const formatDob = (raw) => {
 
 
 
+const getSeatPrice = (base, type) => {
+  let price = Number(base || 0);
+  if (type === "VIP") price *= 2;
+  else if (type === "BUSINESS") price += 100000;
+  else if (type === "SLEEPER") price += 50000;
+  return price;
+};
+
 const TrainTickets = () => {
   const { t } = useLanguage();
   const { token, isAuthenticated } = useAuth();
@@ -64,7 +75,9 @@ const TrainTickets = () => {
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [date, setDate] = useState("");
-  const [passengers, setPassengers] = useState(1);
+  const [passengerCounts, setPassengerCounts] = useState({ adult: 1, child: 0, infant: 0 });
+  const [showPassengersDropdown, setShowPassengersDropdown] = useState(false);
+  const passengers = passengerCounts.adult + passengerCounts.child;
   const [trips, setTrips] = useState([]);
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [seats, setSeats] = useState([]);
@@ -79,17 +92,25 @@ const TrainTickets = () => {
   const [services, setServices] = useState([]);
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
 
-  const [passengerInfo, setPassengerInfo] = useState({
-    firstName: "",
-    lastName: "",
-    dob: "",
-    nationality: "Việt Nam",
-    phoneDigits: "",
-    email: "",
-    memberCode: "",
-    promoOptIn: true,
-    remember: false,
-  });
+  const [passengerInfoList, setPassengerInfoList] = useState([]);
+  const [globalContact, setGlobalContact] = useState({ promoOptIn: true, remember: false });
+  const { savedPassengers, addPassenger } = useSavedPassengers();
+
+  useEffect(() => {
+    const newList = [];
+    for (let i = 0; i < passengerCounts.adult; i++) newList.push({ type: "ADULT", data: {} });
+    for (let i = 0; i < passengerCounts.child; i++) newList.push({ type: "CHILD", data: {} });
+    for (let i = 0; i < passengerCounts.infant; i++) newList.push({ type: "INFANT", data: {} });
+    setPassengerInfoList(prev => newList.map((item, idx) => prev[idx] ? { ...item, data: prev[idx].data } : item));
+  }, [passengerCounts]);
+
+  const handlePassengerChange = (index, type, data) => {
+    setPassengerInfoList(prev => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], data };
+      return copy;
+    });
+  };
 
   const [submitLoading, setSubmitLoading] = useState(false);
   const [bookingResult, setBookingResult] = useState(null);
@@ -127,23 +148,9 @@ const TrainTickets = () => {
   
   }, []);
 
-  useEffect(() => {
-    if (passengerInfo.remember) {
-      localStorage.setItem("guestPassengerDraft", JSON.stringify(passengerInfo));
-    }
-  }, [passengerInfo]);
+  
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("guestPassengerDraft");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setPassengerInfo((prev) => ({ ...prev, ...parsed }));
-      }
-    } catch {
-     
-    }
-  }, []);
+  
 
   const handleSearch = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -359,28 +366,19 @@ const TrainTickets = () => {
   };
 
   const validatePassenger = () => {
-    const firstName = passengerInfo.firstName.trim();
-    const lastName = passengerInfo.lastName.trim();
-    const dob = passengerInfo.dob.trim();
-    const email = passengerInfo.email.trim();
-    const digits = passengerInfo.phoneDigits.trim();
-
-    if (!firstName || !lastName || !dob || !email || !digits) {
-      return "Vui lòng nhập đầy đủ thông tin hành khách bắt buộc.";
+    for (const [idx, pi] of passengerInfoList.entries()) {
+        const d = pi.data || {};
+        const isAdult = pi.type === 'ADULT';
+        if (!d.fullName || d.fullName.trim() === '') return `Vui lòng nhập họ tên cho ${isAdult ? 'người lớn' : pi.type === 'CHILD' ? 'trẻ em' : 'em bé'} ${idx + 1}.`;
+        if (!d.dateOfBirth || !/^\d{2}\/\d{2}\/\d{4}$/.test(d.dateOfBirth)) return `Ngày sinh hành khách ${idx + 1} không hợp lệ. Vui lòng nhập định dạng DD/MM/YYYY.`;
+        if (!d.gender) return `Vui lòng chọn giới tính cho hành khách ${idx + 1}.`;
+        
+        if (isAdult) {
+            if (!d.email || !/^\S+@\S+\.\S+$/.test(d.email)) return `Email của người lớn không hợp lệ.`;
+            if (!d.phone || !/^\d{9,10}$/.test(d.phone.replace(/\D/g, ''))) return `SĐT người lớn không hợp lệ.`;
+            if (!d.idNumber) return `Vui lòng nhập CCCD/Hộ chiếu cho người lớn.`;
+        }
     }
-
-    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dob)) {
-      return "Ngày sinh phải theo định dạng DD/MM/YYYY.";
-    }
-
-    if (!/^\d{9,10}$/.test(digits)) {
-      return "Số điện thoại phải gồm 9-10 chữ số (không gồm +84).";
-    }
-
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      return "Email không đúng định dạng.";
-    }
-
     return null;
   };
 
@@ -451,6 +449,13 @@ const TrainTickets = () => {
       }
 
       setBookingResult(data);
+      if (globalContact.remember) {
+        passengerInfoList.forEach(pi => {
+           if (pi.type === 'ADULT' && pi.data.fullName) {
+               addPassenger({ ...pi.data, passengerType: 'ADULT' }).catch(() => {});
+           }
+        });
+      }
     } catch (err) {
       console.error(err);
       setError("Không thể kết nối đến máy chủ để đặt vé.");
@@ -614,11 +619,33 @@ const TrainTickets = () => {
                 
                 <div>
                   <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13, color: "#555" }}><FaUser /> {t.passengers}</label>
-                  <input type="number" min={1} max={9} value={passengers}
-                    onChange={(e) => setPassengers(Math.max(1, Number(e.target.value) || 1))}
-                    style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid #e0e7ff",
-                      background: "#f8f9ff", fontSize: 15, marginBottom: 10, boxSizing: "border-box" }}
-                  />
+                  <div style={{ position: "relative", marginBottom: 10 }}>
+                    <div
+                      onClick={() => setShowPassengersDropdown(!showPassengersDropdown)}
+                      style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "2px solid #e0e7ff",
+                        background: "#fff", fontSize: 15, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", boxSizing: "border-box" }}
+                    >
+                      <span>{passengerCounts.adult} {t.adult || 'Người lớn'}, {passengerCounts.child} {t.child || 'Trẻ em'}, {passengerCounts.infant} {t.infant || 'Em bé'}</span>
+                      <FiChevronDown />
+                    </div>
+                    {showPassengersDropdown && (
+                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", borderRadius: 12, boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, padding: 16, marginTop: 4 }}>
+                         {['adult', 'child', 'infant'].map(type => (
+                           <div key={type} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                             <div>
+                               <div style={{ fontWeight: 600 }}>{type === 'adult' ? t.adult || 'Người lớn' : type === 'child' ? t.child || 'Trẻ em' : t.infant || 'Em bé'}</div>
+                               <div style={{ fontSize: 12, color: "#666" }}>{type === 'adult' ? '>12 tuổi' : type === 'child' ? '2-11 tuổi' : '<2 tuổi'}</div>
+                             </div>
+                             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                               <button type="button" disabled={passengerCounts[type] <= (type === 'adult' ? 1 : 0)} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] - 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>-</button>
+                               <span style={{ fontWeight: 600, width: 16, textAlign: "center" }}>{passengerCounts[type]}</span>
+                               <button type="button" disabled={passengerCounts.adult + passengerCounts.child + passengerCounts.infant >= 5} onClick={() => setPassengerCounts(p => ({...p, [type]: p[type] + 1}))} style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
+                             </div>
+                           </div>
+                         ))}
+                      </div>
+                    )}
+                  </div>
                   <button type="button" onClick={handleSearch} disabled={loading}
                     style={{ width: "100%", padding: "11px", borderRadius: 10, border: "none",
                       background: loading ? "#aaa" : "linear-gradient(135deg,blue,blue)",
@@ -847,7 +874,13 @@ const TrainTickets = () => {
                     const rightCols = cols.slice(half);
 
                     return (
-                      <div style={{ overflowX: "auto" }}>
+                      <div style={{ 
+                        overflowX: "auto", background: "#f8f9fa", padding: "20px 30px", 
+                        borderRadius: "12px", border: "4px solid #4f7cff", borderLeft: "20px solid #4f7cff",
+                        boxShadow: "0 4px 15px rgba(0,0,0,0.1)", position: "relative",
+                        minWidth: "fit-content", margin: "0 auto"
+                      }}>
+                        <div style={{ textAlign: "left", marginBottom: 20, color: "#4f7cff", fontSize: "18px", fontWeight: "bold" }}>🚂 Đầu Tàu & Toa Xe</div>
                       
                         <div style={{ display: "flex", gap: 6, marginBottom: 8, paddingLeft: 48 }}>
                           {leftCols.map(c => <div key={c} style={{ width: 44, textAlign: "center", fontWeight: 700, color: "#888", fontSize: 12 }}>{c}</div>)}
@@ -864,14 +897,20 @@ const TrainTickets = () => {
                               return (
                                 <button key={s.id} type="button" onClick={() => toggleSeat(s)} disabled={s.booked}
                                   title={`${s.seatNumber} ${s.seatType || "ECONOMY"} ${s.booked ? "(Đã đặt)" : ""}`}
-                                  style={{ width: 44, height: 38, borderRadius: 6, border: "none", cursor: s.booked ? "not-allowed" : "pointer",
-                                    background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (s.seatType === "BUSINESS" ? "#dbeafe" : "#dcfce7"),
-                                    color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 600, fontSize: 11 }}>
+                                  style={{ 
+        width: 44, height: s.seatType === "BUSINESS" || s.seatType === "VIP" ? 48 : 40, 
+        borderRadius: "8px 8px 4px 4px", border: "1px solid rgba(0,0,0,0.1)", 
+        cursor: s.booked ? "not-allowed" : "pointer",
+        background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "#bfdbfe" : false ? "#fef08a" : "#bbf7d0"),
+        color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 700, fontSize: 12,
+        borderBottom: s.booked ? "6px solid #ccc" : sel ? "6px solid #d97706" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "6px solid #60a5fa" : false ? "6px solid #eab308" : "6px solid #4ade80"),
+        transition: "all 0.2s"
+    }}>
                                   {s.booked ? "✗" : s.seatNumber}
                                 </button>
                               );
                             })}
-                            <div style={{ width: 32, textAlign: "center", color: "#ccc", fontSize: 10 }}>✈</div>
+                            <div style={{ width: 32, textAlign: "center", color: "#ccc", fontSize: 10 }}>&nbsp;&nbsp;&nbsp;</div>
                             {rightCols.map(col => {
                               const s = smap.get(`${row}${col}`);
                               if (!s) return <div key={col} style={{ width: 44, height: 38 }} />;
@@ -879,9 +918,15 @@ const TrainTickets = () => {
                               return (
                                 <button key={s.id} type="button" onClick={() => toggleSeat(s)} disabled={s.booked}
                                   title={`${s.seatNumber} ${s.seatType || "ECONOMY"} ${s.booked ? "(Đã đặt)" : ""}`}
-                                  style={{ width: 44, height: 38, borderRadius: 6, border: "none", cursor: s.booked ? "not-allowed" : "pointer",
-                                    background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (s.seatType === "BUSINESS" ? "#dbeafe" : "#dcfce7"),
-                                    color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 600, fontSize: 11 }}>
+                                  style={{ 
+        width: 44, height: s.seatType === "BUSINESS" || s.seatType === "VIP" ? 48 : 40, 
+        borderRadius: "8px 8px 4px 4px", border: "1px solid rgba(0,0,0,0.1)", 
+        cursor: s.booked ? "not-allowed" : "pointer",
+        background: s.booked ? "#e0e0e0" : sel ? "#f59e0b" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "#bfdbfe" : false ? "#fef08a" : "#bbf7d0"),
+        color: s.booked ? "#aaa" : sel ? "#fff" : "#333", fontWeight: 700, fontSize: 12,
+        borderBottom: s.booked ? "6px solid #ccc" : sel ? "6px solid #d97706" : (["BUSINESS", "VIP", "SLEEPER"].includes(s.seatType) ? "6px solid #60a5fa" : false ? "6px solid #eab308" : "6px solid #4ade80"),
+        transition: "all 0.2s"
+    }}>
                                   {s.booked ? "✗" : s.seatNumber}
                                 </button>
                               );
@@ -912,7 +957,7 @@ const TrainTickets = () => {
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content", position: "sticky", top: 16 }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.bookingSummary}</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.8 }}>
-                    <div>✈ <b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
+                    <div>&nbsp;&nbsp;&nbsp; <b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
                     <div style={{ color: "#888" }}>{selectedTrip.departureTime}</div>
                     <div style={{ color: "#888" }}>{selectedTrip.providerName}</div>
                     <div style={{ marginTop: 8, fontWeight: 700, color: "#ff6b00", fontSize: 15 }}>{Number(selectedTrip.price||0).toLocaleString("vi-VN")} đ / ghế</div>
@@ -929,61 +974,36 @@ const TrainTickets = () => {
                   <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{t.step2}</h2>
                   <p style={{ color: "#666", fontSize: 13, marginBottom: 20 }}>{t.passengerInstruction}</p>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-                    {[{label: t.passengerLastName,key:"lastName"},{label: t.passengerFirstName,key:"firstName"}].map(f => (
-                      <div key={f.key}>
-                        <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>{f.label}</label>
-                        <input
-                          value={passengerInfo[f.key]}
-                          onChange={e => setPassengerInfo(p => ({...p, [f.key]: toLatinUpper(e.target.value)}))}
-                          style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, letterSpacing: 1 }} />
-                      </div>
-                    ))}
-                    <div>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>{t.dob}</label>
-                      <input
-                        value={passengerInfo.dob}
-                        onChange={e => setPassengerInfo(p => ({...p, dob: formatDob(e.target.value)}))}
-                        placeholder="__/__/____"
-                        inputMode="numeric"
-                        maxLength={10}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, letterSpacing: 2 }}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    {passengerInfoList.map((pi, idx) => (
+                      <PassengerInfoForm
+                         key={idx}
+                         type={pi.type}
+                         index={idx}
+                         data={pi.data}
+                         onChange={handlePassengerChange}
+                         savedPassengers={savedPassengers}
+                         onSelectSaved={(i, t, p) => handlePassengerChange(i, t, {
+                            ...p, 
+                            fullName: p.fullName || "", 
+                            phone: p.phone || "",
+                            email: p.email || "",
+                            idNumber: p.idNumber || "",
+                            dateOfBirth: p.dateOfBirth || "",
+                            gender: p.gender || "",
+                            nationality: p.nationality || "Việt Nam"
+                         })}
                       />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>{t.nationality}</label>
-                      <select value={passengerInfo.nationality} onChange={e => setPassengerInfo(p => ({...p, nationality: e.target.value}))}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }}>
-                        {["Việt Nam","Nhật Bản","Hàn Quốc","Anh","Mỹ","Úc","Khác"].map(c => <option key={c}>{c}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>{t.phoneNumber}</label>
-                      <div style={{ display: "flex", gap: 8 }}>
-                        <input readOnly value="+84" style={{ width: 64, padding: "10px 8px", borderRadius: 8, border: "1px solid #ddd", background: "#f5f5f5", textAlign: "center" }} />
-                        <input value={passengerInfo.phoneDigits} onChange={e => setPassengerInfo(p => ({...p, phoneDigits: e.target.value.replace(/\D/g,"")}))} placeholder="912345678"
-                          style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                      </div>
-                    </div>
-                    <div style={{ gridColumn: "1 / -1" }}>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>{t.emailField}</label>
-                      <input value={passengerInfo.email} onChange={e => setPassengerInfo(p => ({...p, email: e.target.value}))} type="email"
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                    </div>
-                    <div style={{ gridColumn: "1 / -1" }}>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6 }}>{t.memberCode}</label>
-                      <input value={passengerInfo.memberCode} onChange={e => setPassengerInfo(p => ({...p, memberCode: e.target.value}))}
-                        style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                    </div>
+                    ))}
                   </div>
 
                   <div style={{ display: "flex", gap: 16, marginTop: 14 }}>
                     <label style={{ fontSize: 13, display: "flex", gap: 8, alignItems: "center", cursor: "pointer" }}>
-                      <input type="checkbox" checked={passengerInfo.promoOptIn} onChange={e => setPassengerInfo(p => ({...p, promoOptIn: e.target.checked}))} />
+                      <input type="checkbox" checked={globalContact.promoOptIn} onChange={e => setGlobalContact(p => ({...p, promoOptIn: e.target.checked}))} />
                       {t.receivePromo}
                     </label>
                     <label style={{ fontSize: 13, display: "flex", gap: 8, alignItems: "center", cursor: "pointer" }}>
-                      <input type="checkbox" checked={passengerInfo.remember} onChange={e => setPassengerInfo(p => ({...p, remember: e.target.checked}))} />
+                      <input type="checkbox" checked={globalContact.remember} onChange={e => setGlobalContact(p => ({...p, remember: e.target.checked}))} />
                       {t.rememberInfo}
                     </label>
                   </div>
@@ -999,7 +1019,7 @@ const TrainTickets = () => {
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>Thông tin đặt chỗ</div>
                   <div style={{ fontSize: 13, color: "#444", lineHeight: 1.9 }}>
-                    <div>✈ <b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
+                    <div>&nbsp;&nbsp;&nbsp; <b>{selectedTrip.origin}</b> → <b>{selectedTrip.destination}</b></div>
                     <div style={{ color: "#888" }}>{selectedTrip.departureTime}</div>
                     <div style={{ marginTop: 6 }}>Ghế: <b>{selectedSeatIds.length === 0 ? "Chưa chọn" : seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ")}</b></div>
                     <div style={{ marginTop: 8, fontWeight: 700, color: "#ff6b00", fontSize: 15 }}>{Number(selectedTrip.price||0).toLocaleString("vi-VN")} đ / ghế</div>
@@ -1048,61 +1068,93 @@ const TrainTickets = () => {
                       </div>
 
                   
-                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: 16, background: "#f9fafb" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                          <span style={{ fontSize: 24 }}>🍱</span>
-                          <div><div style={{ fontWeight: 700, fontSize: 15 }}>{t.meal}</div><div style={{ fontSize: 12, color: "#888" }}>Chọn món ăn trên chuyến đi</div></div>
-                        </div>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                          <label style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 8,
-                            border: `2px solid ${!selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#f59e0b" : "#ddd"}`,
-                            background: !selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#fffbeb" : "#fff",
-                            cursor: "pointer" }}>
-                            <input type="radio" name="meal" style={{ display: "none" }}
-                              checked={!selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id))}
-                              onChange={() => setSingleServiceInCategory(null, categories.meal)} />
-                            Không chọn suất ăn
-                          </label>
-                          {categories.meal.map(s => (
-                            <label key={s.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 8,
-                              border: `2px solid ${selectedServiceIds.includes(s.id) ? "#f59e0b" : "#ddd"}`,
-                              background: selectedServiceIds.includes(s.id) ? "#fffbeb" : "#fff", cursor: "pointer" }}>
-                              <input type="radio" name="meal" style={{ display: "none" }} checked={selectedServiceIds.includes(s.id)} onChange={() => setSingleServiceInCategory(s.id, categories.meal)} />
-                              <span style={{ fontWeight: 600 }}>{s.serviceName}</span>
-                              <span style={{ marginLeft: 6, color: "#f59e0b", fontWeight: 700 }}>{Number(s.price||0).toLocaleString("vi-VN")} đ</span>
-                            </label>
-                          ))}
-                        </div>
+                      <div style={{ border: "1px solid #fef3c7", borderRadius: 12, padding: "20px", background: "#f9fafb" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ fontSize: 28 }}>🍱</span>
+                      <div>
+                        <div style={{ fontWeight: 800, fontSize: 16, color: "#b45309" }}>{t.meal}</div>
+                        <div style={{ fontSize: 13, color: "#888" }}>Suất ăn nóng hổi, chuẩn vị nhà hàng</div>
                       </div>
-
+                    </div>
+                  </div>
                   
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 30,
+                      border: `2px solid ${!selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#f59e0b" : "#ddd"}`,
+                      background: !selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#fffbeb" : "#fff",
+                      cursor: "pointer", fontWeight: 700, color: !selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id)) ? "#d97706" : "#555" }}>
+                      <input type="radio" name="meal" style={{ display: "none" }}
+                        checked={!selectedServiceIds.some(id => categories.meal.map(s=>s.id).includes(id))}
+                        onChange={() => setSingleServiceInCategory(null, categories.meal)} />
+                      ✖ Không chọn suất ăn
+                    </label>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                    {categories.meal.map((s, index) => {
+                       const images = [
+                         "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=400&auto=format&fit=crop", 
+                         "https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=400&auto=format&fit=crop", 
+                         "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=400&auto=format&fit=crop", 
+                         "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=400&auto=format&fit=crop"  
+                       ];
+                       const img = images[index % images.length];
+                       const isSelected = selectedServiceIds.includes(s.id);
+                       return (
+                         <div key={s.id} onClick={() => setSingleServiceInCategory(s.id, categories.meal)} 
+                           style={{ borderRadius: 12, overflow: "hidden", border: `2px solid ${isSelected ? "#f59e0b" : "#eee"}`, 
+                           background: isSelected ? "#fffbeb" : "#fff", cursor: "pointer", position: "relative", transition: "all 0.2s",
+                           boxShadow: isSelected ? "0 4px 12px rgba(245, 158, 11, 0.2)" : "0 2px 8px rgba(0,0,0,0.05)" }}>
+                           <div style={{ height: 120, backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                           <div style={{ padding: 12 }}>
+                             <div style={{ fontWeight: 700, fontSize: 13, color: "#333", lineHeight: 1.4, minHeight: 40 }}>{s.serviceName}</div>
+                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+                               <span style={{ color: "#d97706", fontWeight: 800, fontSize: 14 }}>{Number(s.price||0).toLocaleString("vi-VN")} VND</span>
+                               <div style={{ width: 24, height: 24, borderRadius: "50%", background: isSelected ? "#f59e0b" : "#f3f4f6", 
+                                 display: "flex", alignItems: "center", justifyContent: "center", color: isSelected ? "#fff" : "#9ca3af", fontWeight: "bold" }}>
+                                 {isSelected ? "✓" : "+"}
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       );
+                    })}
+                  </div>
+                </div>
+
                       {[{cat: categories.insurance, icon: "🛡️", title: "Bảo hiểm du lịch", sub: "Bảo vệ chuyến đi của bạn", color: "#f0fdf4", border: "#bbf7d0"},
                         {cat: categories.taxi, icon: "🚕", title: "Xe đón sân bay", sub: "Tiện lợi với dịch vụ xe riêng", color: "#fef9c3", border: "#fde68a"}]
-                      .map(({cat, icon, title, sub, color, border}) => (
+                      .map(({cat, icon, title, sub, color, border, highlighted}) => (
                         cat.length > 0 && (
-                          <div key={title} style={{ border: `1px solid ${border}`, borderRadius: 12, padding: 16, background: "#f9fafb" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                              <span style={{ fontSize: 24 }}>{icon}</span>
-                              <div><div style={{ fontWeight: 700, fontSize: 15 }}>{title}</div><div style={{ fontSize: 12, color: "#888" }}>{sub}</div></div>
+                          <div key={title} style={{ border: highlighted ? `2px solid ${border}` : `1px solid ${border}`, borderRadius: 12, padding: 16, background: highlighted ? "#f0fdf4" : "#f9fafb", position: "relative", overflow: "hidden" }}>
+                            {highlighted && <div style={{ position: "absolute", top: 12, right: -25, background: "#ef4444", color: "#fff", fontSize: 10, fontWeight: 800, padding: "4px 24px", transform: "rotate(45deg)", boxShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>NÊN MUA</div>}
+                            <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 14 }}>
+                              <span style={{ fontSize: 32, background: "#fff", borderRadius: "50%", padding: 4, boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}>{icon}</span>
+                              <div><div style={{ fontWeight: 800, fontSize: 16, color: highlighted ? "#15803d" : "#333", marginBottom: 4 }}>{title}</div><div style={{ fontSize: 13, color: highlighted ? "#166534" : "#666", lineHeight: 1.5 }}>{sub}</div></div>
                             </div>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                             {cat.map(s => (
                               <label key={s.id} onClick={() => toggleService(s.id)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between",
-                                padding: 12, borderRadius: 10, background: selectedServiceIds.includes(s.id) ? color : "#fff",
-                                border: `1.5px solid ${selectedServiceIds.includes(s.id) ? border : "#eee"}`,
-                                cursor: "pointer", marginBottom: 6 }}>
-                                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                                  <div style={{ width: 22, height: 22, borderRadius: 11, border: "2px solid #ddd",
-                                    background: selectedServiceIds.includes(s.id) ? "#22c55e" : "#fff",
+                                padding: "14px 16px", borderRadius: 10, background: selectedServiceIds.includes(s.id) ? color : "#fff",
+                                border: `2px solid ${selectedServiceIds.includes(s.id) ? border : "#e5e7eb"}`,
+                                cursor: "pointer", transition: "all 0.2s", boxShadow: selectedServiceIds.includes(s.id) ? "0 4px 10px rgba(34,197,94,0.15)" : "none" }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                                  <div style={{ width: 22, height: 22, borderRadius: "50%", border: `2px solid ${selectedServiceIds.includes(s.id) ? border : "#ccc"}`,
+                                    background: selectedServiceIds.includes(s.id) ? border : "#fff",
                                     display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 12 }}>
                                     {selectedServiceIds.includes(s.id) ? "✓" : ""}
                                   </div>
-                                  <span style={{ fontWeight: 600 }}>{s.serviceName}</span>
+                                  <div>
+                                    <div style={{ fontWeight: 700, color: "#333", fontSize: 14 }}>{s.serviceName}</div>
+                                  </div>
                                 </div>
-                                <span style={{ fontWeight: 700, color: selectedServiceIds.includes(s.id) ? "#16a34a" : "#666" }}>
+                                <span style={{ fontWeight: 800, fontSize: 15, color: selectedServiceIds.includes(s.id) ? border : "#666" }}>
                                   {Number(s.price||0) === 0 ? "Miễn phí" : `${Number(s.price||0).toLocaleString("vi-VN")} đ`}
                                 </span>
                               </label>
                             ))}
+                            </div>
                           </div>
                         )
                       ))}
@@ -1120,7 +1172,7 @@ const TrainTickets = () => {
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.totalCost}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{Number((selectedTrip.price||0) * selectedSeatIds.length).toLocaleString("vi-VN")} đ</b></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{seats.filter(s => selectedSeatIds.includes(s.id)).reduce((sum, s) => sum + getSeatPrice(selectedTrip.price, s.seatType), 0).toLocaleString("vi-VN")} đ</b></div>
                     {services.filter(s => selectedServiceIds.includes(s.id)).map(s => (
                       <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>+ {s.serviceName}</span><span>{Number(s.price||0).toLocaleString("vi-VN")} đ</span></div>
                     ))}
@@ -1142,7 +1194,7 @@ const TrainTickets = () => {
 
          
                   <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
-                    <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>✈ Chuyến bay</div>
+                    <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>&nbsp;&nbsp;&nbsp; Chuyến bay</div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div>
                         <div style={{ fontWeight: 700, fontSize: 16 }}>{selectedTrip.origin} → {selectedTrip.destination}</div>
@@ -1155,11 +1207,14 @@ const TrainTickets = () => {
              
                   <div style={{ border: "1px solid #e0e7ff", borderRadius: 12, padding: 16, marginBottom: 14, background: "#f9fafb" }}>
                     <div style={{ fontWeight: 700, marginBottom: 8, color: "#4f7cff" }}>👤 Hành khách</div>
-                    <div style={{ fontSize: 14 }}>
-                      <b>{passengerInfo.lastName} {passengerInfo.firstName}</b>
-                      <div style={{ color: "#888", fontSize: 13, marginTop: 4 }}>{passengerInfo.email} · +84 {passengerInfo.phoneDigits}</div>
-                      <div style={{ marginTop: 4 }}>Ghế: <b>{seats.filter(s=>selectedSeatIds.includes(s.id)).map(s=>s.seatNumber).join(", ") || "Chưa chọn"}</b></div>
-                    </div>
+                    {passengerInfoList.map((pi, idx) => (
+                      <div key={idx} style={{ fontSize: 13, marginBottom: 8, paddingBottom: 8, borderBottom: idx < passengerInfoList.length - 1 ? "1px dashed #ccc" : "none" }}>
+                        <b>{pi.data.fullName || `Hành khách ${idx+1}`}</b> ({pi.type === 'ADULT' ? 'Người lớn' : pi.type === 'CHILD' ? 'Trẻ em' : 'Em bé'})
+                        {pi.type === 'ADULT' && <div style={{ color: "#888", marginTop: 2 }}>{pi.data.email} · {pi.data.phone ? `+84 ${pi.data.phone}` : ''}</div>}
+                        <div style={{ marginTop: 2 }}>Ngày sinh: {pi.data.dateOfBirth} | Giới tính: {pi.data.gender === 'Male' ? 'Nam' : pi.data.gender === 'Female' ? 'Nữ' : 'Khác'}</div>
+                      </div>
+                    ))}
+                    <div style={{ marginTop: 4 }}>Ghế: <b>{seats.filter(s=>selectedSeatIds.includes(s.id)).map(s=>s.seatNumber).join(", ") || "Chưa chọn"}</b></div>
                   </div>
 
               
@@ -1175,15 +1230,23 @@ const TrainTickets = () => {
                   )}
 
                  
-                  <div style={{ border: "1px dashed #d1d5db", borderRadius: 12, padding: 16, marginBottom: 14 }}>
-                    <div style={{ fontWeight: 700, marginBottom: 10 }}>🎫 {t.promoCodeLabel}</div>
-                    <div style={{ display: "flex", gap: 8 }}>
-                      <input value={promoCode} onChange={e => setPromoCode(e.target.value.toUpperCase())} placeholder="..."
-                        style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14 }} />
-                      <button type="button" style={{ padding: "10px 16px", borderRadius: 8, border: "1px solid #4f7cff", background: "#eff6ff", color: "#4f7cff", fontWeight: 700, cursor: "pointer" }}>{t.applyPromo}</button>
+                  <div style={{ position: "relative", border: "2px dashed #ff4500", borderRadius: 12, padding: "20px", marginBottom: 14, background: "linear-gradient(to right, #fff5f0, #fff)" }}>
+                      <div style={{ position: "absolute", left: -8, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, borderRadius: "50%", background: "#fff", borderRight: "2px dashed #ff4500" }}></div>
+                      <div style={{ position: "absolute", right: -8, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, borderRadius: "50%", background: "#fff", borderLeft: "2px dashed #ff4500" }}></div>
+                      <div style={{ fontWeight: 800, color: "#ff4500", fontSize: 16, marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ fontSize: 22 }}>🎟️</span> {t.promoCodeLabel}
+                      </div>
+                      <div style={{ display: "flex", gap: 10 }}>
+                        <input value={promoCode} onChange={e => setPromoCode(e.target.value.toUpperCase())} placeholder="Nhập mã ưu đãi..."
+                          style={{ flex: 1, padding: "12px 16px", borderRadius: 8, border: "1px solid #fca5a5", fontSize: 15, fontWeight: "bold", color: "#b91c1c", textTransform: "uppercase" }} />
+                        <button type="button" disabled={!promoCode} style={{ padding: "12px 24px", borderRadius: 8, border: "none", background: promoCode ? "#ff4500" : "#fca5a5", color: "#fff", fontWeight: 800, cursor: promoCode ? "pointer" : "not-allowed", transition: "all 0.2s" }}>
+                          {t.applyPromo}
+                        </button>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#991b1b", marginTop: 10 }}>
+                        <span style={{ fontStyle: "italic" }}>💡 Mẹo: Nhận mã tại trang Ưu Đãi để được giảm tới 50%</span>
+                      </div>
                     </div>
-                    <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>{t.promoInstruction}</div>
-                  </div>
 
                   {error && <p style={{ color: "red", marginTop: 4 }}>{error}</p>}
 
@@ -1221,7 +1284,7 @@ const TrainTickets = () => {
                 <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 4px 15px rgba(0,0,0,0.05)", height: "fit-content" }}>
                   <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 10 }}>{t.paymentDetails}</div>
                   <div style={{ fontSize: 13, lineHeight: 2 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{Number((selectedTrip.price||0)*selectedSeatIds.length).toLocaleString("vi-VN")} đ</b></div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}><span>Giá vé ({selectedSeatIds.length} ghế)</span><b>{seats.filter(s => selectedSeatIds.includes(s.id)).reduce((sum, s) => sum + getSeatPrice(selectedTrip.price, s.seatType), 0).toLocaleString("vi-VN")} đ</b></div>
                     {services.filter(s=>selectedServiceIds.includes(s.id)).map(s => (
                       <div key={s.id} style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "#888" }}>+ {s.serviceName}</span><span>{Number(s.price||0).toLocaleString("vi-VN")} đ</span></div>
                     ))}

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useLanguage } from "../context/LanguageContext";
+import { useSavedPassengers } from "../context/SavedPassengersContext";
+import PassengerInfoForm from "../components/PassengerInfoForm";
 import { FiSearch, FiFilter, FiClock, FiInfo, FiChevronDown, FiX, FiUsers, FiCalendar, FiGift } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { MdFlightTakeoff, MdFlightLand } from "react-icons/md";
@@ -11,10 +13,30 @@ import TWFlag from "../Picture/flags/tw.png";
 import UKFlag from "../Picture/flags/uk.png";
 
 // Flight Booking Detail Component
-const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
+const FlightBookingDetail = ({ flightData, onClose, onContinue, passengerCounts }) => {
   const { t } = useLanguage();
   const [selectedClass, setSelectedClass] = useState("economy");
   const [selectedPayment, setSelectedPayment] = useState("momo");
+  const [passengerInfoList, setPassengerInfoList] = React.useState([]);
+  const [globalContact, setGlobalContact] = React.useState({ promoOptIn: true, remember: false });
+  const { savedPassengers, addPassenger } = useSavedPassengers();
+
+  React.useEffect(() => {
+    if(!passengerCounts) return;
+    const newList = [];
+    for (let i = 0; i < passengerCounts.adult; i++) newList.push({ type: "ADULT", data: {} });
+    for (let i = 0; i < passengerCounts.child; i++) newList.push({ type: "CHILD", data: {} });
+    for (let i = 0; i < passengerCounts.infant; i++) newList.push({ type: "INFANT", data: {} });
+    setPassengerInfoList(prev => newList.map((item, idx) => prev[idx] ? { ...item, data: prev[idx].data } : item));
+  }, [passengerCounts]);
+
+  const handlePassengerChange = (index, type, data) => {
+    setPassengerInfoList(prev => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], data };
+      return copy;
+    });
+  };
 
   // Dữ liệu mẫu - có thể nhận từ props
   const data = flightData || {
@@ -544,7 +566,16 @@ const FlightBookingDetail = ({ flightData, onClose, onContinue }) => {
             Đóng
           </button>
           <button
-            onClick={onContinue}
+            onClick={() => {
+              if (globalContact.remember) {
+                passengerInfoList.forEach(pi => {
+                  if (pi.type === 'ADULT' && pi.data.fullName) {
+                      addPassenger({ ...pi.data, passengerType: 'ADULT' }).catch(() => {});
+                  }
+                });
+              }
+              onContinue();
+            }}
             style={{
               padding: "12px 32px",
               border: "none",
@@ -1874,7 +1905,7 @@ const AirlineTicketsDetail = () => {
         <FlightBookingDetail
           flightData={selectedFlight}
           onClose={() => setShowBookingDetail(false)}
-          onContinue={handleContinueBooking}
+          onContinue={handleContinueBooking} passengerCounts={passengerInfo.passengers}
         />
       )}
 

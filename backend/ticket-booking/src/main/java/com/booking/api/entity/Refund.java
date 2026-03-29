@@ -31,4 +31,13 @@ public class Refund {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "reason", length = 500)
+    private String reason;
+
+    @Column(name = "provider_note", length = 500)
+    private String providerNote;
+
+    @Column(name = "requested_at")
+    private LocalDateTime requestedAt;
 }

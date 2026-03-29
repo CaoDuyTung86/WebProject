@@ -19,6 +19,9 @@ public class BookingRequest {
     @NotEmpty(message = "Phải chọn ít nhất một ghế")
     private List<Long> seatIds;
 
+    // Tên hành khách tương ứng với từng ghế
+    private List<String> passengerNames;
+
     // Dịch vụ bổ sung (hành lý, suất ăn, bảo hiểm, taxi...)
     private List<Long> additionalServiceIds;
 }

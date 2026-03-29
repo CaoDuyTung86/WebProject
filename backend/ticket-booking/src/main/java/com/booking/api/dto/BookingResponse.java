@@ -28,9 +28,27 @@ public class BookingResponse {
     // Seats
     private List<String> seatNumbers;
 
+    // Ticket details (passenger name + seat)
+    private List<TicketDetail> ticketDetails;
+
     // Additional services
     private List<String> additionalServices;
 
     // Refund
     private Double refundAmount;
+
+    // Refund status (for checking pending refund requests)
+    private String refundStatus;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TicketDetail {
+        private Long ticketId;
+        private String passengerName;
+        private String seatNumber;
+        private String seatType;
+        private Double price;
+        private String status;
+    }
 }

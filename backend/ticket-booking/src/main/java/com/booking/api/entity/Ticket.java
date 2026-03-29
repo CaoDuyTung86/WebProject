@@ -31,4 +31,10 @@ public class Ticket {
 
     @Column(name = "price")
     private Double price;
+
+    @Column(name = "passenger_name")
+    private String passengerName;
+
+    @Column(name = "status")
+    private String status = "ACTIVE";
 }

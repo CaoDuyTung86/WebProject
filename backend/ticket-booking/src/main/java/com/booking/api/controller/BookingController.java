@@ -57,4 +57,13 @@ public class BookingController {
         BookingResponse response = bookingService.completeBooking(userDetails.getUsername(), id);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{bookingId}/tickets/{ticketId}/cancel")
+    public ResponseEntity<BookingResponse> cancelTicket(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long bookingId,
+            @PathVariable Long ticketId) {
+        BookingResponse response = bookingService.cancelTicket(userDetails.getUsername(), bookingId, ticketId);
+        return ResponseEntity.ok(response);
+    }
 }

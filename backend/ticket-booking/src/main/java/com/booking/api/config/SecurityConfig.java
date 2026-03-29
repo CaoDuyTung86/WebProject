@@ -49,9 +49,15 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         // VNPay callback
                         .requestMatchers("/api/payment/vnpay-return").permitAll()
+                        // Reviews for provider
+                        .requestMatchers("/api/reviews/all").hasAuthority("ROLE_PROVIDER")
+                        // Refund management for admin
+                        .requestMatchers("/api/refunds/all").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/refunds/*/approve").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/refunds/*/reject").hasAuthority("ROLE_ADMIN")
                         // Admin endpoints
-                        .requestMatchers("/api/admin/revenue").hasAnyAuthority("ROLE_ADMIN", "ROLE_PROVIDER")
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/admin/revenue").hasAnyAuthority("ROLE_PROVIDER", "PROVIDER", "ROLE_ADMIN", "ADMIN")
+                        .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN", "ADMIN")
                         // Authenticated endpoints
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

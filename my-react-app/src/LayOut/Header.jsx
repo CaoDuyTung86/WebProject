@@ -312,52 +312,73 @@ const Header = ({ setIsSidebarOpen }) => {
           {(isAuthenticated && (user?.role === "ROLE_ADMIN" || user?.role === "ROLE_PROVIDER")) && (
             <div style={{ display: "flex", gap: "10px" }}>
               {user?.role === "ROLE_ADMIN" && (
-                <button
-                  onClick={() => navigate("/admin/trips")}
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: "6px",
-                    border: "1px solid #20c997",
-                    background: "#e6fff5",
-                    color: "#059669",
-                    cursor: "pointer",
-                    fontSize: "13px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Admin Trips
-                </button>
+                <>
+                  <button
+                    onClick={() => navigate("/admin/trips")}
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid #20c997",
+                      background: "#e6fff5",
+                      color: "#059669",
+                      cursor: "pointer",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {t.adminTrips}
+                  </button>
+                  <button
+                    onClick={() => navigate("/provider/refunds")}
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid #ef4444",
+                      background: "#fef2f2",
+                      color: "#ef4444",
+                      cursor: "pointer",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {t.refunds}
+                  </button>
+                </>
               )}
-              <button
-                onClick={() => navigate("/admin/reviews")}
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: "6px",
-                  border: "1px solid #4f7cff",
-                  background: "#e6edff",
-                  color: "#4f7cff",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                }}
-              >
-                {user?.role === "ROLE_PROVIDER" ? "Reviews (Provider)" : "Admin Reviews"}
-              </button>
-              <button
-                onClick={() => navigate("/admin/revenue")}
-                style={{
-                  padding: "6px 12px",
-                  borderRadius: "6px",
-                  border: "1px solid #f59e0b",
-                  background: "#fef3c7",
-                  color: "#d97706",
-                  cursor: "pointer",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                }}
-              >
-                Doanh thu
-              </button>
+              {user?.role === "ROLE_PROVIDER" && (
+                <>
+                  <button
+                    onClick={() => navigate("/admin/reviews")}
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid #4f7cff",
+                      background: "#e6edff",
+                      color: "#4f7cff",
+                      cursor: "pointer",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {t.providerReviews}
+                  </button>
+                  <button
+                    onClick={() => navigate("/admin/revenue")}
+                    style={{
+                      padding: "6px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid #f59e0b",
+                      background: "#fef3c7",
+                      color: "#d97706",
+                      cursor: "pointer",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {t.revenue}
+                  </button>
+                </>
+              )}
             </div>
           )}
 
@@ -378,7 +399,7 @@ const Header = ({ setIsSidebarOpen }) => {
                   fontWeight: "600",
                 }}
               >
-                Tài khoản
+                {t.account}
               </button>
               <button
                 onClick={() => navigate("/my-bookings")}
@@ -392,7 +413,7 @@ const Header = ({ setIsSidebarOpen }) => {
                   fontWeight: "600",
                 }}
               >
-                Lịch sử đặt vé
+                {t.bookingHistory}
               </button>
               <button
                 onClick={logout}
@@ -406,7 +427,7 @@ const Header = ({ setIsSidebarOpen }) => {
                   fontWeight: "500",
                 }}
               >
-                Đăng xuất
+                {t.logout}
               </button>
             </div>
           ) : (

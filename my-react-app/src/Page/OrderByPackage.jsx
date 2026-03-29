@@ -4,9 +4,9 @@ import { useLanguage } from "../context/LanguageContext";
 import Header from "../LayOut/Header";
 import Sidebar from "../components/Sidebar";
 import { useAuth } from "../context/AuthContext";
-import { 
-  MdFlight, 
-  MdTrain, 
+import {
+  MdFlight,
+  MdTrain,
   MdDirectionsBus,
   MdHotel,
   MdRestaurant,
@@ -32,7 +32,7 @@ const OrderByPackage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedPackage, setSelectedPackage] = useState(null);
-  const [bookingStep, setBookingStep] = useState("browse"); 
+  const [bookingStep, setBookingStep] = useState("browse");
   const [travelers, setTravelers] = useState(2);
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -52,7 +52,7 @@ const OrderByPackage = () => {
 
 
   const packages = [
-    
+
     {
       id: 1,
       type: "flight",
@@ -212,7 +212,7 @@ const OrderByPackage = () => {
       discount: 22,
       rating: 4.6,
       reviewCount: 124,
-      image: "https://images.unsplash.com/photo-1572072393749-3f9e4f1c6e7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/tour_hue_danang.png",
       includes: [
         "Vé tàu Huế - Đà Nẵng",
         "Khách sạn 4 sao (3 đêm)",
@@ -237,7 +237,7 @@ const OrderByPackage = () => {
       transport: "Tàu hỏa + Xe du lịch"
     },
 
-   
+
     {
       id: 6,
       type: "bus",
@@ -250,7 +250,7 @@ const OrderByPackage = () => {
       discount: 24,
       rating: 4.8,
       reviewCount: 156,
-      image: "https://images.unsplash.com/photo-1594007655095-6c0d8d2d6d92?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/tour_san_may.png",
       includes: [
         "Xe giường nằm limousine khứ hồi",
         "Homestay (2 đêm)",
@@ -285,7 +285,7 @@ const OrderByPackage = () => {
       discount: 23,
       rating: 4.7,
       reviewCount: 203,
-      image: "https://images.unsplash.com/photo-1582653291997-079a1c6e3c0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/dalat_city.png",
       includes: [
         "Xe giường nằm khứ hồi",
         "Khách sạn trung tâm (3 đêm)",
@@ -318,9 +318,9 @@ const OrderByPackage = () => {
     { id: 5, name: "Buffet tối cao cấp", price: 599000, icon: <MdRestaurant /> },
   ];
 
- 
-  const filteredPackages = selectedCategory === "all" 
-    ? packages 
+
+  const filteredPackages = selectedCategory === "all"
+    ? packages
     : packages.filter(pkg => pkg.type === selectedCategory);
 
   const handleSelectPackage = (pkg) => {
@@ -382,8 +382,8 @@ const OrderByPackage = () => {
   };
 
   const toggleExtra = (extraId) => {
-    setSelectedExtras(prev => 
-      prev.includes(extraId) 
+    setSelectedExtras(prev =>
+      prev.includes(extraId)
         ? prev.filter(id => id !== extraId)
         : [...prev, extraId]
     );
@@ -418,13 +418,13 @@ const OrderByPackage = () => {
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#f5f7fa" }}>
       <Header setIsSidebarOpen={setIsSidebarOpen} />
-      
+
       <div className="page-with-sidebar">
         <Sidebar isOpen={isSidebarOpen} />
         <div className={`page-main ${isSidebarOpen ? "with-sidebar" : ""}`}>
           <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "30px 20px" }}>
-            
-           
+
+
             {bookingComplete && (
               <div style={{
                 position: "fixed",
@@ -449,7 +449,7 @@ const OrderByPackage = () => {
               </div>
             )}
 
-            
+
             <div style={{ marginBottom: "30px" }}>
               <h1 style={{ fontSize: "36px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>
                 Đặt theo gói
@@ -460,9 +460,9 @@ const OrderByPackage = () => {
             </div>
 
             {/* Category Filter - only show on browse */}
-            {bookingStep === "browse" && <div style={{ 
-              display: "flex", 
-              gap: "12px", 
+            {bookingStep === "browse" && <div style={{
+              display: "flex",
+              gap: "12px",
               marginBottom: "30px",
               flexWrap: "wrap"
             }}>
@@ -548,12 +548,145 @@ const OrderByPackage = () => {
               </button>
             </div>}
 
-         
-            {bookingStep === "browse" && (
-              <div style={{ 
-                display: "grid", 
-                gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", 
-                gap: "24px" 
+            {/* Favorites Tab */}
+            {bookingStep === "browse" && favoriteTours.length > 0 && (
+              <div style={{ marginBottom: "24px" }}>
+                <button
+                  onClick={() => setSelectedCategory(selectedCategory === "favorites" ? "all" : "favorites")}
+                  style={{
+                    padding: "12px 24px",
+                    borderRadius: "50px",
+                    border: selectedCategory === "favorites" ? "2px solid #ef4444" : "1px solid #fca5a5",
+                    background: selectedCategory === "favorites" ? "#fef2f2" : "white",
+                    color: selectedCategory === "favorites" ? "#ef4444" : "#ef4444",
+                    fontWeight: "700",
+                    fontSize: "15px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                    transition: "all 0.2s"
+                  }}
+                >
+                  <MdFavorite /> {t.favoriteTours} ({favoriteTours.length})
+                </button>
+              </div>
+            )}
+
+            {/* Favorite Tours Grid */}
+            {bookingStep === "browse" && selectedCategory === "favorites" && (
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+                gap: "24px",
+                marginBottom: "24px"
+              }}>
+                {packages.filter(pkg => favoriteTours.includes(pkg.id)).map((pkg) => (
+                  <div
+                    key={pkg.id}
+                    style={{
+                      background: "white",
+                      borderRadius: "20px",
+                      overflow: "hidden",
+                      boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+                      cursor: "pointer",
+                      transition: "transform 0.2s, box-shadow 0.2s",
+                      position: "relative",
+                      border: "2px solid #fca5a5"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-4px)";
+                      e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.08)";
+                    }}
+                    onClick={() => handleSelectPackage(pkg)}
+                  >
+                    {pkg.discount && (
+                      <div style={{
+                        position: "absolute", top: "16px", left: "16px",
+                        background: "#ef4444", color: "white",
+                        padding: "4px 12px", borderRadius: "20px",
+                        fontWeight: "700", fontSize: "14px", zIndex: 1
+                      }}>-{pkg.discount}%</div>
+                    )}
+                    <button
+                      style={{
+                        position: "absolute", top: "16px", right: "16px",
+                        background: "white", border: "none",
+                        width: "36px", height: "36px", borderRadius: "50%",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.1)", zIndex: 1
+                      }}
+                      onClick={(e) => { e.stopPropagation(); toggleFavorite(pkg.id); }}
+                    >
+                      <MdFavorite style={{ color: "#ef4444" }} />
+                    </button>
+                    <div style={{
+                      height: "200px",
+                      backgroundImage: `url(${pkg.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      position: "relative"
+                    }}>
+                      <div style={{
+                        position: "absolute", bottom: "12px", left: "12px",
+                        background: "rgba(0,0,0,0.6)", color: "white",
+                        padding: "4px 12px", borderRadius: "20px", fontSize: "13px",
+                        display: "flex", alignItems: "center", gap: "6px"
+                      }}>
+                        {pkg.icon}
+                        <span>{pkg.type === "flight" ? t.flight : pkg.type === "train" ? t.train : t.bus}</span>
+                      </div>
+                    </div>
+                    <div style={{ padding: "20px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
+                        {renderStars(pkg.rating)}
+                        <span style={{ fontSize: "13px", color: "#64748b", marginLeft: "4px" }}>
+                          ({pkg.reviewCount} đánh giá)
+                        </span>
+                      </div>
+                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>{pkg.title}</h3>
+                      <p style={{ fontSize: "14px", color: "#64748b", marginBottom: "12px" }}>{pkg.shortDesc}</p>
+                      <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
+                        <div style={{ fontSize: "13px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                          <MdCalendarToday /> {pkg.duration}
+                        </div>
+                        <div style={{ fontSize: "13px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                          <MdPeople /> {pkg.departureCity}
+                        </div>
+                      </div>
+                      <div style={{
+                        display: "flex", alignItems: "baseline", justifyContent: "space-between",
+                        borderTop: "1px solid #e2e8f0", paddingTop: "16px"
+                      }}>
+                        <div>
+                          <span style={{ fontSize: "14px", color: "#64748b", textDecoration: "line-through", marginRight: "8px" }}>
+                            {pkg.originalPrice.toLocaleString("vi-VN")}đ
+                          </span>
+                          <span style={{ fontSize: "22px", fontWeight: "700", color: "#2563eb" }}>
+                            {pkg.price.toLocaleString("vi-VN")}đ
+                          </span>
+                        </div>
+                        <button style={{
+                          padding: "8px 16px", background: "#2563eb", color: "white",
+                          border: "none", borderRadius: "8px", fontWeight: "600", fontSize: "14px", cursor: "pointer"
+                        }}>Chọn gói</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {bookingStep === "browse" && selectedCategory !== "favorites" && (
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+                gap: "24px"
               }}>
                 {filteredPackages.map((pkg) => (
                   <div
@@ -615,7 +748,7 @@ const OrderByPackage = () => {
                       }}
                       onClick={(e) => { e.stopPropagation(); toggleFavorite(pkg.id); }}
                     >
-                      {favoriteTours.includes(pkg.id) 
+                      {favoriteTours.includes(pkg.id)
                         ? <MdFavorite style={{ color: "#ef4444" }} />
                         : <MdFavoriteBorder style={{ color: "#999" }} />}
                     </button>
@@ -672,9 +805,9 @@ const OrderByPackage = () => {
                         </div>
                       </div>
 
-                      <div style={{ 
-                        display: "flex", 
-                        alignItems: "baseline", 
+                      <div style={{
+                        display: "flex",
+                        alignItems: "baseline",
                         justifyContent: "space-between",
                         borderTop: "1px solid #e2e8f0",
                         paddingTop: "16px"
@@ -727,225 +860,225 @@ const OrderByPackage = () => {
                 >
                   <MdArrowBack size={20} /> Quay lại danh sách
                 </button>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "24px" }}>
-                <div>
-                  {/* Main Image */}
-                  <div style={{
-                    height: "400px",
-                    borderRadius: "20px",
-                    backgroundImage: `url(${selectedPackage.image})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    marginBottom: "24px",
-                    position: "relative"
-                  }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "24px" }}>
+                  <div>
+                    {/* Main Image */}
                     <div style={{
-                      position: "absolute",
-                      bottom: "20px",
-                      left: "20px",
-                      background: "rgba(0,0,0,0.7)",
-                      color: "white",
-                      padding: "8px 16px",
-                      borderRadius: "30px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px"
+                      height: "400px",
+                      borderRadius: "20px",
+                      backgroundImage: `url(${selectedPackage.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      marginBottom: "24px",
+                      position: "relative"
                     }}>
-                      {selectedPackage.icon}
-                      <span style={{ fontSize: "14px" }}>
-                        {selectedPackage.type === "flight" ? t.flight : 
-                         selectedPackage.type === "train" ? t.train : t.bus}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Title and Rating */}
-                  <div style={{ marginBottom: "24px" }}>
-                    <h2 style={{ fontSize: "28px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>
-                      {selectedPackage.title}
-                    </h2>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-                      <div style={{ display: "flex", gap: "2px" }}>
-                        {renderStars(selectedPackage.rating)}
-                      </div>
-                      <span style={{ color: "#64748b" }}>{selectedPackage.rating}/5</span>
-                      <span style={{ color: "#94a3b8" }}>•</span>
-                      <span style={{ color: "#64748b" }}>{selectedPackage.reviewCount} đánh giá</span>
-                    </div>
-                    <p style={{ fontSize: "16px", color: "#475569", lineHeight: "1.6" }}>
-                      {selectedPackage.description}
-                    </p>
-                  </div>
-
-                  {/* Schedule */}
-                  <div style={{
-                    background: "white",
-                    borderRadius: "16px",
-                    padding: "24px",
-                    marginBottom: "24px"
-                  }}>
-                    <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "16px" }}>
-                      Lịch trình chi tiết
-                    </h3>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      {selectedPackage.schedule.map((item, index) => (
-                        <div key={index} style={{ display: "flex", gap: "12px" }}>
-                          <div style={{
-                            width: "28px",
-                            height: "28px",
-                            background: "#2563eb",
-                            color: "white",
-                            borderRadius: "50%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontWeight: "700",
-                            fontSize: "14px",
-                            flexShrink: 0
-                          }}>
-                            {index + 1}
-                          </div>
-                          <div style={{ fontSize: "15px", color: "#334155", lineHeight: "1.5" }}>
-                            {item}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* What's Included */}
-                  <div style={{
-                    background: "white",
-                    borderRadius: "16px",
-                    padding: "24px"
-                  }}>
-                    <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "16px" }}>
-                      Bao gồm
-                    </h3>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px" }}>
-                      {selectedPackage.includes.map((item, index) => (
-                        <div key={index} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <MdCheckCircle style={{ color: "#10b981", flexShrink: 0 }} />
-                          <span style={{ fontSize: "14px", color: "#475569" }}>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Booking Sidebar */}
-                <div>
-                  <div style={{
-                    background: "white",
-                    borderRadius: "16px",
-                    padding: "24px",
-                    position: "sticky",
-                    top: "90px"
-                  }}>
-                    {/* Price */}
-                    <div style={{ marginBottom: "24px" }}>
-                      <div style={{ fontSize: "14px", color: "#64748b", marginBottom: "4px" }}>Giá từ</div>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "12px" }}>
-                        <span style={{ fontSize: "32px", fontWeight: "700", color: "#2563eb" }}>
-                          {selectedPackage.price.toLocaleString("vi-VN")}đ
-                        </span>
-                        <span style={{ fontSize: "16px", color: "#94a3b8", textDecoration: "line-through" }}>
-                          {selectedPackage.originalPrice.toLocaleString("vi-VN")}đ
-                        </span>
-                      </div>
                       <div style={{
-                        background: "#fee2e2",
-                        color: "#ef4444",
-                        padding: "4px 12px",
-                        borderRadius: "20px",
-                        fontSize: "13px",
-                        fontWeight: "600",
-                        display: "inline-block",
-                        marginTop: "8px"
-                      }}>
-                        Tiết kiệm {selectedPackage.discount}%
-                      </div>
-                    </div>
-
-                    {/* Quick Info */}
-                    <div style={{
-                      background: "#f8fafc",
-                      borderRadius: "12px",
-                      padding: "16px",
-                      marginBottom: "24px"
-                    }}>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ color: "#64748b" }}>Điểm khởi hành</span>
-                          <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.departureCity}</span>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ color: "#64748b" }}>Điểm đến</span>
-                          <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.destinationCity}</span>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ color: "#64748b" }}>Thời gian</span>
-                          <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.duration}</span>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ color: "#64748b" }}>Phương tiện</span>
-                          <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.transport}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <button
-                      onClick={handleBookNow}
-                      style={{
-                        width: "100%",
-                        padding: "16px",
-                        background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
+                        position: "absolute",
+                        bottom: "20px",
+                        left: "20px",
+                        background: "rgba(0,0,0,0.7)",
                         color: "white",
-                        border: "none",
-                        borderRadius: "12px",
-                        fontWeight: "700",
-                        fontSize: "16px",
-                        cursor: "pointer",
-                        marginBottom: "12px"
-                      }}
-                    >
-                      Đặt ngay
-                    </button>
-
-                    <button
-                      style={{
-                        width: "100%",
-                        padding: "14px",
-                        background: "white",
-                        color: "#64748b",
-                        border: "1px solid #e2e8f0",
-                        borderRadius: "12px",
-                        fontWeight: "600",
-                        fontSize: "15px",
-                        cursor: "pointer",
+                        padding: "8px 16px",
+                        borderRadius: "30px",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
                         gap: "8px"
-                      }}
-                    >
-                      <MdShare /> Chia sẻ gói này
-                    </button>
+                      }}>
+                        {selectedPackage.icon}
+                        <span style={{ fontSize: "14px" }}>
+                          {selectedPackage.type === "flight" ? t.flight :
+                            selectedPackage.type === "train" ? t.train : t.bus}
+                        </span>
+                      </div>
+                    </div>
 
-                    {/* Info Note */}
+                    {/* Title and Rating */}
+                    <div style={{ marginBottom: "24px" }}>
+                      <h2 style={{ fontSize: "28px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>
+                        {selectedPackage.title}
+                      </h2>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                        <div style={{ display: "flex", gap: "2px" }}>
+                          {renderStars(selectedPackage.rating)}
+                        </div>
+                        <span style={{ color: "#64748b" }}>{selectedPackage.rating}/5</span>
+                        <span style={{ color: "#94a3b8" }}>•</span>
+                        <span style={{ color: "#64748b" }}>{selectedPackage.reviewCount} đánh giá</span>
+                      </div>
+                      <p style={{ fontSize: "16px", color: "#475569", lineHeight: "1.6" }}>
+                        {selectedPackage.description}
+                      </p>
+                    </div>
+
+                    {/* Schedule */}
                     <div style={{
-                      marginTop: "20px",
-                      fontSize: "13px",
-                      color: "#94a3b8",
-                      textAlign: "center"
+                      background: "white",
+                      borderRadius: "16px",
+                      padding: "24px",
+                      marginBottom: "24px"
                     }}>
-                      <MdInfo style={{ verticalAlign: "middle", marginRight: "4px" }} />
-                      Giá có thể thay đổi theo ngày khởi hành và số lượng khách
+                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "16px" }}>
+                        Lịch trình chi tiết
+                      </h3>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                        {selectedPackage.schedule.map((item, index) => (
+                          <div key={index} style={{ display: "flex", gap: "12px" }}>
+                            <div style={{
+                              width: "28px",
+                              height: "28px",
+                              background: "#2563eb",
+                              color: "white",
+                              borderRadius: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontWeight: "700",
+                              fontSize: "14px",
+                              flexShrink: 0
+                            }}>
+                              {index + 1}
+                            </div>
+                            <div style={{ fontSize: "15px", color: "#334155", lineHeight: "1.5" }}>
+                              {item}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* What's Included */}
+                    <div style={{
+                      background: "white",
+                      borderRadius: "16px",
+                      padding: "24px"
+                    }}>
+                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "16px" }}>
+                        Bao gồm
+                      </h3>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px" }}>
+                        {selectedPackage.includes.map((item, index) => (
+                          <div key={index} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <MdCheckCircle style={{ color: "#10b981", flexShrink: 0 }} />
+                            <span style={{ fontSize: "14px", color: "#475569" }}>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Booking Sidebar */}
+                  <div>
+                    <div style={{
+                      background: "white",
+                      borderRadius: "16px",
+                      padding: "24px",
+                      position: "sticky",
+                      top: "90px"
+                    }}>
+                      {/* Price */}
+                      <div style={{ marginBottom: "24px" }}>
+                        <div style={{ fontSize: "14px", color: "#64748b", marginBottom: "4px" }}>Giá từ</div>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "12px" }}>
+                          <span style={{ fontSize: "32px", fontWeight: "700", color: "#2563eb" }}>
+                            {selectedPackage.price.toLocaleString("vi-VN")}đ
+                          </span>
+                          <span style={{ fontSize: "16px", color: "#94a3b8", textDecoration: "line-through" }}>
+                            {selectedPackage.originalPrice.toLocaleString("vi-VN")}đ
+                          </span>
+                        </div>
+                        <div style={{
+                          background: "#fee2e2",
+                          color: "#ef4444",
+                          padding: "4px 12px",
+                          borderRadius: "20px",
+                          fontSize: "13px",
+                          fontWeight: "600",
+                          display: "inline-block",
+                          marginTop: "8px"
+                        }}>
+                          Tiết kiệm {selectedPackage.discount}%
+                        </div>
+                      </div>
+
+                      {/* Quick Info */}
+                      <div style={{
+                        background: "#f8fafc",
+                        borderRadius: "12px",
+                        padding: "16px",
+                        marginBottom: "24px"
+                      }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <span style={{ color: "#64748b" }}>Điểm khởi hành</span>
+                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.departureCity}</span>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <span style={{ color: "#64748b" }}>Điểm đến</span>
+                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.destinationCity}</span>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <span style={{ color: "#64748b" }}>Thời gian</span>
+                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.duration}</span>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <span style={{ color: "#64748b" }}>Phương tiện</span>
+                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.transport}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <button
+                        onClick={handleBookNow}
+                        style={{
+                          width: "100%",
+                          padding: "16px",
+                          background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "12px",
+                          fontWeight: "700",
+                          fontSize: "16px",
+                          cursor: "pointer",
+                          marginBottom: "12px"
+                        }}
+                      >
+                        Đặt ngay
+                      </button>
+
+                      <button
+                        style={{
+                          width: "100%",
+                          padding: "14px",
+                          background: "white",
+                          color: "#64748b",
+                          border: "1px solid #e2e8f0",
+                          borderRadius: "12px",
+                          fontWeight: "600",
+                          fontSize: "15px",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "8px"
+                        }}
+                      >
+                        <MdShare /> Chia sẻ gói này
+                      </button>
+
+                      {/* Info Note */}
+                      <div style={{
+                        marginTop: "20px",
+                        fontSize: "13px",
+                        color: "#94a3b8",
+                        textAlign: "center"
+                      }}>
+                        <MdInfo style={{ verticalAlign: "middle", marginRight: "4px" }} />
+                        Giá có thể thay đổi theo ngày khởi hành và số lượng khách
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
             )}
 
@@ -1211,11 +1344,11 @@ const OrderByPackage = () => {
                   <p style={{ color: "#666", fontSize: "13px", marginBottom: "20px" }}>Nhập thông tin cá nhân. Các ô có dấu * là bắt buộc.</p>
 
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                    {[{label: "Họ *", key: "lastName"}, {label: "Tên & tên đệm *", key: "firstName"}].map(f => (
+                    {[{ label: "Họ *", key: "lastName" }, { label: "Tên & tên đệm *", key: "firstName" }].map(f => (
                       <div key={f.key}>
                         <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>{f.label}</label>
                         <input value={customerInfo[f.key]}
-                          onChange={e => setCustomerInfo(p => ({...p, [f.key]: e.target.value}))}
+                          onChange={e => setCustomerInfo(p => ({ ...p, [f.key]: e.target.value }))}
                           style={{ width: "100%", padding: "12px", borderRadius: "8px", border: customerErrors[f.key] ? "2px solid #ef4444" : "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }} />
                         {customerErrors[f.key] && <div style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px" }}>{customerErrors[f.key]}</div>}
                       </div>
@@ -1223,15 +1356,15 @@ const OrderByPackage = () => {
                     <div>
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Ngày sinh</label>
                       <input type="date" value={customerInfo.dob}
-                        onChange={e => setCustomerInfo(p => ({...p, dob: e.target.value}))}
+                        onChange={e => setCustomerInfo(p => ({ ...p, dob: e.target.value }))}
                         style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }} />
                     </div>
                     <div>
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Quốc tịch</label>
                       <select value={customerInfo.nationality}
-                        onChange={e => setCustomerInfo(p => ({...p, nationality: e.target.value}))}
+                        onChange={e => setCustomerInfo(p => ({ ...p, nationality: e.target.value }))}
                         style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }}>
-                        {["Việt Nam","Nhật Bản","Hàn Quốc","Anh","Mỹ","Úc","Khác"].map(c => <option key={c}>{c}</option>)}
+                        {["Việt Nam", "Nhật Bản", "Hàn Quốc", "Anh", "Mỹ", "Úc", "Khác"].map(c => <option key={c}>{c}</option>)}
                       </select>
                     </div>
                     <div>
@@ -1239,7 +1372,7 @@ const OrderByPackage = () => {
                       <div style={{ display: "flex", gap: "8px" }}>
                         <input readOnly value="+84" style={{ width: "64px", padding: "12px 8px", borderRadius: "8px", border: "1px solid #e2e8f0", background: "#f5f5f5", textAlign: "center" }} />
                         <input value={customerInfo.phoneDigits}
-                          onChange={e => setCustomerInfo(p => ({...p, phoneDigits: e.target.value.replace(/\D/g, "")}))}
+                          onChange={e => setCustomerInfo(p => ({ ...p, phoneDigits: e.target.value.replace(/\D/g, "") }))}
                           placeholder="912345678"
                           style={{ flex: 1, padding: "12px", borderRadius: "8px", border: customerErrors.phoneDigits ? "2px solid #ef4444" : "1px solid #e2e8f0", fontSize: "14px" }} />
                       </div>
@@ -1248,7 +1381,7 @@ const OrderByPackage = () => {
                     <div>
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Email *</label>
                       <input type="email" value={customerInfo.email}
-                        onChange={e => setCustomerInfo(p => ({...p, email: e.target.value}))}
+                        onChange={e => setCustomerInfo(p => ({ ...p, email: e.target.value }))}
                         style={{ width: "100%", padding: "12px", borderRadius: "8px", border: customerErrors.email ? "2px solid #ef4444" : "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }} />
                       {customerErrors.email && <div style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px" }}>{customerErrors.email}</div>}
                     </div>

@@ -77,7 +77,10 @@ public class AuthService {
                 user.getEmail(),
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
-        String token = jwtService.generateToken(userDetails);
+        
+        java.util.Map<String, Object> extraClaims = new java.util.HashMap<>();
+        extraClaims.put("role", user.getRole());
+        String token = jwtService.generateToken(extraClaims, userDetails);
 
         return new AuthResponse(token, user.getEmail(), user.getFullName(), user.getRole());
     }
@@ -103,7 +106,10 @@ public class AuthService {
                 user.getEmail(),
                 user.getPassword() != null ? user.getPassword() : "",
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
-        String token = jwtService.generateToken(userDetails);
+        
+        java.util.Map<String, Object> extraClaims = new java.util.HashMap<>();
+        extraClaims.put("role", user.getRole());
+        String token = jwtService.generateToken(extraClaims, userDetails);
 
         return new AuthResponse(token, user.getEmail(), user.getFullName(), user.getRole());
     }
@@ -173,7 +179,10 @@ public class AuthService {
                 user.getEmail(),
                 user.getPassword() != null ? user.getPassword() : "",
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
-        String token = jwtService.generateToken(userDetails);
+        
+        java.util.Map<String, Object> extraClaims = new java.util.HashMap<>();
+        extraClaims.put("role", user.getRole());
+        String token = jwtService.generateToken(extraClaims, userDetails);
 
         return new AuthResponse(token, user.getEmail(), user.getFullName(), user.getRole());
     }

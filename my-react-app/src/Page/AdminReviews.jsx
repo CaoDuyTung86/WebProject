@@ -14,7 +14,7 @@ const AdminReviews = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    if (!isAuthenticated || (user?.role !== "ROLE_ADMIN" && user?.role !== "ROLE_PROVIDER")) {
+    if (!isAuthenticated || user?.role !== "ROLE_PROVIDER") {
       navigate("/");
       return;
     }
@@ -46,7 +46,7 @@ const AdminReviews = () => {
   return (
     <div style={{ padding: "40px", marginTop: "80px", background: "#f5f7fa", minHeight: "100vh" }}>
       <h2 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px", color: "#333" }}>
-        {user?.role === "ROLE_PROVIDER" ? "Danh sách Đánh giá (Nhà cung cấp)" : "Quản lý Đánh giá"}
+        {t.providerReviews}
       </h2>
       
       <div style={{ marginBottom: "20px" }}>
@@ -69,16 +69,16 @@ const AdminReviews = () => {
             <thead>
               <tr style={{ background: "#f8fafc", textAlign: "left", color: "#64748b", fontSize: "14px" }}>
                 <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>ID</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>Người dùng</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>Nhà cung cấp</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>Hành trình</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>Số sao</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>Bình luận</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.userCol}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.providerCol}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.journeyCol}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.rating}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.commentText}</th>
               </tr>
             </thead>
             <tbody>
               {filteredReviews.length === 0 ? (
-                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#888" }}>Không tìm thấy đánh giá.</td></tr>
+                <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "#888" }}>{t.noReviews}</td></tr>
               ) : (
                 filteredReviews.map(r => (
                   <tr key={r.id} style={{ borderBottom: "1px solid #eee", fontSize: "14px", color: "#333" }}>

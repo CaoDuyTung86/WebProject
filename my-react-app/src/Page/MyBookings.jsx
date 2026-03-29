@@ -139,7 +139,7 @@ const MyBookings = () => {
         <div style={{ padding: "100px 40px 40px", flex: 1 }}>
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 24, color: "#111827" }}>
-              Lịch sử đặt vé của bạn
+              {t.yourBookings}
             </h1>
 
             {paymentMsg && (
@@ -155,7 +155,7 @@ const MyBookings = () => {
               <p style={{ color: "#666" }}>Đang tải danh sách vé...</p>
             ) : bookings.length === 0 ? (
               <div style={{ background: "#fff", padding: 40, borderRadius: 12, textAlign: "center", color: "#666", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
-                Bạn chưa có chuyến đi nào. Hãy đặt vé ngay nhé!
+                {t.noBookings}
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -173,8 +173,8 @@ const MyBookings = () => {
                           <span style={{ background: statusBg, color: statusColor, padding: "4px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
                             {statusText}
                           </span>
-                          <span style={{ fontSize: 13, color: "#666", fontWeight: 600 }}>Mã vé: #{bk.id}</span>
-                          <span style={{ fontSize: 13, color: "#888" }}>• Đặt lúc: {new Date(bk.bookingDate).toLocaleString("vi-VN")}</span>
+                          <span style={{ fontSize: 13, color: "#666", fontWeight: 600 }}>{t.ticketCode}: #{bk.id}</span>
+                          <span style={{ fontSize: 13, color: "#888" }}>• {t.bookedAt}: {new Date(bk.bookingDate).toLocaleString("vi-VN")}</span>
                         </div>
                         
                         <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>
@@ -199,7 +199,7 @@ const MyBookings = () => {
                         
                         {bk.status === "CANCELLED" && bk.refundAmount > 0 && (
                           <div style={{ fontSize: 13, color: "#16a34a", fontWeight: 700, marginTop: 8 }}>
-                            Được hoàn: {bk.refundAmount.toLocaleString("vi-VN")} đ
+                            {t.refundedAmount}: {bk.refundAmount.toLocaleString("vi-VN")} đ
                           </div>
                         )}
                       </div>

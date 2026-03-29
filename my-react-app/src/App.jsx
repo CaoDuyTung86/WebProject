@@ -10,6 +10,7 @@ import TrainTickets from "./Page/TrainTickets";
 import OrderByPackage from "./Page/OrderByPackage";
 import { LanguageProvider } from "./context/LanguageContext";
 import { AuthProvider } from "./context/AuthContext";
+import { SavedPassengersProvider } from "./context/SavedPassengersContext";
 import Footer from "./LayOut/Footer";
 import MyBookings from "./Page/MyBookings";
 import ForgotPassword from "./Page/ForgotPassword";
@@ -18,6 +19,7 @@ import AdminTrips from "./Page/AdminTrips";
 import AdminReviews from "./Page/AdminReviews";
 import AccountPage from "./Page/AccountPage";
 import AdminRevenue from "./Page/AdminRevenue";
+import ProviderRefunds from "./Page/ProviderRefunds";
 
 function AppWrapper() {
   const location = useLocation();
@@ -42,6 +44,7 @@ function AppWrapper() {
         <Route path="/admin/reviews" element={<AdminReviews />} />
         <Route path="/admin/revenue" element={<AdminRevenue />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/provider/refunds" element={<ProviderRefunds />} />
       </Routes>
       {showFooter && <Footer />} 
     </>
@@ -54,7 +57,9 @@ function App() {
       <BrowserRouter>
         <LanguageProvider>
           <AuthProvider>
-            <AppWrapper />
+            <SavedPassengersProvider>
+              <AppWrapper />
+            </SavedPassengersProvider>
           </AuthProvider>
         </LanguageProvider>
       </BrowserRouter>

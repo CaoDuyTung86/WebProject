@@ -663,7 +663,7 @@ const FlightSearch = () => {
                   }}
                 >-</button>
                 <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.adult}</span>
-                <button 
+                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5} 
                   onClick={(e) => {
                     e.stopPropagation();
                     setPassengers({...passengers, adult: passengers.adult + 1});
@@ -712,7 +712,7 @@ const FlightSearch = () => {
                   }}
                 >-</button>
                 <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.child}</span>
-                <button 
+                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5} 
                   onClick={(e) => {
                     e.stopPropagation();
                     setPassengers({...passengers, child: passengers.child + 1});
@@ -761,7 +761,7 @@ const FlightSearch = () => {
                   }}
                 >-</button>
                 <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.infant}</span>
-                <button 
+                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5} 
                   onClick={(e) => {
                     e.stopPropagation();
                     setPassengers({...passengers, infant: passengers.infant + 1});
