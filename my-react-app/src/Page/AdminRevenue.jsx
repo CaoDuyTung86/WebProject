@@ -15,8 +15,10 @@ const AdminRevenue = () => {
 
 
   useEffect(() => {
-    fetchRevenue();
-  }, []);
+    if (token) {
+      fetchRevenue();
+    }
+  }, [token]);
 
   const fetchRevenue = async () => {
     try {
@@ -79,9 +81,9 @@ const AdminRevenue = () => {
         <Sidebar isOpen={isSidebarOpen} />
         <div className={`page-main ${isSidebarOpen ? "with-sidebar" : ""}`} style={{ padding: "30px", flex: 1, overflowY: "auto" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24, color: "#1e293b" }}>{t.revenueTitle}</h1>
+            <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24, color: "var(--text-heading)" }}>{t.revenueTitle}</h1>
             
-            {error && <div style={{ padding: 16, background: "#fee2e2", color: "#dc2626", borderRadius: 8, marginBottom: 20 }}>{error}</div>}
+            {error && <div style={{ padding: 16, background: "rgba(220, 38, 38, 0.1)", color: "var(--danger)", borderRadius: 8, marginBottom: 20, border: "1px solid rgba(220, 38, 38, 0.2)" }}>{error}</div>}
             
             {/* Total Revenue Summary Card */}
             <div style={{ background: "linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)", padding: 30, borderRadius: 16, boxShadow: "0 10px 25px rgba(59, 130, 246, 0.2)", marginBottom: 30, display: "flex", alignItems: "center", gap: 24, color: "white" }}>
@@ -98,7 +100,7 @@ const AdminRevenue = () => {
                 
                 {/* Pie Chart: Revenue by Service Type */}
                 <div style={{ background: "var(--bg-card)", padding: "24px", borderRadius: "16px", boxShadow: "var(--shadow-md)" }}>
-                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155", textAlign: "center" }}>{t.revenueByService}</h3>
+                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "var(--text-heading)", textAlign: "center" }}>{t.revenueByService}</h3>
                   <div style={{ height: "300px", width: "100%" }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -124,7 +126,7 @@ const AdminRevenue = () => {
 
                 {/* Bar Chart: Top Providers */}
                 <div style={{ background: "var(--bg-card)", padding: "24px", borderRadius: "16px", boxShadow: "var(--shadow-md)" }}>
-                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "#334155" }}>Top 5 Nhà cung cấp doanh thu cao nhất</h3>
+                  <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "20px", color: "var(--text-heading)" }}>Top 5 Nhà cung cấp doanh thu cao nhất</h3>
                   <div style={{ height: "300px", width: "100%" }}>
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
@@ -132,9 +134,9 @@ const AdminRevenue = () => {
                         layout="vertical"
                         margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
-                        <XAxis type="number" tickFormatter={(val) => `${(val/1000000).toFixed(1)}M`} stroke="#64748b" />
-                        <YAxis dataKey="name" type="category" width={100} tick={{fill: '#475569', fontSize: 12}} />
+                        <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--border-light)" />
+                        <XAxis type="number" tickFormatter={(val) => `${(val/1000000).toFixed(1)}M`} stroke="var(--text-muted)" />
+                        <YAxis dataKey="name" type="category" width={100} tick={{fill: 'var(--text-secondary)', fontSize: 12}} />
                         <Tooltip formatter={(value) => formatCurrency(value)} cursor={{fill: 'transparent'}} />
                         <Bar dataKey="Doanh thu" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={30} />
                       </BarChart>
@@ -146,23 +148,23 @@ const AdminRevenue = () => {
 
             {/* Data Table */}
             <div style={{ background: "var(--bg-card)", borderRadius: 16, boxShadow: "var(--shadow-md)", overflow: "hidden" }}>
-              <div style={{ padding: "20px 24px", borderBottom: "1px solid #f1f5f9" }}>
-                <h3 style={{ fontSize: "18px", fontWeight: "600", color: "#334155", margin: 0 }}>{t.revenueByService}</h3>
+              <div style={{ padding: "20px 24px", borderBottom: "1px solid var(--border-light)" }}>
+                <h3 style={{ fontSize: "18px", fontWeight: "600", color: "var(--text-heading)", margin: 0 }}>{t.revenueByService}</h3>
               </div>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
-                  <tr style={{ background: "#f8fafc", textAlign: "left" }}>
-                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Mã NCC</th>
-                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>{t.providerCol}</th>
-                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0" }}>Loại dịch vụ</th>
-                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "#64748b", borderBottom: "1px solid #e2e8f0", textAlign: "right" }}>{t.totalRevenue}</th>
+                  <tr style={{ background: "var(--bg-hover)", textAlign: "left" }}>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "var(--text-muted)", borderBottom: "1px solid var(--border-light)" }}>Mã NCC</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "var(--text-muted)", borderBottom: "1px solid var(--border-light)" }}>{t.providerCol}</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "var(--text-muted)", borderBottom: "1px solid var(--border-light)" }}>Loại dịch vụ</th>
+                    <th style={{ padding: "16px 24px", fontWeight: 600, color: "var(--text-muted)", borderBottom: "1px solid var(--border-light)", textAlign: "right" }}>{t.totalRevenue}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <tr><td colSpan="4" style={{ padding: 24, textAlign: "center", color: "#64748b" }}>Đang tải dữ liệu...</td></tr>
+                    <tr><td colSpan="4" style={{ padding: 24, textAlign: "center", color: "var(--text-muted)" }}>Đang tải dữ liệu...</td></tr>
                   ) : revenues.length === 0 ? (
-                    <tr><td colSpan="4" style={{ padding: 24, textAlign: "center", color: "#64748b" }}>Không có dữ liệu</td></tr>
+                    <tr><td colSpan="4" style={{ padding: 24, textAlign: "center", color: "var(--text-muted)" }}>Không có dữ liệu</td></tr>
                   ) : (
                     [...revenues]
                       .sort((a, b) => {
@@ -173,9 +175,9 @@ const AdminRevenue = () => {
                         return a.providerId - b.providerId;
                       })
                       .map((item, index) => (
-                        <tr key={item.providerId} style={{ borderBottom: "1px solid #f1f5f9", transition: "0.2s" }} onMouseEnter={e => e.currentTarget.style.background = "#f8fafc"} onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
-                        <td style={{ padding: "16px 24px", color: "#64748b", fontSize: "14px" }}>#{index + 1}</td>
-                        <td style={{ padding: "16px 24px", fontWeight: 600, color: "#334155" }}>{item.providerName}</td>
+                        <tr key={item.providerId} style={{ borderBottom: "1px solid var(--border-light)", transition: "0.2s" }} onMouseEnter={e => e.currentTarget.style.background = "var(--bg-hover)"} onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                        <td style={{ padding: "16px 24px", color: "var(--text-muted)", fontSize: "14px" }}>#{index + 1}</td>
+                        <td style={{ padding: "16px 24px", fontWeight: 600, color: "var(--text-heading)" }}>{item.providerName}</td>
                         <td style={{ padding: "16px 24px", color: "#64748b" }}>
                           <span style={{ 
                             padding: "4px 10px", 
@@ -188,7 +190,7 @@ const AdminRevenue = () => {
                             {getMappedType(item.providerType)}
                           </span>
                         </td>
-                        <td style={{ padding: "16px 24px", fontWeight: 700, color: "#0f172a", textAlign: "right" }}>
+                        <td style={{ padding: "16px 24px", fontWeight: 700, color: "var(--text-heading)", textAlign: "right" }}>
                           {formatCurrency(item.totalRevenue || 0)}
                         </td>
                       </tr>

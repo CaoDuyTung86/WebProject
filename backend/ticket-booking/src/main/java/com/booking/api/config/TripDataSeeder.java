@@ -27,12 +27,13 @@ public class TripDataSeeder {
     @Order(1)
     CommandLineRunner seedTripData() {
         return args -> {
-            if (tripRepository.count() > 1000) {
-                log.info("[TripDataSeeder] Trips already exist, skipping seed.");
+            // Đổi limit để cho phép sinh thêm dữ liệu đến 10/4
+            if (tripRepository.count() > 30000) {
+                log.info("[TripDataSeeder] Max trips already reached, skipping seed.");
                 return;
             }
 
-            log.info("[TripDataSeeder] Seeding trip data...");
+            log.info("[TripDataSeeder] Seeding extra trip data evenly until April 10...");
 
             // ── 1. Routes ──
             String[][] routePairs = {
@@ -211,7 +212,8 @@ public class TripDataSeeder {
 
             List<Trip> allTrips = new ArrayList<>();
 
-            for (int day = 0; day < 30; day++) {
+            // Sinh thêm dữ liệu cho 12 ngày (đến 10/4/2026)
+            for (int day = 0; day < 12; day++) {
                 LocalDateTime base = now.plusDays(day);
 
                 // Plane trips
@@ -220,14 +222,8 @@ public class TripDataSeeder {
                     Route route = routeMap.get(routeKey);
                     if (route == null) continue;
 
-                    // 2-3 flights per route per day
-                    int count = 2 + rng.nextInt(2);
-                    Set<Integer> usedHours = new HashSet<>();
-                    for (int i = 0; i < count; i++) {
-                        int hi;
-                        do { hi = rng.nextInt(planeHours.length); } while (usedHours.contains(hi));
-                        usedHours.add(hi);
-
+                    // Sinh cho TẤT CẢ các khung giờ thay vì random
+                    for (int hi = 0; hi < planeHours.length; hi++) {
                         Trip t = new Trip();
                         t.setRoute(route);
                         t.setVehicle(vehMap.get(planeVehicles[rng.nextInt(planeVehicles.length)]));
@@ -245,13 +241,8 @@ public class TripDataSeeder {
                     Route route = routeMap.get(routeKey);
                     if (route == null) continue;
 
-                    int count = 2 + rng.nextInt(2);
-                    Set<Integer> usedHours = new HashSet<>();
-                    for (int i = 0; i < count; i++) {
-                        int hi;
-                        do { hi = rng.nextInt(busHours.length); } while (usedHours.contains(hi));
-                        usedHours.add(hi);
-
+                    // Sinh cho TẤT CẢ các khung giờ của xe khách
+                    for (int hi = 0; hi < busHours.length; hi++) {
                         Trip t = new Trip();
                         t.setRoute(route);
                         t.setVehicle(vehMap.get(busVehicles[rng.nextInt(busVehicles.length)]));
@@ -269,13 +260,8 @@ public class TripDataSeeder {
                     Route route = routeMap.get(routeKey);
                     if (route == null) continue;
 
-                    int count = 1 + rng.nextInt(2);
-                    Set<Integer> usedHours = new HashSet<>();
-                    for (int i = 0; i < count; i++) {
-                        int hi;
-                        do { hi = rng.nextInt(trainHours.length); } while (usedHours.contains(hi));
-                        usedHours.add(hi);
-
+                    // Sinh cho TẤT CẢ các khung giờ của tàu hỏa
+                    for (int hi = 0; hi < trainHours.length; hi++) {
                         Trip t = new Trip();
                         t.setRoute(route);
                         t.setVehicle(vehMap.get(trainVehicles[rng.nextInt(trainVehicles.length)]));
@@ -289,7 +275,7 @@ public class TripDataSeeder {
             }
 
             tripRepository.saveAll(allTrips);
-            log.info("[TripDataSeeder] Created {} trips across 30 days for PLANE/BUS/TRAIN.", allTrips.size());
+            log.info("[TripDataSeeder] Created {} extra trips across 12 days (until 10/4) for PLANE/BUS/TRAIN.", allTrips.size());
         };
     }
 }

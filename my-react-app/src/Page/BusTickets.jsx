@@ -1016,11 +1016,11 @@ const BusTickets = () => {
 
                   <div style={{ display: "flex", gap: 16, marginTop: 14 }}>
                     <label style={{ fontSize: 13, display: "flex", gap: 8, alignItems: "center", cursor: "pointer" }}>
-                      <input type="checkbox" checked={passengerInfo.promoOptIn} onChange={e => setPassengerInfo(p => ({ ...p, promoOptIn: e.target.checked }))} />
+                      <input type="checkbox" checked={globalContact.promoOptIn} onChange={e => setGlobalContact(p => ({ ...p, promoOptIn: e.target.checked }))} />
                       Nhận thông tin khuyến mãi
                     </label>
                     <label style={{ fontSize: 13, display: "flex", gap: 8, alignItems: "center", cursor: "pointer" }}>
-                      <input type="checkbox" checked={passengerInfo.remember} onChange={e => setPassengerInfo(p => ({ ...p, remember: e.target.checked }))} />
+                      <input type="checkbox" checked={globalContact.remember} onChange={e => setGlobalContact(p => ({ ...p, remember: e.target.checked }))} />
                       Lưu thông tin cho lần sau
                     </label>
                   </div>
@@ -1200,11 +1200,14 @@ const BusTickets = () => {
 
                   <div style={{ border: "1px solid var(--border-main)", borderRadius: 12, padding: 16, marginBottom: 14, background: "var(--bg-input)" }}>
                     <div style={{ fontWeight: 700, marginBottom: 8, color: "var(--primary)" }}><FaUser /> Hành khách</div>
-                    <div style={{ fontSize: 14 }}>
-                      <b>{passengerInfo.lastName} {passengerInfo.firstName}</b>
-                      <div style={{ color: "var(--text-muted)", fontSize: 13, marginTop: 4 }}>{passengerInfo.email} · +84 {passengerInfo.phoneDigits}</div>
-                      <div style={{ marginTop: 4 }}>Ghế: <b>{seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ") || "Chưa chọn"}</b></div>
-                    </div>
+                    {passengerInfoList.map((pi, idx) => (
+                      <div key={idx} style={{ fontSize: 13, marginBottom: 8, paddingBottom: 8, borderBottom: idx < passengerInfoList.length - 1 ? "1px dashed #ccc" : "none" }}>
+                        <b>{pi.data.fullName || `Hành khách ${idx+1}`}</b> ({pi.type === 'ADULT' ? 'Người lớn' : pi.type === 'CHILD' ? 'Trẻ em' : 'Em bé'})
+                        {pi.type === 'ADULT' && <div style={{ color: "var(--text-muted)", marginTop: 2 }}>{pi.data.email} · {pi.data.phone ? `${pi.data.phone}` : ''}</div>}
+                        <div style={{ marginTop: 2 }}>Ngày sinh: {pi.data.dateOfBirth} | Giới tính: {pi.data.gender === 'Male' ? 'Nam' : pi.data.gender === 'Female' ? 'Nữ' : 'Khác'}</div>
+                      </div>
+                    ))}
+                    <div style={{ marginTop: 4 }}>Ghế: <b>{seats.filter(s => selectedSeatIds.includes(s.id)).map(s => s.seatNumber).join(", ") || "Chưa chọn"}</b></div>
                   </div>
 
          

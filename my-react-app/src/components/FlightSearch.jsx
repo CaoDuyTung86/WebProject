@@ -10,7 +10,7 @@ const FlightSearch = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [tripType, setTripType] = useState("roundtrip");
-  
+
   // State cho roundtrip và oneway
   const [from, setFrom] = useState("");
   const [fromCity, setFromCity] = useState(null);
@@ -18,14 +18,14 @@ const FlightSearch = () => {
   const [toCity, setToCity] = useState(null);
   const [departDate, setDepartDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  
+
   // State cho multi-city
   const [multiCityFlights, setMultiCityFlights] = useState([
     { id: 1, from: "", fromCity: null, to: "", toCity: null, departDate: "" },
     { id: 2, from: "", fromCity: null, to: "", toCity: null, departDate: "" },
     { id: 3, from: "", fromCity: null, to: "", toCity: null, departDate: "" },
   ]);
-  
+
   // State chung
   const [passengers, setPassengers] = useState({
     adult: 1,
@@ -200,7 +200,7 @@ const FlightSearch = () => {
               <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-main)" }}>
                 {t.flight} {index + 1}
               </span>
-              
+
               {/* Nút xóa */}
               {multiCityFlights.length > 1 && (
                 <button
@@ -230,7 +230,7 @@ const FlightSearch = () => {
               marginBottom: "12px",
             }}>
               {/* From */}
-              <div 
+              <div
                 style={{
                   border: "1px solid #e0e0e0",
                   borderRadius: "8px",
@@ -249,8 +249,8 @@ const FlightSearch = () => {
                 </label>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                   <MdFlightTakeoff style={{ color: "var(--primary)", fontSize: "14px" }} />
-                  <span style={{ 
-                    fontSize: "13px", 
+                  <span style={{
+                    fontSize: "13px",
                     color: flight.from ? "#333" : "#999",
                   }}>
                     {flight.from || t.selectDeparture}
@@ -259,7 +259,7 @@ const FlightSearch = () => {
               </div>
 
               {/* Swap button */}
-              <button 
+              <button
                 onClick={() => handleSwapMultiCity(flight.id)}
                 style={{
                   width: "32px",
@@ -278,7 +278,7 @@ const FlightSearch = () => {
               </button>
 
               {/* To */}
-              <div 
+              <div
                 style={{
                   border: "1px solid #e0e0e0",
                   borderRadius: "8px",
@@ -297,8 +297,8 @@ const FlightSearch = () => {
                 </label>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                   <MdFlightLand style={{ color: "var(--primary)", fontSize: "14px" }} />
-                  <span style={{ 
-                    fontSize: "13px", 
+                  <span style={{
+                    fontSize: "13px",
                     color: flight.to ? "#333" : "#999",
                   }}>
                     {flight.to || t.selectDestination}
@@ -323,7 +323,7 @@ const FlightSearch = () => {
                   type="date"
                   value={flight.departDate}
                   onChange={(e) => {
-                    setMultiCityFlights(prev => prev.map(f => 
+                    setMultiCityFlights(prev => prev.map(f =>
                       f.id === flight.id ? { ...f, departDate: e.target.value } : f
                     ));
                   }}
@@ -429,8 +429,8 @@ const FlightSearch = () => {
           gap: "8px",
           marginBottom: "16px",
         }}>
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             id="directFlight"
             style={{ width: "16px", height: "16px", cursor: "pointer" }}
           />
@@ -453,7 +453,7 @@ const FlightSearch = () => {
             marginBottom: "16px",
           }}>
             {/* From */}
-            <div 
+            <div
               style={{
                 border: "1px solid #e0e0e0",
                 borderRadius: "12px",
@@ -471,8 +471,8 @@ const FlightSearch = () => {
               </label>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <MdFlightTakeoff style={{ color: "var(--primary)", fontSize: "18px" }} />
-                <span style={{ 
-                  fontSize: "15px", 
+                <span style={{
+                  fontSize: "15px",
                   color: from ? "#333" : "#999",
                   flex: 1,
                 }}>
@@ -482,7 +482,7 @@ const FlightSearch = () => {
             </div>
 
             {/* Swap button */}
-            <button 
+            <button
               onClick={handleSwapCities}
               style={{
                 width: "40px",
@@ -501,7 +501,7 @@ const FlightSearch = () => {
             </button>
 
             {/* To */}
-            <div 
+            <div
               style={{
                 border: "1px solid #e0e0e0",
                 borderRadius: "12px",
@@ -519,8 +519,8 @@ const FlightSearch = () => {
               </label>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <MdFlightLand style={{ color: "var(--primary)", fontSize: "18px" }} />
-                <span style={{ 
-                  fontSize: "15px", 
+                <span style={{
+                  fontSize: "15px",
                   color: to ? "#333" : "#999",
                   flex: 1,
                 }}>
@@ -606,7 +606,7 @@ const FlightSearch = () => {
         position: "relative",
         cursor: "pointer",
       }}
-      onClick={() => setShowPassengerModal(!showPassengerModal)}
+        onClick={() => setShowPassengerModal(!showPassengerModal)}
       >
         <label style={{ fontSize: "12px", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>
           {t.passengers}
@@ -620,7 +620,7 @@ const FlightSearch = () => {
 
         {/* Passenger modal */}
         {showPassengerModal && (
-          <div 
+          <div
             style={{
               position: "absolute",
               top: "100%",
@@ -636,18 +636,18 @@ const FlightSearch = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Adults */}
-            <div style={{ 
-              display: "flex", 
-              justifyContent: "space-between", 
-              alignItems: "center", 
-              marginBottom: "12px" 
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "12px"
             }}>
               <span style={{ fontWeight: "500" }}>{t.adultAge}</span>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <button 
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPassengers({...passengers, adult: Math.max(1, passengers.adult - 1)});
+                    setPassengers({ ...passengers, adult: Math.max(1, passengers.adult - 1) });
                   }}
                   style={{
                     width: "28px",
@@ -663,10 +663,10 @@ const FlightSearch = () => {
                   }}
                 >-</button>
                 <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.adult}</span>
-                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5} 
+                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPassengers({...passengers, adult: passengers.adult + 1});
+                    setPassengers({ ...passengers, adult: passengers.adult + 1 });
                   }}
                   style={{
                     width: "28px",
@@ -685,18 +685,18 @@ const FlightSearch = () => {
             </div>
 
             {/* Children */}
-            <div style={{ 
-              display: "flex", 
-              justifyContent: "space-between", 
-              alignItems: "center", 
-              marginBottom: "12px" 
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "12px"
             }}>
               <span style={{ fontWeight: "500" }}>{t.childAge}</span>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <button 
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPassengers({...passengers, child: Math.max(0, passengers.child - 1)});
+                    setPassengers({ ...passengers, child: Math.max(0, passengers.child - 1) });
                   }}
                   style={{
                     width: "28px",
@@ -712,10 +712,10 @@ const FlightSearch = () => {
                   }}
                 >-</button>
                 <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.child}</span>
-                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5} 
+                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPassengers({...passengers, child: passengers.child + 1});
+                    setPassengers({ ...passengers, child: passengers.child + 1 });
                   }}
                   style={{
                     width: "28px",
@@ -734,18 +734,18 @@ const FlightSearch = () => {
             </div>
 
             {/* Infants */}
-            <div style={{ 
-              display: "flex", 
-              justifyContent: "space-between", 
-              alignItems: "center", 
-              marginBottom: "16px" 
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "16px"
             }}>
               <span style={{ fontWeight: "500" }}>{t.infantAge}</span>
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <button 
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPassengers({...passengers, infant: Math.max(0, passengers.infant - 1)});
+                    setPassengers({ ...passengers, infant: Math.max(0, passengers.infant - 1) });
                   }}
                   style={{
                     width: "28px",
@@ -761,10 +761,10 @@ const FlightSearch = () => {
                   }}
                 >-</button>
                 <span style={{ minWidth: "20px", textAlign: "center" }}>{passengers.infant}</span>
-                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5} 
+                <button disabled={passengers.adult + passengers.child + passengers.infant >= 5}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPassengers({...passengers, infant: passengers.infant + 1});
+                    setPassengers({ ...passengers, infant: passengers.infant + 1 });
                   }}
                   style={{
                     width: "28px",
@@ -784,17 +784,17 @@ const FlightSearch = () => {
 
             {/* Class */}
             <div>
-              <label style={{ 
-                fontSize: "14px", 
-                fontWeight: "500", 
-                display: "block", 
-                marginBottom: "8px" 
+              <label style={{
+                fontSize: "14px",
+                fontWeight: "500",
+                display: "block",
+                marginBottom: "8px"
               }}>
                 {t.class}
               </label>
               <select
                 value={passengers.class}
-                onChange={(e) => setPassengers({...passengers, class: e.target.value})}
+                onChange={(e) => setPassengers({ ...passengers, class: e.target.value })}
                 onClick={(e) => e.stopPropagation()}
                 style={{
                   width: "100%",
@@ -848,13 +848,14 @@ const FlightSearch = () => {
       }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               id="flightHotel"
               style={{ width: "16px", height: "16px", cursor: "pointer" }}
             />
             <label htmlFor="flightHotel" style={{ fontSize: "14px", color: "var(--text-secondary)", cursor: "pointer" }}>
               {t.flightHotel}
+              Tìm vé + khách sạn
             </label>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>

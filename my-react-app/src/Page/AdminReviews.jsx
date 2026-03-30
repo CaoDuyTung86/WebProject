@@ -44,7 +44,7 @@ const AdminReviews = () => {
   );
 
   return (
-    <div style={{ padding: "40px", marginTop: "80px", background: "#f5f7fa", minHeight: "100vh" }}>
+    <div style={{ padding: "40px", marginTop: "80px", background: "var(--bg-main)", minHeight: "100vh" }}>
       <h2 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "20px", color: "var(--text-main)" }}>
         {t.providerReviews}
       </h2>
@@ -55,7 +55,7 @@ const AdminReviews = () => {
           placeholder="Tìm kiếm theo chuyến bay, hãng, hoặc nội dung..." 
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          style={{ padding: "10px", width: "300px", borderRadius: "8px", border: "1px solid var(--border-input)" }}
+          style={{ padding: "10px", width: "300px", borderRadius: "8px", border: "1px solid var(--border-input)", background: "var(--bg-input)", color: "var(--text-main)" }}
         />
       </div>
 
@@ -67,13 +67,13 @@ const AdminReviews = () => {
         <div style={{ background: "var(--bg-card)", borderRadius: "12px", boxShadow: "var(--shadow-md)", overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ background: "#f8fafc", textAlign: "left", color: "#64748b", fontSize: "14px" }}>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>ID</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.userCol}</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.providerCol}</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.journeyCol}</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.rating}</th>
-                <th style={{ padding: "16px", borderBottom: "1px solid #eee" }}>{t.commentText}</th>
+              <tr style={{ background: "var(--bg-hover)", textAlign: "left", color: "var(--text-muted)", fontSize: "14px" }}>
+                <th style={{ padding: "16px", borderBottom: "1px solid var(--border-light)" }}>ID</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid var(--border-light)" }}>{t.userCol}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid var(--border-light)" }}>{t.providerCol}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid var(--border-light)" }}>{t.journeyCol}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid var(--border-light)" }}>{t.rating}</th>
+                <th style={{ padding: "16px", borderBottom: "1px solid var(--border-light)" }}>{t.commentText}</th>
               </tr>
             </thead>
             <tbody>
@@ -81,7 +81,7 @@ const AdminReviews = () => {
                 <tr><td colSpan={6} style={{ padding: "20px", textAlign: "center", color: "var(--text-muted)" }}>{t.noReviews}</td></tr>
               ) : (
                 filteredReviews.map(r => (
-                  <tr key={r.id} style={{ borderBottom: "1px solid #eee", fontSize: "14px", color: "var(--text-main)" }}>
+                  <tr key={r.id} style={{ borderBottom: "1px solid var(--border-light)", fontSize: "14px", color: "var(--text-main)" }}>
                     <td style={{ padding: "16px" }}>#{r.id}</td>
                     <td style={{ padding: "16px", fontWeight: 600 }}>{r.userName}</td>
                     <td style={{ padding: "16px", color: "#ff6b00", fontWeight: 600 }}>{r.providerName || "N/A"}</td>

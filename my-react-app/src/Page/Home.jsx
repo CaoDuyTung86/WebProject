@@ -9,10 +9,10 @@ const Home = () => {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg-main)", transition: "background-color 0.3s" }}>
-     
+
       <Header setIsSidebarOpen={setIsSidebarOpen} />
 
-      
+
       <div className="page-with-sidebar">
         <Sidebar isOpen={isSidebarOpen} />
         <main className={`page-main ${isSidebarOpen ? "with-sidebar" : ""}`}>

@@ -61,7 +61,7 @@ const ForgotPassword = () => {
             display: "flex", 
             justifyContent: "center", 
             alignItems: "center", 
-            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            background: "var(--bg-main)",
             padding: "20px"
         }}>
             <div style={{ 
@@ -99,7 +99,7 @@ const ForgotPassword = () => {
                 {step === 1 ? (
                     <form onSubmit={handleRequestOTP}>
                         <div style={{ marginBottom: "25px" }}>
-                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>Email tài khoản</label>
+                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "var(--text-heading)" }}>Email tài khoản</label>
                             <input 
                                 type="email"
                                 required
@@ -112,7 +112,9 @@ const ForgotPassword = () => {
                                     borderRadius: "12px",
                                     border: "1px solid var(--border-input)",
                                     outline: "none",
-                                    fontSize: "15px"
+                                    fontSize: "15px",
+                                    background: "var(--bg-input)",
+                                    color: "var(--text-main)"
                                 }}
                             />
                         </div>
@@ -138,7 +140,7 @@ const ForgotPassword = () => {
                 ) : (
                     <form onSubmit={handleResetPassword}>
                         <div style={{ marginBottom: "20px" }}>
-                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>Nhập mã OTP (6 số)</label>
+                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "var(--text-heading)" }}>Nhập mã OTP (6 số)</label>
                             <input 
                                 type="text"
                                 required
@@ -155,12 +157,14 @@ const ForgotPassword = () => {
                                     fontSize: "18px",
                                     textAlign: "center",
                                     letterSpacing: "8px",
-                                    fontWeight: "700"
+                                    fontWeight: "700",
+                                    background: "var(--bg-input)",
+                                    color: "var(--text-main)"
                                 }}
                             />
                         </div>
                         <div style={{ marginBottom: "20px" }}>
-                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>Mật khẩu mới</label>
+                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "var(--text-heading)" }}>Mật khẩu mới</label>
                             <input 
                                 type="password"
                                 required
@@ -173,12 +177,14 @@ const ForgotPassword = () => {
                                     borderRadius: "12px",
                                     border: "1px solid var(--border-input)",
                                     outline: "none",
-                                    fontSize: "15px"
+                                    fontSize: "15px",
+                                    background: "var(--bg-input)",
+                                    color: "var(--text-main)"
                                 }}
                             />
                         </div>
                         <div style={{ marginBottom: "25px" }}>
-                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "#374151" }}>Xác nhận mật khẩu mới</label>
+                            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "var(--text-heading)" }}>Xác nhận mật khẩu mới</label>
                             <input 
                                 type="password"
                                 required
@@ -190,7 +196,9 @@ const ForgotPassword = () => {
                                     borderRadius: "12px",
                                     border: "1px solid var(--border-input)",
                                     outline: "none",
-                                    fontSize: "15px"
+                                    fontSize: "15px",
+                                    background: "var(--bg-input)",
+                                    color: "var(--text-main)"
                                 }}
                             />
                         </div>

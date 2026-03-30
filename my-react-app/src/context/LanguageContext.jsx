@@ -7,7 +7,7 @@ const translations = {
     search: "Tìm kiếm",
     support: "CSKH",
     login: "Đăng nhập/Đăng ký",
-    
+
     // Auth Modal
     authTitle: "Đăng nhập / Đăng ký",
     emailPlaceholder: "Vui lòng nhập địa chỉ email",
@@ -18,7 +18,7 @@ const translations = {
     loginWithApple: "Đăng nhập với Apple",
     qrText: "Sử dụng ứng dụng để",
     qrHighlight: "đăng nhập bằng mã QR",
-    
+
     // Password Step
     createAccount: "Tạo Tài Khoản",
     setPassword: "Đặt mật khẩu cho tài khoản mới của bạn:",
@@ -30,11 +30,11 @@ const translations = {
     termsAndConditions: "Điều Kiện Và Điều Khoản",
     privacyPolicy: "Tuyên Bố Quyền Riêng Tự",
     of: "của",
-    
+
     // Language
     selectLanguage: "Chọn ngôn ngữ",
     language: "Ngôn ngữ",
-    
+
     // Errors
     emailRequired: "Vui lòng nhập địa chỉ email",
     emailInvalid: "Email phải là Gmail (có đuôi @gmail.com)",
@@ -79,7 +79,6 @@ const translations = {
     business: "Thương gia",
     first: "Hạng nhất",
     apply: "Áp dụng",
-    flightHotel: "Vé máy bay + Khách sạn",
     search: "Tìm kiếm",
     anywhere: "Mọi nơi",
     addFlight: "Thêm chuyến bay khác",
@@ -101,24 +100,24 @@ const translations = {
     japan: "Nhật Bản",
     uk: "Anh",
     searchCity: "Tìm thành phố...",
-    
+
     // Vietnam Cities
     hanoi: "Hà Nội",
     hcmc: "TP. Hồ Chí Minh",
     danang: "Đà Nẵng",
-    
+
     // Taiwan Cities
     taipei: "Đài Bắc",
     kaohsiung: "Cao Hùng",
     taichung: "Đài Trung",
-    
+
     // Japan Cities
     tokyo: "Tokyo",
     osaka: "Osaka",
     nagoya: "Nagoya",
     sapporo: "Sapporo",
     fukuoka: "Fukuoka",
-    
+
     // UK Cities
     london: "Luân Đôn",
     manchester: "Manchester",
@@ -223,7 +222,7 @@ const translations = {
     airportTransfer: "Xe đưa đón",
     free: "Miễn phí",
     processing: "Đang xử lý...",
-    
+
     // Extra Strings
     adminTrips: "Admin Trips",
     adminReviews: "Quản lý đánh giá",
@@ -275,14 +274,14 @@ const translations = {
     sendRefundRequest: "Gửi yêu cầu hoàn tiền",
     approveRefund: "✓ Duyệt",
     rejectRefund: "✕ Từ chối",
-    providerNoteText: "Ghi chú Provider",
+    providerNoteText: "Ghi chú",
     sentAt: "Gửi lúc",
     processedAt: "Xử lý lúc",
     rejectTitle: "Từ chối yêu cầu hoàn tiền",
     rejectReasonLabel: "Lý do từ chối (tùy chọn)",
     rejectConfirmBtn: "Xác nhận Từ chối",
     refundReasonLabel: "Lý do yêu cầu hoàn tiền",
-    
+
     // Reviews
     rating: "Số sao",
     commentText: "Bình luận",
@@ -307,11 +306,11 @@ const translations = {
     // Package
     favoriteTours: "Tour Yêu thích",
 
-  
-  
+
+
   },
 
-   
+
 
   en: {
     // Header
@@ -319,7 +318,7 @@ const translations = {
     search: "Search",
     support: "Support",
     login: "Login/Register",
-    
+
     // Auth Modal
     authTitle: "Login / Register",
     emailPlaceholder: "Please enter your email",
@@ -330,7 +329,7 @@ const translations = {
     loginWithApple: "Login with Apple",
     qrText: "Use app to",
     qrHighlight: "login with QR code",
-    
+
     // Password Step
     createAccount: "Create Account",
     setPassword: "Set password for your new account:",
@@ -342,18 +341,18 @@ const translations = {
     termsAndConditions: "Terms & Conditions",
     privacyPolicy: "Privacy Policy",
     of: "of",
-    
+
     // Language
     selectLanguage: "Select language",
     language: "Language",
-    
+
     // Errors
     emailRequired: "Please enter your email",
     emailInvalid: "Email must be Gmail (with @gmail.com)",
     passwordRequired: "Please enter password",
     passwordInvalid: "Password must be at least 8 characters, including letters, numbers and symbols",
     registerSuccess: "Account {email} registered successfully!",
-    
+
     // Booking Tabs
     flight: "Flight Tickets",
     train: "Train Tickets",
@@ -413,24 +412,24 @@ const translations = {
     japan: "Japan",
     uk: "United Kingdom",
     searchCity: "Search city...",
-    
+
     // Vietnam Cities
     hanoi: "Hanoi",
     hcmc: "Ho Chi Minh City",
     danang: "Da Nang",
-    
+
     // Taiwan Cities
     taipei: "Taipei",
     kaohsiung: "Kaohsiung",
     taichung: "Taichung",
-    
+
     // Japan Cities
     tokyo: "Tokyo",
     osaka: "Osaka",
     nagoya: "Nagoya",
     sapporo: "Sapporo",
     fukuoka: "Fukuoka",
-    
+
     // UK Cities
     london: "London",
     manchester: "Manchester",
@@ -438,28 +437,28 @@ const translations = {
     birmingham: "Birmingham",
 
     // Footer
-  contactUs: "Contact Us",
-  customerCare: "Customer Care",
-  serviceGuarantee: "Service Guarantee",
-  moreServiceInfo: "More service information",
-  aboutUs: "About Datxe.com",
-  news: "News",
-  careers: "Careers",
-  termsConditions: "Terms & Conditions",
-  privacyPolicy: "Privacy Policy",
-  aboutGroup: "About Datxe.com Group",
-  otherServices: "Other Services",
-  investorRelations: "Investor Relations",
-  rewards: "Datxe.com Rewards",
-  affiliateProgram: "Affiliate Program",
-  listProperty: "List Your Property",
-  security: "Security",
-  paymentMethods: "Payment Methods",
-  ourPartners: "Our Partners",
-  copyright: "Copyright © 2025 Datxe.com Travel VietNam Pte. Ltd. All rights reserved. Operator: Datxe.com Travel VietNam Pte. Ltd.",
+    contactUs: "Contact Us",
+    customerCare: "Customer Care",
+    serviceGuarantee: "Service Guarantee",
+    moreServiceInfo: "More service information",
+    aboutUs: "About Datxe.com",
+    news: "News",
+    careers: "Careers",
+    termsConditions: "Terms & Conditions",
+    privacyPolicy: "Privacy Policy",
+    aboutGroup: "About Datxe.com Group",
+    otherServices: "Other Services",
+    investorRelations: "Investor Relations",
+    rewards: "Datxe.com Rewards",
+    affiliateProgram: "Affiliate Program",
+    listProperty: "List Your Property",
+    security: "Security",
+    paymentMethods: "Payment Methods",
+    ourPartners: "Our Partners",
+    copyright: "Copyright © 2025 Datxe.com Travel VietNam Pte. Ltd. All rights reserved. Operator: Datxe.com Travel VietNam Pte. Ltd.",
 
     // Package Search
-   search: "Search",
+    search: "Search",
     apply: "Apply",
     package: "Package Booking",
     roundTrip: "Round trip",
@@ -476,7 +475,7 @@ const translations = {
     rooms: "rooms",
     adult: "Adults",
     child: "Children",
-    
+
     // Search Forms
     selectAirport: "Select airport",
     selectBusStation: "Select bus station",
@@ -534,7 +533,7 @@ const translations = {
     airportTransfer: "Transfer",
     free: "Free",
     processing: "Processing...",
-    
+
     // Extra Strings
     adminTrips: "Admin Trips",
     adminReviews: "Admin Reviews",
@@ -593,7 +592,7 @@ const translations = {
     rejectReasonLabel: "Reject reason (optional)",
     rejectConfirmBtn: "Confirm Reject",
     refundReasonLabel: "Reason for refund request",
-    
+
     // Reviews
     rating: "Rating",
     commentText: "Comment",
@@ -617,12 +616,12 @@ const translations = {
 
     // Package
     favoriteTours: "Favorite Tours",
-  
- 
-},
 
 
-   
+  },
+
+
+
 
   ja: {
     // Header
@@ -630,7 +629,7 @@ const translations = {
     search: "検索",
     support: "サポート",
     login: "ログイン/登録",
-    
+
     // Auth Modal
     authTitle: "ログイン / 登録",
     emailPlaceholder: "メールアドレスを入力してください",
@@ -641,7 +640,7 @@ const translations = {
     loginWithApple: "Appleでログイン",
     qrText: "アプリを使用して",
     qrHighlight: "QRコードでログイン",
-    
+
     // Password Step
     createAccount: "アカウント作成",
     setPassword: "新しいアカウントのパスワードを設定:",
@@ -653,11 +652,11 @@ const translations = {
     termsAndConditions: "利用規約",
     privacyPolicy: "プライバシーポリシー",
     of: "に同意したものとみなされます",
-    
+
     // Language
     selectLanguage: "言語を選択",
     language: "言語",
-    
+
     // Errors
     emailRequired: "メールアドレスを入力してください",
     emailInvalid: "メールはGmail（@gmail.com）である必要があります",
@@ -724,50 +723,50 @@ const translations = {
     japan: "日本",
     uk: "イギリス",
     searchCity: "都市を検索...",
-    
+
     // Vietnam Cities
     hanoi: "ハノイ",
     hcmc: "ホーチミン",
     danang: "ダナン",
-    
+
     // Taiwan Cities
     taipei: "台北",
     kaohsiung: "高雄",
     taichung: "台中",
-    
+
     // Japan Cities
     tokyo: "東京",
     osaka: "大阪",
     nagoya: "名古屋",
     sapporo: "札幌",
     fukuoka: "福岡",
-    
+
     // UK Cities
     london: "ロンドン",
     manchester: "マンチェスター",
     edinburgh: "エディンバラ",
     birmingham: "バーミンガム",
 
-  // Footer
-  contactUs: "お問い合わせ",
-  customerCare: "カスタマーケア",
-  serviceGuarantee: "サービス保証",
-  moreServiceInfo: "サービス詳細",
-  aboutUs: "Datxe.comについて",
-  news: "ニュース",
-  careers: "採用情報",
-  termsConditions: "利用規約",
-  privacyPolicy: "プライバシーポリシー",
-  aboutGroup: "Datxe.comグループについて",
-  otherServices: "その他のサービス",
-  investorRelations: "投資家情報",
-  rewards: "Datxe.com特典",
-  affiliateProgram: "アフィリエイトプログラム",
-  listProperty: "宿泊施設を登録",
-  security: "セキュリティ",
-  paymentMethods: "お支払い方法",
-  ourPartners: "パートナー",
-  copyright: "著作権 © 2025 Datxe.com Travel VietNam Pte. Ltd. 全著作権所有。運営会社: Datxe.com Travel VietNam Pte. Ltd.",
+    // Footer
+    contactUs: "お問い合わせ",
+    customerCare: "カスタマーケア",
+    serviceGuarantee: "サービス保証",
+    moreServiceInfo: "サービス詳細",
+    aboutUs: "Datxe.comについて",
+    news: "ニュース",
+    careers: "採用情報",
+    termsConditions: "利用規約",
+    privacyPolicy: "プライバシーポリシー",
+    aboutGroup: "Datxe.comグループについて",
+    otherServices: "その他のサービス",
+    investorRelations: "投資家情報",
+    rewards: "Datxe.com特典",
+    affiliateProgram: "アフィリエイトプログラム",
+    listProperty: "宿泊施設を登録",
+    security: "セキュリティ",
+    paymentMethods: "お支払い方法",
+    ourPartners: "パートナー",
+    copyright: "著作権 © 2025 Datxe.com Travel VietNam Pte. Ltd. 全著作権所有。運営会社: Datxe.com Travel VietNam Pte. Ltd.",
 
     // Package Search
     search: "検索",
@@ -845,7 +844,7 @@ const translations = {
     airportTransfer: "送迎",
     free: "無料",
     processing: "処理中...",
-    
+
     // Extra Strings
     adminTrips: "管理トリップ",
     adminReviews: "管理レビュー",
@@ -904,7 +903,7 @@ const translations = {
     rejectReasonLabel: "拒否の理由（オプション）",
     rejectConfirmBtn: "拒否を確認",
     refundReasonLabel: "払い戻しリクエストの理由",
-    
+
     // Reviews
     rating: "評価",
     commentText: "コメント",
@@ -931,7 +930,7 @@ const translations = {
 
   },
 
- 
+
 
   zh: {
     // Header
@@ -939,7 +938,7 @@ const translations = {
     search: "搜尋",
     support: "客服",
     login: "登入/註冊",
-    
+
     // Auth Modal
     authTitle: "登入 / 註冊",
     emailPlaceholder: "請輸入電子郵件",
@@ -950,7 +949,7 @@ const translations = {
     loginWithApple: "使用Apple登入",
     qrText: "使用應用程式",
     qrHighlight: "使用QR碼登入",
-    
+
     // Password Step
     createAccount: "創建帳戶",
     setPassword: "為您的新帳戶設置密碼：",
@@ -962,11 +961,11 @@ const translations = {
     termsAndConditions: "條款與條件",
     privacyPolicy: "隱私權政策",
     of: "的",
-    
+
     // Language
     selectLanguage: "選擇語言",
     language: "語言",
-    
+
     // Errors
     emailRequired: "請輸入電子郵件",
     emailInvalid: "電子郵件必須是Gmail（帶@gmail.com）",
@@ -1033,24 +1032,24 @@ const translations = {
     japan: "日本",
     uk: "英國",
     searchCity: "搜尋城市...",
-    
+
     // Vietnam Cities
     hanoi: "河內",
     hcmc: "胡志明市",
     danang: "峴港",
-    
+
     // Taiwan Cities
     taipei: "台北",
     kaohsiung: "高雄",
     taichung: "台中",
-    
+
     // Japan Cities
     tokyo: "東京",
     osaka: "大阪",
     nagoya: "名古屋",
     sapporo: "札幌",
     fukuoka: "福岡",
-    
+
     // UK Cities
     london: "倫敦",
     manchester: "曼徹斯特",
@@ -1058,29 +1057,29 @@ const translations = {
     birmingham: "伯明翰",
 
     // Footer
-  contactUs: "聯繫我們",
-  customerCare: "客戶服務",
-  serviceGuarantee: "服務保證",
-  moreServiceInfo: "更多服務信息",
-  aboutUs: "關於Datxe.com",
-  news: "新聞",
-  careers: "招聘",
-  termsConditions: "條款與條件",
-  privacyPolicy: "隱私政策",
-  aboutGroup: "關於Datxe.com集團",
-  otherServices: "其他服務",
-  investorRelations: "投資者關係",
-  rewards: "Datxe.com獎勵",
-  affiliateProgram: "聯盟計畫",
-  listProperty: "註冊住宿",
-  security: "安全",
-  paymentMethods: "付款方式",
-  ourPartners: "合作夥伴",
-  copyright: "版權所有 © 2025 Datxe.com Travel VietNam Pte. Ltd. 保留所有權利。運營商：Datxe.com Travel VietNam Pte. Ltd.",
-  
-   
-   //Package Search
-   
+    contactUs: "聯繫我們",
+    customerCare: "客戶服務",
+    serviceGuarantee: "服務保證",
+    moreServiceInfo: "更多服務信息",
+    aboutUs: "關於Datxe.com",
+    news: "新聞",
+    careers: "招聘",
+    termsConditions: "條款與條件",
+    privacyPolicy: "隱私政策",
+    aboutGroup: "關於Datxe.com集團",
+    otherServices: "其他服務",
+    investorRelations: "投資者關係",
+    rewards: "Datxe.com獎勵",
+    affiliateProgram: "聯盟計畫",
+    listProperty: "註冊住宿",
+    security: "安全",
+    paymentMethods: "付款方式",
+    ourPartners: "合作夥伴",
+    copyright: "版權所有 © 2025 Datxe.com Travel VietNam Pte. Ltd. 保留所有權利。運營商：Datxe.com Travel VietNam Pte. Ltd.",
+
+
+    //Package Search
+
     search: "搜尋",
     apply: "套用",
     package: "套裝預訂",
@@ -1215,7 +1214,7 @@ const translations = {
     rejectReasonLabel: "拒絕原因 (可選)",
     rejectConfirmBtn: "確認拒絕",
     refundReasonLabel: "退款請求原因",
-    
+
     // Reviews
     rating: "評分",
     commentText: "評論",
@@ -1241,7 +1240,7 @@ const translations = {
     favoriteTours: "收藏的行程",
   }
 
-  
+
 };
 
 const LanguageContext = createContext();
@@ -1250,7 +1249,7 @@ export const LanguageProvider = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState({
     code: 'vi',
     name: 'Tiếng Việt',
-    flag: null 
+    flag: null
   });
   const [t, setT] = useState(translations.vi);
 

@@ -16,7 +16,7 @@ const MyBookings = () => {
   const [paymentMsg, setPaymentMsg] = useState(null);
 
   // Modal Hoàn vé
-  const [cancelModal, setCancelModal] = useState({ show: false, booking: null, loading: false, error: null });
+  const [cancelModal, setCancelModal] = useState({ show: false, booking: null, loading: false, error: null, reason: "", success: false });
 
   // Modal Đánh Giá
   const [reviewModal, setReviewModal] = useState({ show: false, booking: null, rating: 0, hovered: 0, comment: "", loading: false, error: null, success: false });
@@ -56,28 +56,35 @@ const MyBookings = () => {
   }, [location, navigate]);
 
   const openCancelModal = (booking) => {
-    setCancelModal({ show: true, booking, loading: false, error: null });
+    setCancelModal({ show: true, booking, loading: false, error: null, reason: "", success: false });
   };
 
   const closeCancelModal = () => {
-    setCancelModal({ show: false, booking: null, loading: false, error: null });
+    setCancelModal({ show: false, booking: null, loading: false, error: null, reason: "", success: false });
   };
 
   const handleConfirmCancel = async () => {
     if (!cancelModal.booking) return;
+    if (!cancelModal.reason.trim()) {
+      setCancelModal(prev => ({ ...prev, error: "Vui lòng nhập lý do hoàn vé." }));
+      return;
+    }
     try {
       setCancelModal(prev => ({ ...prev, loading: true, error: null }));
       const token = localStorage.getItem("authToken");
-      await axios.put(`http://localhost:8080/api/bookings/${cancelModal.booking.id}/cancel`, {}, {
+      await axios.post(`http://localhost:8080/api/refunds/request`, {
+        bookingId: cancelModal.booking.id,
+        reason: cancelModal.reason
+      }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      // Refresh list
-      await fetchBookings();
-      closeCancelModal();
-
-      // Show success alert or toast here if needed
-      alert("Đã hoàn vé thành công!");
+      setCancelModal(prev => ({ ...prev, loading: false, success: true }));
+      // Refresh list after 2s
+      setTimeout(async () => {
+        await fetchBookings();
+        closeCancelModal();
+      }, 2000);
     } catch (err) {
       setCancelModal(prev => ({ ...prev, loading: false, error: err.response?.data?.message || err.message }));
     }
@@ -163,6 +170,8 @@ const MyBookings = () => {
                   const statusBg = bk.status === "PAID" || bk.status === "CONFIRMED" ? "#dcfce7" : bk.status === "COMPLETED" ? "#e0e7ff" : bk.status === "CANCELLED" ? "#f3f4f6" : "#fef9c3";
                   const statusColor = bk.status === "PAID" || bk.status === "CONFIRMED" ? "#16a34a" : bk.status === "COMPLETED" ? "#4f46e5" : bk.status === "CANCELLED" ? "#6b7280" : "#ca8a04";
                   const statusText = bk.status === "PAID" ? "Đã thanh toán" : bk.status === "CONFIRMED" ? "Đã xác nhận" : bk.status === "COMPLETED" ? "Đã hoàn thành" : bk.status === "CANCELLED" ? "Đã hủy/Hoàn" : "Chờ thanh toán";
+                  const hasPendingRefund = bk.refundStatus === "PENDING";
+                  const hasRejectedRefund = bk.refundStatus === "REJECTED";
                   
                   return (
                     <div key={bk.id} style={{ background: "var(--bg-card)", border: "1px solid var(--border-light)", borderRadius: 12, padding: 20, boxShadow: "0 2px 10px rgba(0,0,0,0.02)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -191,6 +200,20 @@ const MyBookings = () => {
                           <div><b>Ghế:</b> {bk.seatNumbers ? bk.seatNumbers.join(", ") : "N/A"}</div>
                         </div>
 
+                        {/* Hiển thị tên hành khách */}
+                        {bk.ticketDetails && bk.ticketDetails.length > 0 && (
+                          <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6 }}>
+                            <b>👤 Hành khách:</b>{" "}
+                            {bk.ticketDetails.map((td, idx) => (
+                              <span key={idx}>
+                                {td.passengerName || "N/A"}
+                                <span style={{ color: "var(--text-muted)", fontSize: 11 }}> ({td.seatNumber})</span>
+                                {idx < bk.ticketDetails.length - 1 ? ", " : ""}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
                         {bk.additionalServices && bk.additionalServices.length > 0 && (
                           <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 8 }}>
                             <b>Dịch vụ:</b> {bk.additionalServices.join(", ")}
@@ -200,6 +223,18 @@ const MyBookings = () => {
                         {bk.status === "CANCELLED" && bk.refundAmount > 0 && (
                           <div style={{ fontSize: 13, color: "#16a34a", fontWeight: 700, marginTop: 8 }}>
                             {t.refundedAmount}: {bk.refundAmount.toLocaleString("vi-VN")} đ
+                          </div>
+                        )}
+
+                        {/* Badge trạng thái yêu cầu hoàn tiền */}
+                        {hasPendingRefund && (
+                          <div style={{ marginTop: 8, padding: "6px 12px", background: "#fef3c7", color: "#92400e", borderRadius: 6, fontSize: 13, fontWeight: 700, display: "inline-block", border: "1px solid #fde68a" }}>
+                            ⏳ Đang chờ admin duyệt yêu cầu hoàn vé
+                          </div>
+                        )}
+                        {hasRejectedRefund && bk.status !== "CANCELLED" && (
+                          <div style={{ marginTop: 8, padding: "6px 12px", background: "#fee2e2", color: "#991b1b", borderRadius: 6, fontSize: 13, fontWeight: 700, display: "inline-block", border: "1px solid #fecaca" }}>
+                            ❌ Yêu cầu hoàn tiền bị từ chối
                           </div>
                         )}
                       </div>
@@ -264,7 +299,7 @@ const MyBookings = () => {
                             </button>
                           )}
 
-                          {bk.status !== "CANCELLED" && bk.status !== "COMPLETED" && (
+                          {bk.status !== "CANCELLED" && bk.status !== "COMPLETED" && !hasPendingRefund && (
                             <button 
                               onClick={() => openCancelModal(bk)}
                               style={{ padding: "8px 16px", borderRadius: 6, border: "1px solid #ef4444", background: "var(--bg-card)", color: "#ef4444", fontWeight: 700, cursor: "pointer", fontSize: 13, transition: "0.2s" }}
@@ -337,9 +372,34 @@ const MyBookings = () => {
                 )}
               </div>
 
+              {/* Lý do hoàn vé */}
+              {refundInfo.canRefund && (
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{ display: "block", fontWeight: 700, fontSize: 14, marginBottom: 8, color: "var(--text-heading)" }}>
+                    Lý do hoàn vé <span style={{ color: "#ef4444" }}>*</span>
+                  </label>
+                  <textarea
+                    value={cancelModal.reason}
+                    onChange={e => setCancelModal(prev => ({ ...prev, reason: e.target.value }))}
+                    placeholder="Vui lòng cho biết lý do bạn muốn hoàn/hủy vé..."
+                    rows={3}
+                    maxLength={500}
+                    style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid var(--border-input)", fontSize: 14, resize: "vertical", outline: "none", boxSizing: "border-box", lineHeight: 1.5, background: "var(--bg-input)", color: "var(--text-primary)" }}
+                  />
+                  <div style={{ textAlign: "right", fontSize: 11, color: "#9ca3af", marginTop: 4 }}>{cancelModal.reason.length}/500</div>
+                </div>
+              )}
+
               {cancelModal.error && (
-                <div style={{ padding: 12, background: "#fee2e2", color: "#dc2626", borderRadius: 8, fontSize: 13, marginBottom: 20 }}>
-                  {cancelModal.error}
+                <div style={{ padding: 12, background: "#fee2e2", color: "#dc2626", borderRadius: 8, fontSize: 13, marginBottom: 20, fontWeight: 600 }}>
+                  ⚠️ {cancelModal.error}
+                </div>
+              )}
+
+              {cancelModal.success && (
+                <div style={{ padding: 16, background: "#dcfce7", color: "#16a34a", borderRadius: 8, fontSize: 14, marginBottom: 20, fontWeight: 700, textAlign: "center", border: "1px solid #bbf7d0" }}>
+                  🎉 Yêu cầu hoàn vé đã được gửi thành công!<br/>
+                  <span style={{ fontWeight: 400, fontSize: 13 }}>Vui lòng chờ Admin duyệt. Bạn có thể theo dõi trạng thái tại đây.</span>
                 </div>
               )}
 
@@ -351,13 +411,13 @@ const MyBookings = () => {
                 >
                   Đóng
                 </button>
-                {refundInfo.canRefund && (
+                {refundInfo.canRefund && !cancelModal.success && (
                   <button 
                     onClick={handleConfirmCancel}
                     disabled={cancelModal.loading}
-                    style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: "#ef4444", color: "#fff", fontWeight: 700, cursor: cancelModal.loading ? "not-allowed" : "pointer" }}
+                    style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: cancelModal.loading ? "#fca5a5" : "#ef4444", color: "#fff", fontWeight: 700, cursor: cancelModal.loading ? "not-allowed" : "pointer", transition: "0.2s" }}
                   >
-                    {cancelModal.loading ? "Đang xử lý..." : "Xác nhận Hủy Vé"}
+                    {cancelModal.loading ? "Đang gửi yêu cầu..." : "Gửi yêu cầu hoàn vé"}
                   </button>
                 )}
               </div>

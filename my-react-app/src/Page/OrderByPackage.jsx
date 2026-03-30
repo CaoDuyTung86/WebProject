@@ -416,7 +416,7 @@ const OrderByPackage = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f5f7fa" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "var(--bg-main)" }}>
       <Header setIsSidebarOpen={setIsSidebarOpen} />
 
       <div className="page-with-sidebar">
@@ -451,10 +451,10 @@ const OrderByPackage = () => {
 
 
             <div style={{ marginBottom: "30px" }}>
-              <h1 style={{ fontSize: "36px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>
+              <h1 style={{ fontSize: "36px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "8px" }}>
                 Đặt theo gói
               </h1>
-              <p style={{ fontSize: "16px", color: "#64748b" }}>
+              <p style={{ fontSize: "16px", color: "var(--text-secondary)" }}>
                 Lựa chọn gói du lịch trọn gói với nhiều ưu đãi hấp dẫn
               </p>
             </div>
@@ -472,8 +472,8 @@ const OrderByPackage = () => {
                   padding: "12px 24px",
                   borderRadius: "50px",
                   border: "none",
-                  background: selectedCategory === "all" ? "#2563eb" : "white",
-                  color: selectedCategory === "all" ? "white" : "#1e293b",
+                  background: selectedCategory === "all" ? "#2563eb" : "var(--bg-card)",
+                  color: selectedCategory === "all" ? "white" : "var(--text-main)",
                   fontWeight: "600",
                   fontSize: "15px",
                   cursor: "pointer",
@@ -492,8 +492,8 @@ const OrderByPackage = () => {
                   padding: "12px 24px",
                   borderRadius: "50px",
                   border: "none",
-                  background: selectedCategory === "flight" ? "#2563eb" : "white",
-                  color: selectedCategory === "flight" ? "white" : "#1e293b",
+                  background: selectedCategory === "flight" ? "#2563eb" : "var(--bg-card)",
+                  color: selectedCategory === "flight" ? "white" : "var(--text-main)",
                   fontWeight: "600",
                   fontSize: "15px",
                   cursor: "pointer",
@@ -512,8 +512,8 @@ const OrderByPackage = () => {
                   padding: "12px 24px",
                   borderRadius: "50px",
                   border: "none",
-                  background: selectedCategory === "train" ? "#2563eb" : "white",
-                  color: selectedCategory === "train" ? "white" : "#1e293b",
+                  background: selectedCategory === "train" ? "#2563eb" : "var(--bg-card)",
+                  color: selectedCategory === "train" ? "white" : "var(--text-main)",
                   fontWeight: "600",
                   fontSize: "15px",
                   cursor: "pointer",
@@ -532,8 +532,8 @@ const OrderByPackage = () => {
                   padding: "12px 24px",
                   borderRadius: "50px",
                   border: "none",
-                  background: selectedCategory === "bus" ? "#2563eb" : "white",
-                  color: selectedCategory === "bus" ? "white" : "#1e293b",
+                  background: selectedCategory === "bus" ? "#2563eb" : "var(--bg-card)",
+                  color: selectedCategory === "bus" ? "white" : "var(--text-main)",
                   fontWeight: "600",
                   fontSize: "15px",
                   cursor: "pointer",
@@ -586,7 +586,7 @@ const OrderByPackage = () => {
                   <div
                     key={pkg.id}
                     style={{
-                      background: "white",
+                      background: "var(--bg-card)",
                       borderRadius: "20px",
                       overflow: "hidden",
                       boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
@@ -649,22 +649,22 @@ const OrderByPackage = () => {
                           ({pkg.reviewCount} đánh giá)
                         </span>
                       </div>
-                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>{pkg.title}</h3>
-                      <p style={{ fontSize: "14px", color: "#64748b", marginBottom: "12px" }}>{pkg.shortDesc}</p>
+                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "8px" }}>{pkg.title}</h3>
+                      <p style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "12px" }}>{pkg.shortDesc}</p>
                       <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
-                        <div style={{ fontSize: "13px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <div style={{ fontSize: "13px", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
                           <MdCalendarToday /> {pkg.duration}
                         </div>
-                        <div style={{ fontSize: "13px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <div style={{ fontSize: "13px", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
                           <MdPeople /> {pkg.departureCity}
                         </div>
                       </div>
                       <div style={{
                         display: "flex", alignItems: "baseline", justifyContent: "space-between",
-                        borderTop: "1px solid #e2e8f0", paddingTop: "16px"
+                        borderTop: "1px solid var(--border-light)", paddingTop: "16px"
                       }}>
                         <div>
-                          <span style={{ fontSize: "14px", color: "#64748b", textDecoration: "line-through", marginRight: "8px" }}>
+                          <span style={{ fontSize: "14px", color: "var(--text-muted)", textDecoration: "line-through", marginRight: "8px" }}>
                             {pkg.originalPrice.toLocaleString("vi-VN")}đ
                           </span>
                           <span style={{ fontSize: "22px", fontWeight: "700", color: "#2563eb" }}>
@@ -692,7 +692,7 @@ const OrderByPackage = () => {
                   <div
                     key={pkg.id}
                     style={{
-                      background: "white",
+                      background: "var(--bg-card)",
                       borderRadius: "20px",
                       overflow: "hidden",
                       boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
@@ -788,19 +788,19 @@ const OrderByPackage = () => {
                         </span>
                       </div>
 
-                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>
+                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "8px" }}>
                         {pkg.title}
                       </h3>
 
-                      <p style={{ fontSize: "14px", color: "#64748b", marginBottom: "12px" }}>
+                      <p style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "12px" }}>
                         {pkg.shortDesc}
                       </p>
 
                       <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
-                        <div style={{ fontSize: "13px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <div style={{ fontSize: "13px", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
                           <MdCalendarToday /> {pkg.duration}
                         </div>
-                        <div style={{ fontSize: "13px", color: "#64748b", display: "flex", alignItems: "center", gap: "4px" }}>
+                        <div style={{ fontSize: "13px", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
                           <MdPeople /> {pkg.departureCity}
                         </div>
                       </div>
@@ -809,11 +809,11 @@ const OrderByPackage = () => {
                         display: "flex",
                         alignItems: "baseline",
                         justifyContent: "space-between",
-                        borderTop: "1px solid #e2e8f0",
+                        borderTop: "1px solid var(--border-light)",
                         paddingTop: "16px"
                       }}>
                         <div>
-                          <span style={{ fontSize: "14px", color: "#64748b", textDecoration: "line-through", marginRight: "8px" }}>
+                          <span style={{ fontSize: "14px", color: "var(--text-muted)", textDecoration: "line-through", marginRight: "8px" }}>
                             {pkg.originalPrice.toLocaleString("vi-VN")}đ
                           </span>
                           <span style={{ fontSize: "22px", fontWeight: "700", color: "#2563eb" }}>
@@ -850,13 +850,13 @@ const OrderByPackage = () => {
                   style={{
                     display: "flex", alignItems: "center", gap: "8px",
                     padding: "10px 20px", marginBottom: "20px",
-                    background: "white", border: "1px solid #e2e8f0",
+                    background: "var(--bg-card)", border: "1px solid var(--border-light)",
                     borderRadius: "10px", cursor: "pointer",
-                    fontWeight: "600", fontSize: "15px", color: "#475569",
+                    fontWeight: "600", fontSize: "15px", color: "var(--text-secondary)",
                     transition: "all 0.2s"
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "#f1f5f9"; e.currentTarget.style.borderColor = "#cbd5e1"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "white"; e.currentTarget.style.borderColor = "#e2e8f0"; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "var(--bg-hover)"; e.currentTarget.style.borderColor = "var(--border-main)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "var(--bg-card)"; e.currentTarget.style.borderColor = "var(--border-light)"; }}
                 >
                   <MdArrowBack size={20} /> Quay lại danh sách
                 </button>
@@ -894,18 +894,18 @@ const OrderByPackage = () => {
 
                     {/* Title and Rating */}
                     <div style={{ marginBottom: "24px" }}>
-                      <h2 style={{ fontSize: "28px", fontWeight: "700", color: "#1e293b", marginBottom: "8px" }}>
+                      <h2 style={{ fontSize: "28px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "8px" }}>
                         {selectedPackage.title}
                       </h2>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
                         <div style={{ display: "flex", gap: "2px" }}>
                           {renderStars(selectedPackage.rating)}
                         </div>
-                        <span style={{ color: "#64748b" }}>{selectedPackage.rating}/5</span>
+                        <span style={{ color: "var(--text-muted)" }}>{selectedPackage.rating}/5</span>
                         <span style={{ color: "#94a3b8" }}>•</span>
-                        <span style={{ color: "#64748b" }}>{selectedPackage.reviewCount} đánh giá</span>
+                        <span style={{ color: "var(--text-muted)" }}>{selectedPackage.reviewCount} đánh giá</span>
                       </div>
-                      <p style={{ fontSize: "16px", color: "#475569", lineHeight: "1.6" }}>
+                      <p style={{ fontSize: "16px", color: "var(--text-secondary)", lineHeight: "1.6" }}>
                         {selectedPackage.description}
                       </p>
                     </div>
@@ -917,7 +917,7 @@ const OrderByPackage = () => {
                       padding: "24px",
                       marginBottom: "24px"
                     }}>
-                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "16px" }}>
+                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "16px" }}>
                         Lịch trình chi tiết
                       </h3>
                       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -938,7 +938,7 @@ const OrderByPackage = () => {
                             }}>
                               {index + 1}
                             </div>
-                            <div style={{ fontSize: "15px", color: "#334155", lineHeight: "1.5" }}>
+                            <div style={{ fontSize: "15px", color: "var(--text-main)", lineHeight: "1.5" }}>
                               {item}
                             </div>
                           </div>
@@ -952,14 +952,14 @@ const OrderByPackage = () => {
                       borderRadius: "16px",
                       padding: "24px"
                     }}>
-                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#1e293b", marginBottom: "16px" }}>
+                      <h3 style={{ fontSize: "18px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "16px" }}>
                         Bao gồm
                       </h3>
                       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px" }}>
                         {selectedPackage.includes.map((item, index) => (
                           <div key={index} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                             <MdCheckCircle style={{ color: "#10b981", flexShrink: 0 }} />
-                            <span style={{ fontSize: "14px", color: "#475569" }}>{item}</span>
+                            <span style={{ fontSize: "14px", color: "var(--text-secondary)" }}>{item}</span>
                           </div>
                         ))}
                       </div>
@@ -969,7 +969,7 @@ const OrderByPackage = () => {
                   {/* Booking Sidebar */}
                   <div>
                     <div style={{
-                      background: "white",
+                      background: "var(--bg-card)",
                       borderRadius: "16px",
                       padding: "24px",
                       position: "sticky",
@@ -977,12 +977,12 @@ const OrderByPackage = () => {
                     }}>
                       {/* Price */}
                       <div style={{ marginBottom: "24px" }}>
-                        <div style={{ fontSize: "14px", color: "#64748b", marginBottom: "4px" }}>Giá từ</div>
+                        <div style={{ fontSize: "14px", color: "var(--text-muted)", marginBottom: "4px" }}>Giá từ</div>
                         <div style={{ display: "flex", alignItems: "baseline", gap: "12px" }}>
                           <span style={{ fontSize: "32px", fontWeight: "700", color: "#2563eb" }}>
                             {selectedPackage.price.toLocaleString("vi-VN")}đ
                           </span>
-                          <span style={{ fontSize: "16px", color: "#94a3b8", textDecoration: "line-through" }}>
+                          <span style={{ fontSize: "16px", color: "var(--text-muted)", textDecoration: "line-through" }}>
                             {selectedPackage.originalPrice.toLocaleString("vi-VN")}đ
                           </span>
                         </div>
@@ -1002,27 +1002,27 @@ const OrderByPackage = () => {
 
                       {/* Quick Info */}
                       <div style={{
-                        background: "#f8fafc",
+                        background: "var(--bg-hover)",
                         borderRadius: "12px",
                         padding: "16px",
                         marginBottom: "24px"
                       }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                           <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <span style={{ color: "#64748b" }}>Điểm khởi hành</span>
-                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.departureCity}</span>
+                            <span style={{ color: "var(--text-muted)" }}>Điểm khởi hành</span>
+                            <span style={{ fontWeight: "600", color: "var(--text-heading)" }}>{selectedPackage.departureCity}</span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <span style={{ color: "#64748b" }}>Điểm đến</span>
-                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.destinationCity}</span>
+                            <span style={{ color: "var(--text-muted)" }}>Điểm đến</span>
+                            <span style={{ fontWeight: "600", color: "var(--text-heading)" }}>{selectedPackage.destinationCity}</span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <span style={{ color: "#64748b" }}>Thời gian</span>
-                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.duration}</span>
+                            <span style={{ color: "var(--text-muted)" }}>Thời gian</span>
+                            <span style={{ fontWeight: "600", color: "var(--text-heading)" }}>{selectedPackage.duration}</span>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <span style={{ color: "#64748b" }}>Phương tiện</span>
-                            <span style={{ fontWeight: "600", color: "#1e293b" }}>{selectedPackage.transport}</span>
+                            <span style={{ color: "var(--text-muted)" }}>Phương tiện</span>
+                            <span style={{ fontWeight: "600", color: "var(--text-heading)" }}>{selectedPackage.transport}</span>
                           </div>
                         </div>
                       </div>
@@ -1050,9 +1050,9 @@ const OrderByPackage = () => {
                         style={{
                           width: "100%",
                           padding: "14px",
-                          background: "white",
-                          color: "#64748b",
-                          border: "1px solid #e2e8f0",
+                          background: "var(--bg-card)",
+                          color: "var(--text-muted)",
+                          border: "1px solid var(--border-light)",
                           borderRadius: "12px",
                           fontWeight: "600",
                           fontSize: "15px",
@@ -1070,7 +1070,7 @@ const OrderByPackage = () => {
                       <div style={{
                         marginTop: "20px",
                         fontSize: "13px",
-                        color: "#94a3b8",
+                        color: "var(--text-muted)",
                         textAlign: "center"
                       }}>
                         <MdInfo style={{ verticalAlign: "middle", marginRight: "4px" }} />
@@ -1086,17 +1086,17 @@ const OrderByPackage = () => {
             {bookingStep === "booking" && selectedPackage && (
               <div style={{ maxWidth: "800px", margin: "0 auto" }}>
                 <div style={{
-                  background: "white",
+                  background: "var(--bg-card)",
                   borderRadius: "20px",
                   padding: "32px"
                 }}>
-                  <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#1e293b", marginBottom: "24px" }}>
+                  <h2 style={{ fontSize: "24px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "24px" }}>
                     Thông tin đặt gói
                   </h2>
 
                   {/* Travelers */}
                   <div style={{ marginBottom: "24px" }}>
-                    <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>
+                    <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "var(--text-heading)", marginBottom: "8px" }}>
                       Số lượng khách
                     </label>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -1106,8 +1106,8 @@ const OrderByPackage = () => {
                           width: "40px",
                           height: "40px",
                           borderRadius: "8px",
-                          border: "1px solid #e2e8f0",
-                          background: "white",
+                          border: "1px solid var(--border-light)",
+                          background: "var(--bg-card)",
                           fontSize: "18px",
                           cursor: "pointer"
                         }}
@@ -1124,8 +1124,10 @@ const OrderByPackage = () => {
                           width: "80px",
                           padding: "8px",
                           textAlign: "center",
-                          border: "1px solid #e2e8f0",
-                          borderRadius: "8px"
+                          border: "1px solid var(--border-light)",
+                          borderRadius: "8px",
+                          background: "var(--bg-input)",
+                          color: "var(--text-main)"
                         }}
                       />
                       <button
@@ -1134,8 +1136,8 @@ const OrderByPackage = () => {
                           width: "40px",
                           height: "40px",
                           borderRadius: "8px",
-                          border: "1px solid #e2e8f0",
-                          background: "white",
+                          border: "1px solid var(--border-light)",
+                          background: "var(--bg-card)",
                           fontSize: "18px",
                           cursor: "pointer"
                         }}
@@ -1148,7 +1150,7 @@ const OrderByPackage = () => {
                   {/* Dates */}
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "24px" }}>
                     <div>
-                      <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>
+                      <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "var(--text-heading)", marginBottom: "8px" }}>
                         Ngày khởi hành
                       </label>
                       <select
@@ -1157,9 +1159,11 @@ const OrderByPackage = () => {
                         style={{
                           width: "100%",
                           padding: "12px",
-                          border: "1px solid #e2e8f0",
+                          border: "1px solid var(--border-light)",
                           borderRadius: "8px",
-                          fontSize: "14px"
+                          fontSize: "14px",
+                          background: "var(--bg-input)",
+                          color: "var(--text-main)"
                         }}
                       >
                         <option value="">Chọn ngày</option>
@@ -1169,7 +1173,7 @@ const OrderByPackage = () => {
                       </select>
                     </div>
                     <div>
-                      <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>
+                      <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "var(--text-heading)", marginBottom: "8px" }}>
                         Ngày kết thúc
                       </label>
                       <select
@@ -1178,9 +1182,11 @@ const OrderByPackage = () => {
                         style={{
                           width: "100%",
                           padding: "12px",
-                          border: "1px solid #e2e8f0",
+                          border: "1px solid var(--border-light)",
                           borderRadius: "8px",
-                          fontSize: "14px"
+                          fontSize: "14px",
+                          background: "var(--bg-input)",
+                          color: "var(--text-main)"
                         }}
                       >
                         <option value="">Chọn ngày</option>
@@ -1193,7 +1199,7 @@ const OrderByPackage = () => {
 
                   {/* Extras */}
                   <div style={{ marginBottom: "24px" }}>
-                    <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#1e293b", marginBottom: "16px" }}>
+                    <h3 style={{ fontSize: "16px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "16px" }}>
                       Dịch vụ bổ sung
                     </h3>
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -1205,7 +1211,7 @@ const OrderByPackage = () => {
                             alignItems: "center",
                             justifyContent: "space-between",
                             padding: "12px",
-                            border: "1px solid #e2e8f0",
+                            border: "1px solid var(--border-light)",
                             borderRadius: "8px",
                             cursor: "pointer"
                           }}
@@ -1229,7 +1235,7 @@ const OrderByPackage = () => {
 
                   {/* Promo Code */}
                   <div style={{ marginBottom: "24px" }}>
-                    <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "#1e293b", marginBottom: "8px" }}>
+                    <label style={{ display: "block", fontSize: "14px", fontWeight: "600", color: "var(--text-heading)", marginBottom: "8px" }}>
                       Mã khuyến mãi
                     </label>
                     <div style={{ display: "flex", gap: "12px" }}>
@@ -1241,9 +1247,11 @@ const OrderByPackage = () => {
                         style={{
                           flex: 1,
                           padding: "12px",
-                          border: "1px solid #e2e8f0",
+                          border: "1px solid var(--border-light)",
                           borderRadius: "8px",
-                          fontSize: "14px"
+                          fontSize: "14px",
+                          background: "var(--bg-input)",
+                          color: "var(--text-main)"
                         }}
                       />
                       <button
@@ -1264,7 +1272,7 @@ const OrderByPackage = () => {
 
                   {/* Total */}
                   <div style={{
-                    background: "#f8fafc",
+                    background: "var(--bg-hover)",
                     borderRadius: "12px",
                     padding: "20px",
                     marginBottom: "24px"
@@ -1276,14 +1284,14 @@ const OrderByPackage = () => {
                     {selectedExtras.map(id => {
                       const extra = extraServices.find(e => e.id === id);
                       return (
-                        <div key={id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", color: "#64748b" }}>
+                        <div key={id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", color: "var(--text-muted)" }}>
                           <span>+ {extra.name}</span>
                           <span>{extra.price.toLocaleString("vi-VN")}đ</span>
                         </div>
                       );
                     })}
                     <div style={{
-                      borderTop: "1px solid #e2e8f0",
+                      borderTop: "1px solid var(--border-light)",
                       marginTop: "12px",
                       paddingTop: "12px",
                       display: "flex",
@@ -1304,9 +1312,9 @@ const OrderByPackage = () => {
                       style={{
                         flex: 1,
                         padding: "14px",
-                        background: "white",
-                        color: "#64748b",
-                        border: "1px solid #e2e8f0",
+                        background: "var(--bg-card)",
+                        color: "var(--text-muted)",
+                        border: "1px solid var(--border-light)",
                         borderRadius: "8px",
                         fontWeight: "600",
                         cursor: "pointer"
@@ -1337,8 +1345,8 @@ const OrderByPackage = () => {
             {/* Customer Info Form */}
             {bookingStep === "customerInfo" && selectedPackage && (
               <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-                <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-                  <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#1e293b", marginBottom: "24px" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: "20px", padding: "32px" }}>
+                  <h2 style={{ fontSize: "24px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "24px" }}>
                     Thông tin khách hàng
                   </h2>
                   <p style={{ color: "var(--text-secondary)", fontSize: "13px", marginBottom: "20px" }}>Nhập thông tin cá nhân. Các ô có dấu * là bắt buộc.</p>
@@ -1349,7 +1357,7 @@ const OrderByPackage = () => {
                         <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>{f.label}</label>
                         <input value={customerInfo[f.key]}
                           onChange={e => setCustomerInfo(p => ({ ...p, [f.key]: e.target.value }))}
-                          style={{ width: "100%", padding: "12px", borderRadius: "8px", border: customerErrors[f.key] ? "2px solid #ef4444" : "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }} />
+                          style={{ width: "100%", padding: "12px", borderRadius: "8px", border: customerErrors[f.key] ? "2px solid #ef4444" : "1px solid var(--border-light)", fontSize: "14px", boxSizing: "border-box", background: "var(--bg-input)", color: "var(--text-main)" }} />
                         {customerErrors[f.key] && <div style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px" }}>{customerErrors[f.key]}</div>}
                       </div>
                     ))}
@@ -1357,24 +1365,24 @@ const OrderByPackage = () => {
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Ngày sinh</label>
                       <input type="date" value={customerInfo.dob}
                         onChange={e => setCustomerInfo(p => ({ ...p, dob: e.target.value }))}
-                        style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid var(--border-light)", fontSize: "14px", boxSizing: "border-box", background: "var(--bg-input)", color: "var(--text-main)" }} />
                     </div>
                     <div>
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Quốc tịch</label>
                       <select value={customerInfo.nationality}
                         onChange={e => setCustomerInfo(p => ({ ...p, nationality: e.target.value }))}
-                        style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }}>
+                        style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid var(--border-light)", fontSize: "14px", boxSizing: "border-box", background: "var(--bg-input)", color: "var(--text-main)" }}>
                         {["Việt Nam", "Nhật Bản", "Hàn Quốc", "Anh", "Mỹ", "Úc", "Khác"].map(c => <option key={c}>{c}</option>)}
                       </select>
                     </div>
                     <div>
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Số điện thoại *</label>
                       <div style={{ display: "flex", gap: "8px" }}>
-                        <input readOnly value="+84" style={{ width: "64px", padding: "12px 8px", borderRadius: "8px", border: "1px solid #e2e8f0", background: "var(--bg-hover)", textAlign: "center" }} />
+                        <input readOnly value="+84" style={{ width: "64px", padding: "12px 8px", borderRadius: "8px", border: "1px solid var(--border-light)", background: "var(--bg-hover)", textAlign: "center", color: "var(--text-main)" }} />
                         <input value={customerInfo.phoneDigits}
                           onChange={e => setCustomerInfo(p => ({ ...p, phoneDigits: e.target.value.replace(/\D/g, "") }))}
                           placeholder="912345678"
-                          style={{ flex: 1, padding: "12px", borderRadius: "8px", border: customerErrors.phoneDigits ? "2px solid #ef4444" : "1px solid #e2e8f0", fontSize: "14px" }} />
+                          style={{ flex: 1, padding: "12px", borderRadius: "8px", border: customerErrors.phoneDigits ? "2px solid #ef4444" : "1px solid var(--border-light)", fontSize: "14px", background: "var(--bg-input)", color: "var(--text-main)" }} />
                       </div>
                       {customerErrors.phoneDigits && <div style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px" }}>{customerErrors.phoneDigits}</div>}
                     </div>
@@ -1382,14 +1390,14 @@ const OrderByPackage = () => {
                       <label style={{ display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Email *</label>
                       <input type="email" value={customerInfo.email}
                         onChange={e => setCustomerInfo(p => ({ ...p, email: e.target.value }))}
-                        style={{ width: "100%", padding: "12px", borderRadius: "8px", border: customerErrors.email ? "2px solid #ef4444" : "1px solid #e2e8f0", fontSize: "14px", boxSizing: "border-box" }} />
+                        style={{ width: "100%", padding: "12px", borderRadius: "8px", border: customerErrors.email ? "2px solid #ef4444" : "1px solid var(--border-light)", fontSize: "14px", boxSizing: "border-box", background: "var(--bg-input)", color: "var(--text-main)" }} />
                       {customerErrors.email && <div style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px" }}>{customerErrors.email}</div>}
                     </div>
                   </div>
 
                   <div style={{ display: "flex", gap: "12px", marginTop: "24px" }}>
                     <button onClick={() => setBookingStep("booking")}
-                      style={{ flex: 1, padding: "14px", background: "white", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: "8px", fontWeight: "600", cursor: "pointer" }}>
+                      style={{ flex: 1, padding: "14px", background: "var(--bg-card)", color: "var(--text-muted)", border: "1px solid var(--border-light)", borderRadius: "8px", fontWeight: "600", cursor: "pointer" }}>
                       Quay lại
                     </button>
                     <button onClick={handleCustomerInfoSubmit}
@@ -1404,8 +1412,8 @@ const OrderByPackage = () => {
             {/* Payment - VNPay */}
             {bookingStep === "payment" && selectedPackage && (
               <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-                <div style={{ background: "white", borderRadius: "20px", padding: "32px" }}>
-                  <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#1e293b", marginBottom: "24px" }}>
+                <div style={{ background: "var(--bg-card)", borderRadius: "20px", padding: "32px" }}>
+                  <h2 style={{ fontSize: "24px", fontWeight: "700", color: "var(--text-heading)", marginBottom: "24px" }}>
                     Thanh toán
                   </h2>
 
@@ -1425,7 +1433,7 @@ const OrderByPackage = () => {
                   </div>
 
                   {/* Total */}
-                  <div style={{ background: "#f8fafc", borderRadius: "12px", padding: "20px", marginBottom: "24px" }}>
+                  <div style={{ background: "var(--bg-hover)", borderRadius: "12px", padding: "20px", marginBottom: "24px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                       <span>Giá gói ({travelers} khách)</span>
                       <span style={{ fontWeight: "600" }}>{(selectedPackage.price * travelers).toLocaleString("vi-VN")}đ</span>
@@ -1433,12 +1441,12 @@ const OrderByPackage = () => {
                     {selectedExtras.map(id => {
                       const extra = extraServices.find(e => e.id === id);
                       return (
-                        <div key={id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", color: "#64748b" }}>
+                        <div key={id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", color: "var(--text-muted)" }}>
                           <span>+ {extra.name}</span><span>{extra.price.toLocaleString("vi-VN")}đ</span>
                         </div>
                       );
                     })}
-                    <div style={{ borderTop: "1px solid #e2e8f0", marginTop: "12px", paddingTop: "12px", display: "flex", justifyContent: "space-between", fontWeight: "700", fontSize: "18px", color: "#2563eb" }}>
+                    <div style={{ borderTop: "1px solid var(--border-light)", marginTop: "12px", paddingTop: "12px", display: "flex", justifyContent: "space-between", fontWeight: "700", fontSize: "18px", color: "#2563eb" }}>
                       <span>Tổng cộng</span>
                       <span>{calculateTotal().toLocaleString("vi-VN")}đ</span>
                     </div>
@@ -1447,7 +1455,7 @@ const OrderByPackage = () => {
                   {/* Action Buttons */}
                   <div style={{ display: "flex", gap: "12px" }}>
                     <button onClick={() => setBookingStep("customerInfo")}
-                      style={{ flex: 1, padding: "14px", background: "white", color: "#64748b", border: "1px solid #e2e8f0", borderRadius: "8px", fontWeight: "600", cursor: "pointer" }}>
+                      style={{ flex: 1, padding: "14px", background: "var(--bg-card)", color: "var(--text-muted)", border: "1px solid var(--border-light)", borderRadius: "8px", fontWeight: "600", cursor: "pointer" }}>
                       Quay lại
                     </button>
                     <button onClick={handleVNPayPayment}
